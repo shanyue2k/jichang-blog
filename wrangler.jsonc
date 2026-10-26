@@ -1,0 +1,12 @@
+// Cloudflare Workers 静态站点配置：上传 npm run build 生成的 dist 文件夹
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // 必须和 Cloudflare 后台里这个 Worker 的名字一致
+  "name": "jichang-blog",
+  "compatibility_date": "2026-06-01",
+  "assets": {
+    "directory": "./dist",
+    // 找不到页面时返回 dist/404.html，并带 404 状态码
+    "not_found_handling": "404-page"
+  }
+}

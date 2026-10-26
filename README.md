@@ -22,12 +22,16 @@ npm run build    # 生成 dist/
 
 推送后 Cloudflare Pages 会自动重新部署。
 
-## 部署到 Cloudflare Pages
+## 部署到 Cloudflare（Workers）
 
-1. Cloudflare 控制台 → Workers 和 Pages → 创建 → Pages → 连接到 Git，选这个仓库
-2. 框架预设选 **Astro**；构建命令 `npm run build`；输出目录 `dist`
-3. 环境变量加 `NODE_VERSION` = `22`
-4. 部署完成后，在「自定义域」里绑定买好的域名
+仓库里的 `wrangler.jsonc` 已经配置好，把 `dist` 作为静态站点上传。
+
+1. Cloudflare 控制台 → Workers 和 Pages → 创建 → 导入 Git 存储库，选这个仓库
+2. 构建命令：`npm run build`
+3. 部署命令：`npx wrangler deploy`
+4. 构建变量加 `NODE_VERSION` = `22`
+5. Worker 名称要和 `wrangler.jsonc` 里的 `name`（jichang-blog）一致
+6. 部署完成后，在 Worker 的「设置 → 域和路由」里绑定买好的域名
 
 ## 写内容
 
