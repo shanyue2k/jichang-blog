@@ -1,0 +1,161 @@
+---
+import Base from '../layouts/Base.astro';
+import Board from '../components/Board.astro';
+import PostList from '../components/PostList.astro';
+import { PILLAR, SECTION_KEYS, SECTIONS, SITE } from '../site.config';
+import { getAllPosts, getPosts, getRankedAirports, getReviewFor, postPath, sectionPath } from '../lib/content';
+import { websiteSchema } from '../lib/schema';
+
+const airports = (await getRankedAirports()).slice(0, 5);
+const reviewPaths: Record<string, string> = {};
+for (const a of airports) {
+  const r = await getReviewFor(a.id);
+  if (r) reviewPaths[a.id] = postPath(r);
+}
+const updated = airports.length ? new Date(Math.max(...airports.map((a) => a.data.testedAt.getTime()))) : undefined;
+
+const latest = (await getAllPosts()).slice(0, 8);
+const counts = Object.fromEntries(
+  await Promise.all(SECTION_KEYS.map(async (k) => [k, (await getPosts(k)).length] as const)),
+);
+---
+
+<Base fullTitle={`${SITE.homeTitle} - ${SITE.name}`} description={SITE.description} jsonLd={[websiteSchema()]}>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="intro">
+        <h1>机场推荐与实测评测</h1>
+        <p>
+          每家机场都实际用满一个月以上，记录早中晚测速、晚高峰掉速和流媒体解锁情况。榜单按实测结果排序，每月复测一次。
+        </p>
+        <p class="cta">
+          <a class="btn" href={PILLAR.path}>查看完整机场推荐榜</a>
+        </p>
+      </div>
+      <div class="board-slot">
+        {
+          airports.length > 0 && (
+            <Board airports={airports} reviewPaths={reviewPaths} heading="本月推荐" updated={updated} animate />
+          )
+        }
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <section class="sections" aria-labelledby="sections-title">
+      <h2 id="sections-title" class="visually-hidden">栏目</h2>
+      <ul>
+        {
+          SECTION_KEYS.map((k) => (
+            <li>
+              <a href={sectionPath(k)}>
+                <span class="sec-name">{SECTIONS[k].label}</span>
+                <span class="sec-count num">{counts[k]} 篇</span>
+              </a>
+              <p>{SECTIONS[k].description}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="latest" aria-labelledby="latest-title">
+      <h2 id="latest-title">最近更新</h2>
+      {latest.length > 0 ? <PostList posts={latest} showSection headingLevel="h3" /> : <p class="meta">还没有文章。</p>}
+    </section>
+  </div>
+</Base>
+
+<style>
+  .hero {
+    background: linear-gradient(var(--surface), var(--surface)) top / 100% 70% no-repeat;
+    padding: 2.5rem 0 1rem;
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 20rem) minmax(0, 1fr);
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  @media (max-width: 960px) {
+    .hero-grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1.5rem;
+    }
+  }
+
+  .intro h1 {
+    font-size: clamp(var(--step-3), 4vw, var(--step-4));
+    line-height: 1.25;
+  }
+
+  .intro p {
+    color: var(--ink-soft);
+  }
+
+  .cta {
+    margin-top: 1.5rem;
+  }
+
+  .sections ul {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
+    list-style: none;
+    padding: 0;
+    margin: 3rem 0 0;
+    border-top: 2px solid var(--ink);
+  }
+
+  @media (max-width: 860px) {
+    .sections ul {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .sections li {
+    padding: 1rem 1.25rem 1rem 0;
+  }
+
+  .sections a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: var(--ink);
+  }
+
+  .sections a:hover .sec-name {
+    text-decoration: underline;
+  }
+
+  .sec-name {
+    font-size: var(--step-1);
+    font-weight: 700;
+  }
+
+  .sec-count {
+    color: var(--muted);
+  }
+
+  .sections p {
+    margin: 0.3rem 0 0;
+    font-size: 0.9375rem;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+
+  .latest {
+    margin-top: 3rem;
+  }
+
+  .latest h2 {
+    max-width: 48rem;
+    border-top: 2px solid var(--ink);
+    padding-top: 0.25em;
+  }
+</style>

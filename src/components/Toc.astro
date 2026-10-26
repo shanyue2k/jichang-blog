@@ -1,0 +1,61 @@
+---
+import type { MarkdownHeading } from 'astro';
+
+interface Props {
+  headings: MarkdownHeading[];
+}
+const items = Astro.props.headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+{
+  items.length >= 3 && (
+    <nav class="toc" aria-label="本文目录">
+      <p class="toc-title">本文目录</p>
+      <ol>
+        {items.map((h) => (
+          <li class={`d${h.depth}`}>
+            <a href={`#${h.slug}`}>{h.text}</a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+  )
+}
+
+<style>
+  .toc {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+
+  .toc-title {
+    font-weight: 700;
+    margin: 0 0 0.5rem;
+  }
+
+  ol {
+    list-style: none;
+    padding: 0 0 0 0.9rem;
+    margin: 0;
+    border-left: 3px solid var(--sign);
+  }
+
+  li {
+    margin: 0.35rem 0;
+  }
+
+  .d3 {
+    padding-left: 1em;
+    font-size: 0.875rem;
+  }
+
+  a {
+    color: var(--ink-soft);
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: var(--link);
+    text-decoration: underline;
+  }
+</style>

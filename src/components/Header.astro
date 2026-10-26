@@ -1,0 +1,116 @@
+---
+import { PILLAR, SECTION_KEYS, SECTIONS, SITE } from '../site.config';
+
+const current = Astro.url.pathname;
+const links = [
+  { href: PILLAR.path, label: PILLAR.label },
+  ...SECTION_KEYS.map((k) => ({ href: `/${k}/`, label: SECTIONS[k].label })),
+];
+const isActive = (href: string) => current === href || current.startsWith(href);
+---
+
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="/" aria-label={`${SITE.name} 首页`}>
+      <span class="mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="22" height="22"><path
+            fill="currentColor"
+            d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"
+          ></path></svg>
+      </span>
+      <span class="brand-name">{SITE.name}</span>
+    </a>
+  </div>
+  <nav class="wayfinding" aria-label="主栏目">
+    <ul class="wrap">
+      {
+        links.map((l) => (
+          <li>
+            <a href={l.href} aria-current={isActive(l.href) ? 'page' : undefined}>
+              {l.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    background: var(--slate);
+    color: #fff;
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    min-height: 3.5rem;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.125rem;
+    letter-spacing: 0.04em;
+  }
+
+  .mark {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    background: var(--sign);
+    color: var(--sign-ink);
+    border-radius: var(--radius-sm);
+  }
+
+  .mark svg {
+    transform: rotate(45deg);
+  }
+
+  /* 导视条：机场里那条黄色指示牌 */
+  .wayfinding {
+    background: var(--sign);
+    color: var(--sign-ink);
+  }
+
+  .wayfinding ul {
+    display: flex;
+    gap: 0.25rem;
+    list-style: none;
+    margin: 0 auto;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .wayfinding ul::-webkit-scrollbar {
+    display: none;
+  }
+
+  .wayfinding a {
+    display: block;
+    padding: 0.6rem 0.9rem;
+    color: inherit;
+    text-decoration: none;
+    font-weight: 700;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+  }
+
+  .wayfinding li:first-child a {
+    padding-left: 0;
+  }
+
+  .wayfinding a:hover {
+    border-bottom-color: var(--sign-ink);
+  }
+
+  .wayfinding a[aria-current='page'] {
+    border-bottom-color: var(--sign-ink);
+  }
+</style>

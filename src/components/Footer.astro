@@ -1,0 +1,93 @@
+---
+import { PILLAR, SECTION_KEYS, SECTIONS, SITE } from '../site.config';
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="wrap grid">
+    <div>
+      <p class="name">{SITE.name}</p>
+      <p class="small">{SITE.description}</p>
+    </div>
+    <nav aria-label="栏目">
+      <ul>
+        <li><a href={PILLAR.path}>{PILLAR.label}</a></li>
+        {SECTION_KEYS.map((k) => <li><a href={`/${k}/`}>{SECTIONS[k].label}</a></li>)}
+      </ul>
+    </nav>
+    <nav aria-label="关于本站">
+      <ul>
+        <li><a href="/ceping-fangfa/">测评方法</a></li>
+        <li><a href="/about/">关于与声明</a></li>
+        <li><a href="/rss.xml">RSS 订阅</a></li>
+        <li><a href="/sitemap.xml">网站地图</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="wrap small legal">
+    <p>
+      © {year} {SITE.name}。部分链接为推广链接，通过它购买不会让你多付钱，本站可能获得佣金；这不影响测评结论。请遵守所在地法律法规使用网络服务。
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: 5rem;
+    background: var(--slate);
+    color: #c9d1da;
+    padding: 3rem 0 2rem;
+  }
+
+  .grid {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: 2fr 1fr 1fr;
+  }
+
+  @media (max-width: 720px) {
+    .grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .grid > div {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .name {
+    color: #fff;
+    font-weight: 700;
+    margin-bottom: 0.4em;
+  }
+
+  .small {
+    font-size: var(--step--1);
+    line-height: 1.7;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li + li {
+    margin-top: 0.35em;
+  }
+
+  a {
+    color: #fff;
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  .legal {
+    margin-top: 2rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--slate-2);
+    color: #9aa6b2;
+  }
+</style>

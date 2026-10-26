@@ -1,0 +1,53 @@
+---
+interface Props {
+  crumbs: { name: string; path: string }[];
+}
+const { crumbs } = Astro.props;
+---
+
+<nav class="crumbs" aria-label="当前位置">
+  <ol>
+    {
+      crumbs.map((c, i) => (
+        <li>
+          {i < crumbs.length - 1 ? <a href={c.path}>{c.name}</a> : <span aria-current="page">{c.name}</span>}
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+
+<style>
+  .crumbs {
+    font-size: var(--step--1);
+    color: var(--muted);
+    margin: 1.5rem 0 1rem;
+  }
+
+  ol {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li:not(:last-child)::after {
+    content: '/';
+    margin: 0 0.5em;
+    color: var(--line);
+  }
+
+  a {
+    color: var(--muted);
+  }
+
+  span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 18em;
+    display: inline-block;
+    vertical-align: bottom;
+  }
+</style>

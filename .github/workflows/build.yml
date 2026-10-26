@@ -1,0 +1,33 @@
+name: Build check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - run: npm run build
+      - name: Check key outputs
+        run: |
+          test -f dist/index.html
+          test -f dist/jichang-tuijian/index.html
+          test -f dist/sitemap.xml
+          test -f dist/robots.txt
+          test -f dist/rss.xml
+          ls dist/*.txt
+          echo "--- sitemap ---"; cat dist/sitemap.xml
+          echo "--- pages ---"; find dist -name index.html | sort
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+          retention-days: 7

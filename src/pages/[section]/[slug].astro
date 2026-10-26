@@ -1,0 +1,217 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import BoardingPass from '../../components/BoardingPass.astro';
+import CompareTable from '../../components/CompareTable.astro';
+import ProsCons from '../../components/ProsCons.astro';
+import Faq from '../../components/Faq.astro';
+import Toc from '../../components/Toc.astro';
+import PostList from '../../components/PostList.astro';
+import { PILLAR, SECTION_KEYS, SECTIONS, type SectionKey } from '../../site.config';
+import {
+  getPostAirports,
+  getPosts,
+  hasSample,
+  lastModified,
+  postPath,
+  sectionPath,
+  type Post,
+} from '../../lib/content';
+import { formatDate } from '../../lib/format';
+import { articleSchema, breadcrumbSchema, faqSchema, reviewSchema } from '../../lib/schema';
+
+export async function getStaticPaths() {
+  const paths = [];
+  for (const section of SECTION_KEYS) {
+    const posts = await getPosts(section);
+    for (const post of posts) {
+      paths.push({ params: { section, slug: post.id }, props: { post, siblings: posts } });
+    }
+  }
+  return paths;
+}
+
+interface Props {
+  post: Post;
+  siblings: Post[];
+}
+
+const { post, siblings } = Astro.props;
+const section = post.collection as SectionKey;
+const { Content, headings } = await render(post);
+const airports = await getPostAirports(post);
+const isSample = hasSample(airports);
+const modified = lastModified(post);
+const related = siblings.filter((p) => p.id !== post.id).slice(0, 4);
+
+const crumbs = [
+  { name: '首页', path: '/' },
+  { name: SECTIONS[section].label, path: sectionPath(section) },
+  { name: post.data.title, path: postPath(post) },
+];
+
+const jsonLd = [
+  breadcrumbSchema(crumbs),
+  section === 'pingce' && airports[0] ? reviewSchema(post, airports[0]) : articleSchema(post),
+  faqSchema(post.data.faq),
+];
+---
+
+<Base
+  title={post.data.title}
+  description={post.data.description}
+  type="article"
+  noindex={isSample}
+  jsonLd={jsonLd}
+  published={post.data.pubDate}
+  modified={modified}
+>
+  <div class="wrap">
+    <Breadcrumbs crumbs={crumbs} />
+    <div class="layout">
+      <article class="article">
+        <header class="head">
+          <h1>{post.data.title}</h1>
+          <p class="meta">
+            <span>发布于 <time class="num" datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time></span>
+            {
+              post.data.updatedDate && (
+                <span class="updated">
+                  最后更新 <time class="num" datetime={modified.toISOString()}>{formatDate(modified)}</time>
+                </span>
+              )
+            }
+            {
+              section === 'jiaocheng' && 'platforms' in post.data && post.data.platforms.length > 0 && (
+                <span>适用：{post.data.platforms.join(' / ')}</span>
+              )
+            }
+          </p>
+        </header>
+
+        {
+          isSample && (
+            <p class="notice">
+              本页使用的是示例机场数据，仅用于展示版面，已设置为不被搜索引擎收录。请在 src/data/airports.json 中换成真实实测数据并去掉 "sample": true。
+            </p>
+          )
+        }
+
+        {
+          section === 'pingce' && airports[0] && (
+            <>
+              <BoardingPass airport={airports[0]} />
+              <ProsCons pros={airports[0].data.pros} cons={airports[0].data.cons} />
+            </>
+          )
+        }
+
+        {
+          section === 'duibi' && airports.length >= 2 && (
+            <section aria-labelledby="cmp">
+              <h2 id="cmp" class="cmp-title">参数一览</h2>
+              <CompareTable airports={airports} />
+            </section>
+          )
+        }
+
+        <div class="prose">
+          <Content />
+        </div>
+
+        <Faq items={post.data.faq} />
+
+        {
+          section !== 'wenzhang' && (
+            <p class="pillar-link">
+              还在挑机场？看看 <a href={PILLAR.path}>{PILLAR.label}榜单</a>，按实测结果排序。
+            </p>
+          )
+        }
+      </article>
+
+      <aside class="side">
+        <div class="sticky">
+          <Toc headings={headings} />
+        </div>
+      </aside>
+    </div>
+
+    {
+      related.length > 0 && (
+        <section class="related" aria-labelledby="related-title">
+          <h2 id="related-title">更多{SECTIONS[section].label}</h2>
+          <PostList posts={related} headingLevel="h3" />
+        </section>
+      )
+    }
+  </div>
+</Base>
+
+<style>
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 15rem;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  @media (max-width: 960px) {
+    .layout {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .side {
+      display: none;
+    }
+  }
+
+  .article {
+    min-width: 0;
+  }
+
+  .head {
+    max-width: var(--measure);
+    margin-bottom: 1.75rem;
+  }
+
+  .head .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.25rem;
+    margin: 0;
+  }
+
+  .updated {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .sticky {
+    position: sticky;
+    top: 1.5rem;
+    padding-top: 0.5rem;
+  }
+
+  .cmp-title {
+    margin-top: 0;
+  }
+
+  .pillar-link {
+    max-width: var(--measure);
+    margin-top: 3rem;
+    padding: 1rem 1.2rem;
+    background: var(--surface);
+    border-left: 4px solid var(--sign);
+  }
+
+  .related {
+    margin-top: 4rem;
+  }
+
+  .related h2 {
+    border-top: 2px solid var(--ink);
+    padding-top: 0.25em;
+    max-width: 48rem;
+  }
+</style>

@@ -1,0 +1,72 @@
+---
+// 对比表：从机场数据自动生成，文章里不用手写表格
+import type { Airport } from '../lib/content';
+import { formatDate, formatPrice } from '../lib/format';
+
+interface Props {
+  airports: Airport[];
+}
+const { airports } = Astro.props;
+const yes = (b: boolean) => (b ? '✓ 支持' : '✗ 不支持');
+
+const rows: [string, (a: Airport['data']) => string][] = [
+  ['综合评分', (a) => `${a.score.toFixed(1)} / 10`],
+  ['起价', (a) => `${formatPrice(a.priceFrom)}/月${a.priceNote ? `（${a.priceNote}）` : ''}`],
+  ['线路', (a) => a.lineType],
+  ['协议', (a) => a.protocols.join(' / ')],
+  ['节点数', (a) => `${a.nodeCount} 个`],
+  ['地区', (a) => a.regions.join('、')],
+  ['Netflix', (a) => yes(a.unlock.netflix)],
+  ['Disney+', (a) => yes(a.unlock.disney)],
+  ['ChatGPT', (a) => yes(a.unlock.chatgpt)],
+  ['免费试用', (a) => (a.trial ? '有' : '无')],
+  ['当前状态', (a) => a.status],
+  ['适合谁', (a) => a.bestFor],
+  ['实测日期', (a) => formatDate(a.testedAt)],
+];
+---
+
+<div class="table-scroll">
+  <table class="data-table compare">
+    <caption class="visually-hidden">{airports.map((a) => a.data.name).join(' 与 ')} 参数对比</caption>
+    <thead>
+      <tr>
+        <th scope="col">项目</th>
+        {airports.map((a) => <th scope="col">{a.data.name}</th>)}
+      </tr>
+    </thead>
+    <tbody>
+      {
+        rows.map(([label, fn]) => (
+          <tr>
+            <th scope="row">{label}</th>
+            {airports.map((a) => <td>{fn(a.data)}</td>)}
+          </tr>
+        ))
+      }
+      <tr>
+        <th scope="row">官网</th>
+        {
+          airports.map((a) => (
+            <td>
+              <a href={a.data.url} rel="sponsored nofollow noopener" target="_blank">
+                访问官网
+              </a>
+            </td>
+          ))
+        }
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .compare tbody th {
+    background: #eef1f4;
+    color: var(--ink);
+    width: 7em;
+  }
+  .compare td {
+    min-width: 9em;
+  }
+</style>

@@ -1,0 +1,94 @@
+---
+// 文章列表：日期 + 标题 + 摘要，紧凑、可扫读
+import { lastModified, postPath, sectionLabel, type Post } from '../lib/content';
+import { formatDate } from '../lib/format';
+
+interface Props {
+  posts: Post[];
+  showSection?: boolean;
+  headingLevel?: 'h2' | 'h3';
+}
+const { posts, showSection = false, headingLevel = 'h2' } = Astro.props;
+const H = headingLevel;
+---
+
+<ul class="list">
+  {
+    posts.map((p) => (
+      <li>
+        <p class="meta">
+          {showSection && <a class="sec" href={`/${p.collection}/`}>{sectionLabel(p.collection)}</a>}
+          <time datetime={lastModified(p).toISOString()} class="num">
+            {formatDate(lastModified(p))}
+          </time>
+          {p.data.updatedDate && <span>更新</span>}
+        </p>
+        <H class="title">
+          <a href={postPath(p)}>{p.data.title}</a>
+        </H>
+        <p class="desc">{p.data.description}</p>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-width: 48rem;
+  }
+
+  li {
+    padding: 1.1rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  li:first-child {
+    padding-top: 0;
+  }
+
+  .meta {
+    display: flex;
+    gap: 0.75em;
+    align-items: baseline;
+    margin: 0 0 0.2rem;
+  }
+
+  .meta time {
+    font-size: 0.9375rem;
+  }
+
+  .sec {
+    font-weight: 700;
+    color: var(--ink);
+    text-decoration: none;
+    background: var(--sign);
+    padding: 0 0.4em;
+    border-radius: 3px;
+  }
+
+  .title {
+    font-size: var(--step-1);
+    margin: 0 0 0.25rem;
+    line-height: 1.45;
+  }
+
+  .title a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .title a:hover {
+    color: var(--link);
+    text-decoration: underline;
+  }
+
+  .desc {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 0.9375rem;
+    line-height: 1.7;
+  }
+</style>

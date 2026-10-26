@@ -1,0 +1,35 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { SITE } from '../site.config';
+import { breadcrumbSchema } from '../lib/schema';
+
+const crumbs = [
+  { name: '首页', path: '/' },
+  { name: '关于与声明', path: '/about/' },
+];
+---
+
+<Base title="关于本站与免责声明" description={`关于 ${SITE.name}：站点介绍、联系方式、推广链接说明与免责声明。`} jsonLd={[breadcrumbSchema(crumbs)]}>
+  <div class="wrap">
+    <Breadcrumbs crumbs={crumbs} />
+    <article class="prose">
+      <h1>关于本站</h1>
+      <p>
+        {SITE.name} 是一个个人维护的机场测评站点。这里的每篇评测都来自真实购买和长期使用，目的是帮你少踩坑、少花冤枉钱。
+      </p>
+      <p>（在这里写一点你自己：为什么开始做测评、用机场多少年了、主要用来做什么。真实的个人经历能明显提升搜索引擎对站点的信任度。）</p>
+
+      <h2>联系方式</h2>
+      <p>邮箱：（填写你的联系邮箱）</p>
+
+      <h2>推广链接说明</h2>
+      <p>部分购买链接是推广链接。通过它购买不会让你多付钱，本站可能获得佣金，用来支付测试机场的费用。排名只看实测结果。</p>
+
+      <h2>免责声明</h2>
+      <p>
+        本站内容仅供学习交流和信息参考，机场的服务质量可能随时变化，请以实际使用为准。请在遵守所在地法律法规的前提下使用网络服务。
+      </p>
+    </article>
+  </div>
+</Base>

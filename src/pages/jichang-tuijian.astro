@@ -1,0 +1,225 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Board from '../components/Board.astro';
+import Faq from '../components/Faq.astro';
+import { PILLAR, SITE } from '../site.config';
+import { getRankedAirports, getReviewFor, hasSample, postPath } from '../lib/content';
+import { formatDate, formatPrice } from '../lib/format';
+import { breadcrumbSchema, faqSchema, itemListSchema } from '../lib/schema';
+
+const airports = await getRankedAirports();
+const reviewPaths: Record<string, string> = {};
+for (const a of airports) {
+  const r = await getReviewFor(a.id);
+  if (r) reviewPaths[a.id] = postPath(r);
+}
+const updated = airports.length
+  ? new Date(Math.max(...airports.map((a) => a.data.testedAt.getTime())))
+  : new Date();
+const year = updated.getFullYear();
+const isSample = hasSample(airports);
+
+const title = `机场推荐 ${year}：${airports.length || ''} 家实测好用的机场排行`;
+const description = `${year} 年机场推荐榜，按长期实测的速度、晚高峰稳定性、流媒体与 ChatGPT 解锁情况排序，附价格、线路类型和选购建议，每月更新。`;
+
+const crumbs = [
+  { name: '首页', path: '/' },
+  { name: PILLAR.label, path: PILLAR.path },
+];
+
+// 常见问题：按你的实际情况修改，会同时生成 FAQ 结构化数据
+const faq = [
+  {
+    q: '机场和 VPN 有什么区别？',
+    a: '机场通常提供一份订阅链接，在 Clash 等客户端里导入后可以按规则分流，国内网站直连、国外网站走代理；传统 VPN 一般是全局转发所有流量。机场的节点更多、价格更低，但需要自己装客户端。',
+  },
+  {
+    q: '第一次买机场应该选月付还是年付？',
+    a: '建议先买月付或最短周期，用一两周确认晚高峰速度和你常用的网站都正常，再考虑年付。机场有跑路风险，不建议一次购买过长周期。',
+  },
+  {
+    q: '便宜的机场能用吗？',
+    a: '能用，但要看用途。只刷网页和看 1080p 视频，十元左右的中转机场通常够用；如果要稳定看 4K 或者对延迟敏感，专线机场更合适。',
+  },
+  {
+    q: '这个榜单多久更新一次？',
+    a: `榜单每月复测更新，最近一次更新于 ${formatDate(updated)}。测试方法见本站的测评方法页面。`,
+  },
+];
+
+const jsonLd = [breadcrumbSchema(crumbs), itemListSchema(airports, reviewPaths), faqSchema(faq)];
+---
+
+<Base title={title} description={description} jsonLd={jsonLd} noindex={isSample} modified={updated}>
+  <div class="wrap">
+    <Breadcrumbs crumbs={crumbs} />
+    <header class="head">
+      <h1>{title}</h1>
+      <p class="lead">
+        下面的机场都经过至少一个月的实际使用：每天早、中、晚三个时段测速，记录晚高峰掉速和断流，并逐一检查 Netflix、Disney+ 和 ChatGPT 能否正常使用。排名只看实测结果。
+      </p>
+      <p class="meta">最后更新 <time class="num" datetime={updated.toISOString()}>{formatDate(updated)}</time>。测试怎么做的，见<a href="/ceping-fangfa/">测评方法</a>。</p>
+    </header>
+
+    {isSample && <p class="notice">当前榜单是示例数据，页面已设为不被收录。替换 src/data/airports.json 中的数据并去掉 "sample": true 后会自动开放收录。</p>}
+
+    {airports.length > 0 ? (
+      <Board airports={airports} reviewPaths={reviewPaths} heading={`${year} 机场推荐榜`} updated={updated} />
+    ) : (
+      <p class="notice">还没有上榜机场。在 src/data/airports.json 中添加机场并把 rank 设为 1、2、3…</p>
+    )}
+
+    <div class="body">
+      {
+        airports.map((a) => {
+          const d = a.data;
+          return (
+            <section class="pick" id={a.id}>
+              <h2>
+                <span class="num rank">{d.rank}</span>
+                {d.name}：{d.tagline}
+              </h2>
+              <p>
+                <strong>适合：</strong>
+                {d.bestFor}
+              </p>
+              <ul class="facts">
+                <li>
+                  起价 <span class="num">{formatPrice(d.priceFrom)}</span>/月{d.priceNote ? `（${d.priceNote}）` : ''}
+                </li>
+                <li>{d.lineType}</li>
+                <li>{d.protocols.join(' / ')}</li>
+                <li>{d.nodeCount} 个节点</li>
+                <li>{d.trial ? '有免费试用' : '无试用'}</li>
+              </ul>
+              <div class="pc">
+                <p>
+                  <strong class="ok">优点：</strong>
+                  {d.pros.join('；')}
+                </p>
+                <p>
+                  <strong class="bad">缺点：</strong>
+                  {d.cons.join('；')}
+                </p>
+              </div>
+              <p class="actions">
+                {reviewPaths[a.id] && (
+                  <a class="btn btn--ghost" href={reviewPaths[a.id]}>
+                    阅读 {d.name} 完整评测
+                  </a>
+                )}
+                <a class="btn" href={d.url} rel="sponsored nofollow noopener" target="_blank">
+                  访问 {d.name} 官网
+                </a>
+              </p>
+            </section>
+          );
+        })
+      }
+
+      <section class="guide">
+        <h2>怎么挑一家适合自己的机场</h2>
+        <h3>先想清楚主要用途</h3>
+        <p>
+          只是查资料、刷 YouTube，低价中转机场就够了；经常看 Netflix、Disney+ 的 4K 内容，要优先看解锁情况和晚高峰速度；需要用 ChatGPT 等对 IP 敏感的服务，要确认机场有可用的地区节点。
+        </p>
+        <h3>看懂线路类型</h3>
+        <p>
+          直连最便宜，但晚高峰最容易慢；中转经过国内服务器再出境，稳定性好一些；IEPL / IPLC 专线不走公网出境，延迟低、高峰期也稳，价格最高。
+        </p>
+        <h3>先短后长，别一次买太久</h3>
+        <p>
+          机场行业有跑路风险。新机场先买月付，用满两周没问题再考虑季付或年付；有免费试用的机场优先试用。
+        </p>
+        <h3>确认你的设备能用</h3>
+        <p>
+          绝大多数机场都提供 Clash 订阅，Windows、macOS、安卓都能用；iPhone 一般需要外区 Apple ID 下载 Shadowrocket 等客户端。具体操作见 <a href="/jiaocheng/">客户端教程</a>。
+        </p>
+      </section>
+
+      <Faq items={faq} />
+    </div>
+  </div>
+</Base>
+
+<style>
+  .head {
+    max-width: 48rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .lead {
+    color: var(--ink-soft);
+  }
+
+  .body {
+    max-width: var(--measure);
+    margin-top: 3rem;
+  }
+
+  .pick {
+    padding-bottom: 1.5rem;
+  }
+
+  .pick h2 {
+    display: flex;
+    gap: 0.6rem;
+    align-items: baseline;
+    border-top: 2px solid var(--ink);
+    padding-top: 0.5em;
+  }
+
+  .rank {
+    flex: none;
+    display: inline-grid;
+    place-items: center;
+    min-width: 2.2rem;
+    height: 2.2rem;
+    background: var(--sign);
+    border-radius: var(--radius-sm);
+    font-size: 1.4rem;
+    font-weight: 700;
+  }
+
+  .facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem;
+  }
+
+  .facts li {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 0.1rem 0.6rem;
+    font-size: 0.9375rem;
+  }
+
+  .pc p {
+    margin-bottom: 0.5rem;
+  }
+
+  .ok {
+    color: var(--ok);
+  }
+
+  .bad {
+    color: var(--bad);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .guide h2 {
+    border-top: 2px solid var(--ink);
+    padding-top: 0.25em;
+  }
+</style>

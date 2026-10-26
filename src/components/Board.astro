@@ -1,0 +1,253 @@
+---
+// 航班信息牌：机场榜单的主视觉。一行一家机场。
+import type { Airport } from '../lib/content';
+import { formatDate, formatPrice } from '../lib/format';
+
+interface Props {
+  airports: Airport[];
+  /** 机场 id → 评测文章路径 */
+  reviewPaths: Record<string, string>;
+  heading?: string;
+  updated?: Date;
+  /** 页面加载时的翻牌动效，全站只在首页用一次 */
+  animate?: boolean;
+}
+
+const { airports, reviewPaths, heading = '机场推荐榜', updated, animate = false } = Astro.props;
+
+const unlockKeys = [
+  { key: 'netflix', short: 'NF', name: 'Netflix' },
+  { key: 'disney', short: 'D+', name: 'Disney+' },
+  { key: 'chatgpt', short: 'GPT', name: 'ChatGPT' },
+] as const;
+---
+
+<section class:list={['board', { 'board--animate': animate }]} aria-label={heading}>
+  <div class="board-head">
+    <p class="board-title">{heading}</p>
+    {updated && <p class="board-updated num">更新 {formatDate(updated)}</p>}
+  </div>
+
+  <div class="board-table" role="table" aria-label={heading}>
+    <div class="row row--head" role="row">
+      <span role="columnheader">排名</span>
+      <span role="columnheader">机场</span>
+      <span role="columnheader">线路</span>
+      <span role="columnheader">起价/月</span>
+      <span role="columnheader">解锁</span>
+      <span role="columnheader">状态</span>
+    </div>
+    {
+      airports.map((a, i) => {
+        const d = a.data;
+        const href = reviewPaths[a.id];
+        return (
+          <div class="row" role="row" style={`--i:${i}`}>
+            <span class="cell rank num" role="cell">
+              {String(d.rank).padStart(2, '0')}
+            </span>
+            <span class="cell name" role="cell">
+              {href ? <a href={href}>{d.name}</a> : d.name}
+              <small>{d.tagline}</small>
+            </span>
+            <span class="cell line" role="cell">
+              {d.lineType}
+            </span>
+            <span class="cell price num" role="cell">
+              {formatPrice(d.priceFrom)}
+            </span>
+            <span class="cell unlock" role="cell">
+              {unlockKeys.map((u) => (
+                <span class:list={['lamp', { on: d.unlock[u.key] }]} title={`${u.name}：${d.unlock[u.key] ? '可解锁' : '不可解锁'}`}>
+                  {u.short}
+                  <span class="visually-hidden">{d.unlock[u.key] ? '可解锁' : '不可解锁'}</span>
+                </span>
+              ))}
+            </span>
+            <span class={`cell state status status--${d.status}`} role="cell">
+              {d.status}
+            </span>
+          </div>
+        );
+      })
+    }
+  </div>
+</section>
+
+<style>
+  .board {
+    background: var(--slate);
+    color: #e9eef3;
+    border-radius: var(--radius-md);
+    padding: 1.25rem clamp(0.75rem, 3vw, 1.75rem) 1rem;
+    box-shadow: inset 0 0 0 1px #33414f;
+  }
+
+  .board-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .board-title {
+    margin: 0;
+    color: var(--sign);
+    font-weight: 700;
+    font-size: var(--step-1);
+  }
+
+  .board-updated {
+    margin: 0;
+    color: #9aa6b2;
+    font-size: 1rem;
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: 3.2rem minmax(0, 2.4fr) minmax(0, 1fr) 5.5rem 8.5rem 5.5rem;
+    gap: 0.75rem;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-top: 1px solid #33414f;
+  }
+
+  .row--head {
+    border-top: 0;
+    padding: 0.25rem 0;
+    color: #8c99a6;
+    font-size: 0.8125rem;
+  }
+
+  .rank {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--sign);
+    line-height: 1;
+  }
+
+  .name {
+    font-weight: 700;
+    font-size: 1.0625rem;
+    line-height: 1.4;
+  }
+
+  .name a {
+    color: #fff;
+    text-decoration: none;
+    border-bottom: 1px solid #5d6b79;
+  }
+
+  .name a:hover {
+    border-bottom-color: var(--sign);
+  }
+
+  .name small {
+    display: block;
+    font-weight: 400;
+    font-size: 0.875rem;
+    color: #a9b4bf;
+  }
+
+  .line {
+    color: #cfd7df;
+    font-size: 0.9375rem;
+  }
+
+  .price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--sign);
+  }
+
+  .unlock {
+    display: flex;
+    gap: 0.3rem;
+  }
+
+  .lamp {
+    font-family: var(--font-sign);
+    font-weight: 700;
+    font-size: 0.875rem;
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+    background: #2c3946;
+    color: #5f6d7b;
+  }
+
+  .lamp.on {
+    background: #33414f;
+    color: var(--sign);
+  }
+
+  .state {
+    font-size: 0.9375rem;
+    font-weight: 600;
+  }
+
+  .status--稳定 {
+    color: #4cd287;
+  }
+
+  .status--观察中 {
+    color: #ffb340;
+  }
+
+  .status--不推荐 {
+    color: #ff7a7a;
+  }
+
+  /* 手机：每家机场折成两行 */
+  @media (max-width: 760px) {
+    .row--head {
+      display: none;
+    }
+    .row {
+      grid-template-columns: 2.6rem 1fr auto;
+      grid-template-areas:
+        'rank name price'
+        'rank meta state';
+      row-gap: 0.4rem;
+    }
+    .rank {
+      grid-area: rank;
+      align-self: start;
+    }
+    .name {
+      grid-area: name;
+    }
+    .price {
+      grid-area: price;
+      text-align: right;
+    }
+    .line {
+      display: none;
+    }
+    .unlock {
+      grid-area: meta;
+    }
+    .state {
+      grid-area: state;
+      justify-self: end;
+    }
+  }
+
+  /* 翻牌：页面打开时逐行翻下来，只发生一次 */
+  .board--animate .row:not(.row--head) {
+    transform-origin: top center;
+    animation: flap 0.55s cubic-bezier(0.3, 1.4, 0.5, 1) both;
+    animation-delay: calc(var(--i) * 0.12s + 0.15s);
+  }
+
+  @keyframes flap {
+    from {
+      opacity: 0;
+      transform: perspective(600px) rotateX(-80deg);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>

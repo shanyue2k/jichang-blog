@@ -1,0 +1,62 @@
+---
+interface Props {
+  pros: string[];
+  cons: string[];
+}
+const { pros, cons } = Astro.props;
+---
+
+<div class="pc">
+  <div class="col pros">
+    <h2>优点</h2>
+    <ul>{pros.map((p) => <li>{p}</li>)}</ul>
+  </div>
+  <div class="col cons">
+    <h2>缺点</h2>
+    <ul>{cons.map((c) => <li>{c}</li>)}</ul>
+  </div>
+</div>
+
+<style>
+  .pc {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 2rem 0;
+    max-width: var(--measure);
+  }
+
+  @media (max-width: 600px) {
+    .pc {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .col {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-top-width: 4px;
+    border-radius: var(--radius-sm);
+    padding: 0.9rem 1.1rem;
+  }
+
+  .pros {
+    border-top-color: var(--ok);
+  }
+
+  .cons {
+    border-top-color: var(--bad);
+  }
+
+  h2 {
+    font-size: var(--step-0);
+    margin: 0 0 0.4rem;
+    border: 0;
+    padding: 0;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 1.2em;
+  }
+</style>

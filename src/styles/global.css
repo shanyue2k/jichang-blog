@@ -1,0 +1,325 @@
+/* ------------------------------------------------------------
+   设计语言：机场导视系统
+   - 告示黄 + 跑道石板色，只在航班牌 / 登机牌 / 导视条上用重色
+   - 正文用系统中文字体（国内加载最快），数字与标识用 Barlow Condensed
+   ------------------------------------------------------------ */
+
+:root {
+  --bg: #f3f5f7;
+  --surface: #ffffff;
+  --ink: #1d2833;
+  --ink-soft: #3c4855;
+  --muted: #5d6875;
+  --line: #d8dde3;
+  --slate: #1d2833;
+  --slate-2: #27333f;
+  --sign: #ffcc00;
+  --sign-ink: #1d2833;
+  --ok: #1f9d55;
+  --watch: #d97a00;
+  --bad: #cf3b3b;
+  --link: #1557b0;
+
+  --font-body: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
+    'Noto Sans SC', 'Source Han Sans SC', 'Segoe UI', sans-serif;
+  --font-sign: 'Barlow Condensed', 'DIN Alternate', 'Arial Narrow', var(--font-body);
+  --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* 字号阶梯（1.25 比例） */
+  --step--1: 0.875rem;
+  --step-0: 1rem;
+  --step-1: 1.25rem;
+  --step-2: 1.5625rem;
+  --step-3: 1.953rem;
+  --step-4: 2.441rem;
+
+  --measure: 40em; /* 中文正文约 38–40 字一行 */
+  --wide: 72rem;
+  --gutter: clamp(1rem, 4vw, 2rem);
+  --radius-sm: 4px;
+  --radius-md: 10px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.8;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: var(--link);
+  text-underline-offset: 0.2em;
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+:focus-visible {
+  outline: 3px solid var(--sign);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  line-height: 1.35;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+h1 {
+  font-size: clamp(var(--step-3), 5vw, var(--step-4));
+  margin: 0 0 0.5em;
+}
+
+h2 {
+  font-size: var(--step-2);
+  margin: 2em 0 0.6em;
+}
+
+h3 {
+  font-size: var(--step-1);
+  margin: 1.6em 0 0.5em;
+}
+
+p {
+  margin: 0 0 1.1em;
+}
+
+.wrap {
+  width: 100%;
+  max-width: var(--wide);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -3rem;
+  background: var(--sign);
+  color: var(--sign-ink);
+  padding: 0.5rem 1rem;
+  z-index: 10;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+/* 数字统一用等宽数字，便于对齐 */
+.num {
+  font-family: var(--font-sign);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+/* 状态点：颜色 + 文字双重表达，不只靠颜色 */
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  white-space: nowrap;
+}
+
+.status::before {
+  content: '';
+  width: 0.55em;
+  height: 0.55em;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.status--稳定 {
+  color: var(--ok);
+}
+
+.status--观察中 {
+  color: var(--watch);
+}
+
+.status--不推荐 {
+  color: var(--bad);
+}
+
+/* ---------- 正文排版 ---------- */
+.prose {
+  max-width: var(--measure);
+}
+
+.prose h2 {
+  padding-top: 0.25em;
+  border-top: 2px solid var(--ink);
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.4em;
+  margin: 0 0 1.1em;
+}
+
+.prose li + li {
+  margin-top: 0.3em;
+}
+
+.prose blockquote {
+  margin: 1.5em 0;
+  padding: 0.75em 1.1em;
+  border-left: 4px solid var(--sign);
+  background: var(--surface);
+  color: var(--ink-soft);
+}
+
+.prose blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+.prose code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  background: #e8ecf0;
+  padding: 0.1em 0.35em;
+  border-radius: var(--radius-sm);
+}
+
+.prose pre {
+  padding: 1em 1.2em;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.prose pre code {
+  background: none;
+  padding: 0;
+}
+
+.prose img {
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+}
+
+.table-scroll {
+  overflow-x: auto;
+  margin: 1.5em 0;
+}
+
+.prose table,
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  background: var(--surface);
+}
+
+/* 正文里的 Markdown 表格在手机上横向滚动，不撑破页面 */
+.prose table {
+  display: block;
+  overflow-x: auto;
+  margin: 1.5em 0;
+}
+
+.prose th,
+.prose td,
+.data-table th,
+.data-table td {
+  padding: 0.6em 0.8em;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.prose th,
+.data-table th {
+  background: var(--slate);
+  color: #fff;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ---------- 通用组件 ---------- */
+.notice {
+  padding: 0.8em 1em;
+  background: #fff6cc;
+  border: 1px solid #f0d36b;
+  border-radius: var(--radius-sm);
+  font-size: var(--step--1);
+  color: var(--ink-soft);
+  margin-bottom: 1.5em;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.65em 1.3em;
+  background: var(--sign);
+  color: var(--sign-ink);
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--sign);
+}
+
+.btn:hover {
+  background: #ffd83d;
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+.btn--ghost:hover {
+  background: var(--ink);
+  color: #fff;
+}
+
+.meta {
+  color: var(--muted);
+  font-size: var(--step--1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

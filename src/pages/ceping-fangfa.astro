@@ -1,0 +1,58 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { breadcrumbSchema } from '../lib/schema';
+
+// 这是测评方法模板：请按你真实的测试流程修改，写清楚是可信度的来源
+const crumbs = [
+  { name: '首页', path: '/' },
+  { name: '测评方法', path: '/ceping-fangfa/' },
+];
+---
+
+<Base
+  title="测评方法：我们怎么测试和给机场排名"
+  description="本站机场测评的测试环境、测速时段、评分维度和更新频率说明。"
+  jsonLd={[breadcrumbSchema(crumbs)]}
+>
+  <div class="wrap">
+    <Breadcrumbs crumbs={crumbs} />
+    <article class="prose">
+      <h1>测评方法</h1>
+      <p>每一家上榜的机场，都由我们自己付费购买、实际使用，不接受机场方提供的免费账号来做测评。</p>
+
+      <h2>测试环境</h2>
+      <ul>
+        <li>宽带：国内家庭宽带（请填写运营商和带宽）</li>
+        <li>客户端：Windows 上的 Clash Verge Rev，iPhone 上的 Shadowrocket</li>
+        <li>测速工具：Speedtest、YouTube 统计信息、流媒体解锁检测脚本</li>
+      </ul>
+
+      <h2>测试流程</h2>
+      <ol>
+        <li>购买最短周期套餐，连续使用至少 30 天。</li>
+        <li>每天早上、下午、晚上 20:00–23:00 各测一次常用节点的下载速度和延迟。</li>
+        <li>记录断流、掉速和节点失效的次数。</li>
+        <li>逐一检查 Netflix、Disney+、ChatGPT 能否正常访问。</li>
+      </ol>
+
+      <h2>评分维度</h2>
+      <table>
+        <thead><tr><th>维度</th><th>占比</th><th>看什么</th></tr></thead>
+        <tbody>
+          <tr><td>晚高峰稳定性</td><td>35%</td><td>20:00–23:00 的速度和断流次数</td></tr>
+          <tr><td>速度与延迟</td><td>25%</td><td>常用地区节点的平均下载速度和延迟</td></tr>
+          <tr><td>解锁能力</td><td>20%</td><td>流媒体和 ChatGPT 的可用情况</td></tr>
+          <tr><td>价格</td><td>15%</td><td>同等质量下的每月花费</td></tr>
+          <tr><td>售后与运营</td><td>5%</td><td>工单响应、运营时长、公告透明度</td></tr>
+        </tbody>
+      </table>
+
+      <h2>更新频率</h2>
+      <p>榜单每月复测一次。机场出现大面积故障、涨价或跑路时，会在发现后尽快更新对应页面，并在文章顶部标注更新日期。</p>
+
+      <h2>关于推广链接</h2>
+      <p>部分购买链接是推广链接。通过它购买价格不变，本站可能获得佣金。佣金不影响排名：排名只由上面的实测结果决定。</p>
+    </article>
+  </div>
+</Base>
