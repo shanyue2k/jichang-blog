@@ -22,6 +22,9 @@ export const SITE = {
   },
 };
 
+/** 域名还是占位的 xxx.com 时，全站禁止收录，防止预览站被搜索引擎抓取 */
+export const IS_PLACEHOLDER_DOMAIN = SITE.url.includes('xxx.com');
+
 /** 四个内容栏目。key 同时是网址路径和 src/content 下的文件夹名 */
 export const SECTIONS = {
   pingce: {
