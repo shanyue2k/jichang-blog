@@ -69,13 +69,14 @@ const counts = Object.fromEntries(
 
 <style>
   .hero {
-    background: linear-gradient(var(--surface), var(--surface)) top / 100% 70% no-repeat;
-    padding: 2.5rem 0 1rem;
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+    padding: 2.5rem 0;
   }
 
   .hero-grid {
     display: grid;
-    grid-template-columns: minmax(0, 20rem) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 22rem) minmax(0, 1fr);
     gap: 2.5rem;
     align-items: start;
   }
@@ -106,7 +107,7 @@ const counts = Object.fromEntries(
     gap: 0;
     list-style: none;
     padding: 0;
-    margin: 3rem 0 0;
+    margin: 2.5rem 0 0;
     border-top: 2px solid var(--ink);
   }
 

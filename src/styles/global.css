@@ -89,6 +89,7 @@ h4 {
   line-height: 1.35;
   font-weight: 700;
   letter-spacing: 0.01em;
+  text-wrap: balance;
 }
 
 h1 {
@@ -249,9 +250,14 @@ p {
 
 /* 正文里的 Markdown 表格在手机上横向滚动，不撑破页面 */
 .prose table {
-  display: block;
-  overflow-x: auto;
   margin: 1.5em 0;
+}
+
+@media (max-width: 640px) {
+  .prose table {
+    display: block;
+    overflow-x: auto;
+  }
 }
 
 .prose th,
