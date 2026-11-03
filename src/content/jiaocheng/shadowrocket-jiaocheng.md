@@ -163,6 +163,8 @@ Shadowrocket 是付费应用，需要账号里有余额或绑定了当地的付�
 
 ## 小结
 
+还在犹豫买小火箭还是其他客户端？可以看 [iOS 代理客户端对比](/jiaocheng/ios-kehuduan-duibi/)。
+
 小火箭的核心操作其实就三件事：**导入订阅、选节点打开开关、全局路由保持在"配置"**。做对这三步，日常使用基本不会遇到问题。
 
 电脑上也要用的话，可以看 [Clash Verge Rev 使用教程](/jiaocheng/clash-verge-rev-jiaocheng/) 或 [v2rayN 使用教程](/jiaocheng/v2rayn-jiaocheng/)；安卓手机看 [Clash Meta for Android 使用教程](/jiaocheng/clash-meta-for-android-jiaocheng/)。如果你对"订阅""节点""专线"这些词还不熟，先读一下[机场是什么](/wenzhang/jichang-shi-shenme/)。
