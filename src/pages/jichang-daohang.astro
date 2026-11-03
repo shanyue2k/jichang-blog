@@ -5,10 +5,13 @@ import Breadcrumbs from '../components/Breadcrumbs.astro';
 import { PILLAR } from '../site.config';
 import { breadcrumbSchema } from '../lib/schema';
 import links from '../data/affiliate-links.json';
+import { getProfile, lowestMonthly, profilePath, profiles, yuan } from '../lib/profiles';
 
 type Item = { id: string; order: number; name: string; url: string; tested: boolean; coupon?: string };
 const items = (links.airports as Item[]).slice().sort((a, b) => a.order - b.order);
 const testedCount = items.filter((i) => i.tested).length;
+// 至少有 5 家整理了资料，或有任何一家实测过，才开放收录
+const indexable = testedCount > 0 || profiles.length >= 5;
 
 const crumbs = [
   { name: '首页', path: '/' },
@@ -20,7 +23,7 @@ const crumbs = [
   title="机场官网导航：常见机场官网入口汇总"
   description="汇总常见机场的官网入口，方便直接访问。标注尚未实测的机场本站还没有完成评测，不代表推荐。"
   jsonLd={[breadcrumbSchema(crumbs)]}
-  noindex={testedCount === 0}
+  noindex={!indexable}
 >
   <div class="wrap">
     <Breadcrumbs crumbs={crumbs} />
@@ -49,6 +52,17 @@ const crumbs = [
               <span class="name">{i.name}</span>
               {i.tested ? <span class="tag tag--ok">已实测</span> : <span class="tag tag--pending">尚未实测</span>}
             </div>
+            {(() => {
+              const pr = getProfile(i.id);
+              const low = pr && lowestMonthly(pr);
+              return pr ? (
+                <p class="info">
+                  {low && <span>折合最低 <strong class="num">{yuan(low.value)}</strong>/月</span>}
+                  {pr.lineType && <span>{pr.lineType}</span>}
+                  <a href={profilePath(i.id)}>查看套餐资料</a>
+                </p>
+              ) : null;
+            })()}
             {i.coupon && <p class="coupon">优惠码：<code>{i.coupon}</code></p>}
             <a class="go" href={i.url} rel="sponsored nofollow noopener" target="_blank">
               访问 {i.name} 官网
@@ -152,6 +166,15 @@ const crumbs = [
   .tag--ok {
     background: #e3f4ea;
     color: #136b3a;
+  }
+
+  .info {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    font-size: 0.875rem;
+    color: var(--ink-soft);
   }
 
   .coupon {

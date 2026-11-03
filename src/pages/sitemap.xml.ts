@@ -14,6 +14,7 @@ import {
 } from '../lib/content';
 import { escapeXml } from '../lib/format';
 import affiliate from '../data/affiliate-links.json';
+import { profilePath, profiles } from '../lib/profiles';
 
 export const GET: APIRoute = async () => {
   const urls: { loc: string; lastmod?: Date }[] = [];
@@ -40,7 +41,8 @@ export const GET: APIRoute = async () => {
   }
 
   // 导航页至少有一家实测过才进站点地图
-  if (affiliate.airports.some((a) => a.tested)) urls.push({ loc: '/jichang-daohang/' });
+  if (affiliate.airports.some((a) => a.tested) || profiles.length >= 5) urls.push({ loc: '/jichang-daohang/' });
+  for (const pr of profiles) urls.push({ loc: profilePath(pr.id), lastmod: new Date(pr.collectedAt) });
 
   urls.push({ loc: '/ceping-fangfa/' }, { loc: '/about/' });
 

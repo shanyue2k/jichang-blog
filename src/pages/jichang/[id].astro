@@ -1,0 +1,339 @@
+---
+// 单家机场资料页：全部内容来自官网资料整理，不含任何未经实测的速度或评分
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Faq from '../../components/Faq.astro';
+import { formatDate } from '../../lib/format';
+import { breadcrumbSchema, faqSchema } from '../../lib/schema';
+import {
+  PLAN_TYPE_LABEL,
+  getAff,
+  lowestMonthly,
+  lowestMonthlyPlan,
+  perGB,
+  perMonth,
+  profilePath,
+  profiles,
+  yuan,
+  type Plan,
+  type Profile,
+} from '../../lib/profiles';
+
+export function getStaticPaths() {
+  return profiles.map((p) => ({ params: { id: p.id }, props: { profile: p } }));
+}
+
+interface Props {
+  profile: Profile;
+}
+
+const { profile: pr } = Astro.props;
+const aff = getAff(pr.id)!;
+const name = aff.name;
+const collected = new Date(pr.collectedAt);
+const year = collected.getFullYear();
+
+const cheapest = lowestMonthly(pr);
+const cheapestMonthly = lowestMonthlyPlan(pr);
+const groups = (['monthly', 'quarterly', 'yearly', 'onetime'] as Plan['type'][])
+  .map((t) => ({ type: t, plans: pr.plans.filter((p) => p.type === t) }))
+  .filter((g) => g.plans.length);
+const onetime = pr.plans.filter((p) => p.type === 'onetime');
+const periodic = pr.plans.filter((p) => p.type !== 'onetime');
+const gbRange = (list: Plan[]) => {
+  const v = list.map(perGB);
+  return [Math.min(...v), Math.max(...v)];
+};
+
+const title = `${name}机场怎么样？套餐价格、线路与优惠码整理（${year}）`;
+const description = `${name}机场资料整理：${cheapest ? `套餐最低折合 ${yuan(cheapest.value)}/月，` : ''}${pr.lineType ? `官方标注${pr.lineType}，` : ''}设备数${pr.devices ?? '以官网为准'}。附全部套餐价格、每 GB 单价对比和选购建议。`;
+
+const crumbs = [
+  { name: '首页', path: '/' },
+  { name: '机场官网导航', path: '/jichang-daohang/' },
+  { name: name, path: profilePath(pr.id) },
+];
+
+const faq = [
+  ...(cheapest
+    ? [
+        {
+          q: `${name}最便宜的套餐多少钱？`,
+          a: `按 ${pr.collectedAt} 整理的官网价格，折合每月最便宜的是「${cheapest.plan.name}」，${PLAN_TYPE_LABEL[cheapest.plan.type]} ${yuan(cheapest.plan.price)}，折合约 ${yuan(cheapest.value)}/月。${cheapestMonthly ? `如果只想买一个月试试，最便宜的月付套餐是「${cheapestMonthly.name}」，${yuan(cheapestMonthly.price)}/月。` : ''}价格可能调整，以官网为准。`,
+        },
+      ]
+    : []),
+  ...(pr.devices ? [{ q: `${name}有设备数量限制吗？`, a: `根据官网套餐说明，${name}的设备数${pr.devices}。` }] : []),
+  ...(onetime.length
+    ? [
+        {
+          q: `${name}的不限时套餐流量会过期吗？`,
+          a: `官网说明不限时套餐是一次性购买的总流量，没有时间限制。适合用量不固定、偶尔才用的人，但每 GB 的价格比月付和年付套餐高不少。`,
+        },
+      ]
+    : []),
+  ...(aff.coupon
+    ? [
+        {
+          q: `${name}有优惠码吗？`,
+          a: `有，下单时填写优惠码「${aff.coupon}」，具体折扣以结算页面显示为准。`,
+        },
+      ]
+    : []),
+  {
+    q: `本站测试过${name}吗？`,
+    a: `还没有。本页资料整理自${name}官网，速度、稳定性和解锁情况本站尚未实测。完成实测后会更新本页，并在机场推荐榜中给出结论。`,
+  },
+];
+
+const jsonLd = [breadcrumbSchema(crumbs), faqSchema(faq)];
+---
+
+<Base title={title} description={description} jsonLd={jsonLd} type="article" modified={collected}>
+  <div class="wrap">
+    <Breadcrumbs crumbs={crumbs} />
+    <article class="article">
+      <header class="head">
+        <h1>{title}</h1>
+        <p class="meta">资料整理于 <time class="num" datetime={collected.toISOString()}>{formatDate(collected)}</time></p>
+      </header>
+
+      <p class="notice">
+        本页资料整理自{name}官网套餐页，本站<strong>尚未实测</strong>{name}的速度、稳定性和解锁情况。下文"官方说明"部分是机场自己的介绍，不代表本站结论。价格可能随时调整，以官网为准。
+      </p>
+
+      <section class="facts" aria-label={`${name}基本资料`}>
+        <dl>
+          {cheapest && (
+            <div>
+              <dt>最低折合月价</dt>
+              <dd class="num big">{yuan(cheapest.value)}<small>/月</small></dd>
+              <dd class="sub">{cheapest.plan.name}</dd>
+            </div>
+          )}
+          {cheapestMonthly && (
+            <div>
+              <dt>月付起价</dt>
+              <dd class="num big">{yuan(cheapestMonthly.price)}<small>/月</small></dd>
+              <dd class="sub">{cheapestMonthly.name}</dd>
+            </div>
+          )}
+          <div>
+            <dt>套餐类型</dt>
+            <dd>{groups.map((g) => PLAN_TYPE_LABEL[g.type]).join(' / ')}</dd>
+          </div>
+          {pr.lineType && (
+            <div>
+              <dt>官方标注线路</dt>
+              <dd>{pr.lineType}</dd>
+            </div>
+          )}
+          {pr.devices && (
+            <div>
+              <dt>设备数</dt>
+              <dd>{pr.devices}</dd>
+            </div>
+          )}
+          {pr.rate && (
+            <div>
+              <dt>流量倍率</dt>
+              <dd>{pr.rate}</dd>
+            </div>
+          )}
+          {aff.coupon && (
+            <div>
+              <dt>优惠码</dt>
+              <dd><code>{aff.coupon}</code></dd>
+            </div>
+          )}
+        </dl>
+        <a class="btn" href={aff.url} rel="sponsored nofollow noopener" target="_blank">访问 {name} 官网</a>
+      </section>
+
+      <div class="prose">
+        <h2>{name}套餐价格一览</h2>
+        <p>下面是{name}官网目前在售的全部套餐。"每 GB 单价"是本站按价格和流量换算的，方便横向比较。</p>
+        {
+          groups.map((g) => (
+            <>
+              <h3>{PLAN_TYPE_LABEL[g.type]}套餐</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>套餐</th>
+                    <th>价格</th>
+                    <th>流量</th>
+                    {g.type !== 'onetime' && g.type !== 'monthly' && <th>折合每月</th>}
+                    <th>每 GB 单价</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {g.plans.map((p) => (
+                    <tr>
+                      <td>
+                        {p.name}
+                        {p.note && <small class="pnote">{p.note}</small>}
+                      </td>
+                      <td class="num">
+                        {yuan(p.price)}
+                        {g.type === 'onetime' ? ' 一次性' : `/${g.type === 'yearly' ? '年' : g.type === 'quarterly' ? '季' : '月'}`}
+                      </td>
+                      <td>{p.trafficPer === 'month' ? `每月 ${p.trafficGB}GB` : `${p.trafficGB}GB（总量）`}</td>
+                      {g.type !== 'onetime' && g.type !== 'monthly' && <td class="num">{yuan(perMonth(p)!)}</td>}
+                      <td class="num">{yuan(perGB(p), 3)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </>
+          ))
+        }
+        {pr.discounts && <p>{pr.discounts}。</p>}
+
+        <h2>官方说明的特点</h2>
+        <p>以下内容来自{name}官网的套餐说明，本站尚未逐项验证：</p>
+        <ul>{pr.claims.map((c) => <li>{c}</li>)}</ul>
+        <p>
+          其中"专线"是机场价格差异最大的因素。专线、中转和直连分别是什么意思，可以看<a href="/wenzhang/jichang-shi-shenme/">机场是什么</a>。
+          {pr.unlock?.includes('ChatGPT') && (
+            <>
+              官方说明支持 ChatGPT，购买后可以用<a href="/jiaocheng/chatgpt-da-bu-kai/">这篇教程里的方法</a>自己验证节点能否使用。
+            </>
+          )}
+        </p>
+
+        <h2>{name}套餐怎么选</h2>
+        <ul>
+          {cheapestMonthly && (
+            <li>
+              <strong>第一次买，想先试试：</strong>选最便宜的月付「{cheapestMonthly.name}」（{yuan(cheapestMonthly.price)}/月），用一两周确认晚高峰速度和常用网站都正常，再考虑长期套餐。
+            </li>
+          )}
+          {cheapest && cheapest.plan.type !== 'monthly' && (
+            <li>
+              <strong>确定长期使用、追求最低价：</strong>「{cheapest.plan.name}」折合约 {yuan(cheapest.value)}/月，是整体最便宜的选择。但长周期套餐要一次付清，机场行业有跑路风险，建议先用过月付再决定。
+            </li>
+          )}
+          {onetime.length > 0 && periodic.length > 0 && (
+            <li>
+              <strong>用量不固定、偶尔才用：</strong>可以考虑不限时套餐，流量用多少扣多少、不过期。代价是单价更高：不限时套餐每 GB 约 {yuan(gbRange(onetime)[0])}–{yuan(gbRange(onetime)[1])}，周期套餐只要约 {yuan(gbRange(periodic)[0], 3)}–{yuan(gbRange(periodic)[1], 3)}。
+            </li>
+          )}
+          <li>
+            <strong>估算自己的用量：</strong>日常刷网页、聊天一个月通常几 GB 到十几 GB；经常看 1080p 视频要几十 GB；常看 4K 流媒体可能要 100GB 以上。
+          </li>
+        </ul>
+
+        {
+          pr.pending && pr.pending.length > 0 && (
+            <>
+              <h2>还在整理中的资料</h2>
+              <p>以下信息本站还没有整理完成，购买前可以在官网或客服处确认：{pr.pending.join('、')}。</p>
+            </>
+          )
+        }
+
+        <h2>购买后怎么用</h2>
+        <p>
+          买好套餐后，在{name}后台复制订阅链接，导入客户端即可：电脑用 <a href="/jiaocheng/clash-verge-rev-jiaocheng/">Clash Verge Rev</a> 或 <a href="/jiaocheng/v2rayn-jiaocheng/">v2rayN</a>，iPhone 用 <a href="/jiaocheng/shadowrocket-jiaocheng/">Shadowrocket</a>，安卓用 <a href="/jiaocheng/clash-meta-for-android-jiaocheng/">Clash Meta for Android</a>。
+        </p>
+      </div>
+
+      <p class="cta">
+        <a class="btn" href={aff.url} rel="sponsored nofollow noopener" target="_blank">访问 {name} 官网</a>
+        {aff.coupon && <span>下单时填写优惠码 <code>{aff.coupon}</code></span>}
+      </p>
+
+      <Faq items={faq} />
+
+      <p class="more">想看更多机场，可以去<a href="/jichang-daohang/">机场官网导航</a>。</p>
+    </article>
+  </div>
+</Base>
+
+<style>
+  .article {
+    max-width: var(--measure);
+  }
+
+  .head {
+    margin-bottom: 1.25rem;
+  }
+
+  .head .meta {
+    margin: 0;
+  }
+
+  .facts {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 1.1rem 1.25rem;
+    margin-bottom: 2rem;
+  }
+
+  .facts dl {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+    gap: 0.9rem 1.25rem;
+    margin: 0 0 1rem;
+  }
+
+  .facts dt {
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+
+  .facts dd {
+    margin: 0;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  .facts .big {
+    font-size: 1.5rem;
+    line-height: 1.2;
+  }
+
+  .facts .big small {
+    font-size: 0.8125rem;
+    font-family: var(--font-body);
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  .facts .sub {
+    font-size: 0.8125rem;
+    font-weight: 400;
+    color: var(--muted);
+  }
+
+  .facts code,
+  .cta code {
+    font-family: var(--font-mono);
+    background: #eef1f4;
+    padding: 0 0.35em;
+    border-radius: 3px;
+  }
+
+  .pnote {
+    display: block;
+    color: var(--muted);
+    font-size: 0.8125rem;
+  }
+
+  .cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1rem;
+    margin: 2.5rem 0 0;
+    padding: 1rem 1.2rem;
+    background: var(--surface);
+    border-left: 4px solid var(--sign);
+  }
+
+  .more {
+    margin-top: 2rem;
+  }
+</style>
