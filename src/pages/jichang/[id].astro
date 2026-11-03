@@ -174,10 +174,7 @@ const jsonLd = [breadcrumbSchema(crumbs), faqSchema(faq)];
                         {p.name}
                         {p.note && <small class="pnote">{p.note}</small>}
                       </td>
-                      <td class="num">
-                        {yuan(p.price)}
-                        {g.type === 'onetime' ? ' 一次性' : `/${g.type === 'yearly' ? '年' : g.type === 'quarterly' ? '季' : '月'}`}
-                      </td>
+                      <td class="num">{`${yuan(p.price)}${g.type === 'onetime' ? ' 一次性' : `/${g.type === 'yearly' ? '年' : g.type === 'quarterly' ? '季' : '月'}`}`}</td>
                       <td>{p.trafficPer === 'month' ? `每月 ${p.trafficGB}GB` : `${p.trafficGB}GB（总量）`}</td>
                       {g.type !== 'onetime' && g.type !== 'monthly' && <td class="num">{yuan(perMonth(p)!)}</td>}
                       <td class="num">{yuan(perGB(p), 3)}</td>
