@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 340" width="480" height="340" role="img" aria-labelledby="t d">
+<title id="t">外区 Apple ID 注册流程总览</title>
+<desc id="d">四个步骤：只退出媒体与购买项目的账号，在 App Store 获取免费应用时创建新账户，地区选美国并在付款方式选无，验证邮箱和手机后登录下载。</desc>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#1d2833"/></marker>
+<marker id="ay" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#c99a00"/></marker><style>
+text{font-family:'PingFang SC','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC',sans-serif;fill:#1d2833}
+.n{font-size:26px;font-weight:700}
+.h{font-size:19px;font-weight:700}
+.s{font-size:15px;fill:#5d6875}
+.b{font-size:16px;font-weight:600}
+.box{fill:#fff;stroke:#c9d0d7;stroke-width:1.5}
+.direct{stroke:#1d2833;stroke-width:2.5;fill:none;marker-end:url(#a)}
+.proxy{stroke:#c99a00;stroke-width:2.5;fill:none;stroke-dasharray:7 5;marker-end:url(#ay)}
+</style></defs>
+<rect width="480" height="340" fill="#f3f5f7"/>
+<g transform="translate(20 20)"><rect width="212" height="140" rx="10" fill="#fff" stroke="#d8dde3" stroke-width="1.5"/>
+<rect x="16" y="16" width="38" height="38" rx="6" fill="#ffcc00"/><text x="35" y="44" class="n" text-anchor="middle">1</text>
+<text x="66" y="42" class="h" style="">退出商店账号</text>
+<text x="16" y="90" class="s" style="">设置 → 媒体与购买项目</text>
+<text x="16" y="116" class="s" style="">不要退出 iCloud</text></g>
+<g transform="translate(248 20)"><rect width="212" height="140" rx="10" fill="#fff" stroke="#d8dde3" stroke-width="1.5"/>
+<rect x="16" y="16" width="38" height="38" rx="6" fill="#ffcc00"/><text x="35" y="44" class="n" text-anchor="middle">2</text>
+<text x="66" y="42" class="h" style="">创建新账户</text>
+<text x="16" y="90" class="s" style="">App Store 获取免费 App</text>
+<text x="16" y="116" class="s" style="">选「创建新 Apple 账户」</text></g>
+<g transform="translate(20 180)"><rect width="212" height="140" rx="10" fill="#fff" stroke="#d8dde3" stroke-width="1.5"/>
+<rect x="16" y="16" width="38" height="38" rx="6" fill="#ffcc00"/><text x="35" y="44" class="n" text-anchor="middle">3</text>
+<text x="66" y="42" class="h" style="">选地区与付款</text>
+<text x="16" y="90" class="s" style="">国家或地区选美国</text>
+<text x="16" y="116" class="s" style="">付款方式选「无」</text></g>
+<g transform="translate(248 180)"><rect width="212" height="140" rx="10" fill="#1d2833" />
+<rect x="16" y="16" width="38" height="38" rx="6" fill="#ffcc00"/><text x="35" y="44" class="n" text-anchor="middle">4</text>
+<text x="66" y="42" class="h" style="fill:#fff">验证并使用</text>
+<text x="16" y="90" class="s" style="fill:#c9d1da">验证邮箱和手机号</text>
+<text x="16" y="116" class="s" style="fill:#c9d1da">下载小火箭等应用</text></g>
+<path d="M233 90 L 244 90" class="direct"/><path d="M233 250 L 244 250" class="direct"/>
+</svg>

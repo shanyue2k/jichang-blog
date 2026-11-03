@@ -141,7 +141,7 @@ v2rayN 同一时间只用一个活动节点，所以直接把活动节点设成�
 ## 手机上用 ChatGPT
 
 - **网页版**：手机浏览器打开 chatgpt.com 就能用，和电脑一样，按上面的方法选好节点即可。
-- **iPhone App**：国区 App Store 搜不到，需要用外区 Apple ID 下载。用小火箭的人本来就有外区账号，直接搜索 ChatGPT 安装，认准开发者是 OpenAI。
+- **iPhone App**：国区 App Store 搜不到，需要用外区 Apple ID 下载（注册方法见[外区 Apple ID 注册教程](/jiaocheng/waiqu-apple-id-zhuce/)）。用小火箭的人本来就有外区账号，直接搜索 ChatGPT 安装，认准开发者是 OpenAI。
 - **安卓 App**：国内应用商店没有，可以通过 Google Play 安装。
 
 App 和网页版遇到的问题一样，排查方法也一样：先确认节点地区。

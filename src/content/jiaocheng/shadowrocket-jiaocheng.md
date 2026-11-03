@@ -30,7 +30,7 @@ faq:
 ## 开始之前要准备什么
 
 - **一台 iPhone 或 iPad**，系统版本不要太老，能正常访问 App Store 即可。
-- **一个外区 Apple ID**：美国、香港、台湾、日本等地区都可以。国区商店里没有这个应用。
+- **一个外区 Apple ID**：美国、香港、台湾、日本等地区都可以。国区商店里没有这个应用。还没有的话，先看[外区 Apple ID 注册教程](/jiaocheng/waiqu-apple-id-zhuce/)。
 - **一份机场订阅链接**：在你购买的机场后台里可以找到。还没有机场的话，可以先看看[机场推荐榜单](/jichang-tuijian/)。
 
 ## 第一步：用外区 Apple ID 下载 Shadowrocket
