@@ -28,7 +28,8 @@ export const GET: APIRoute = async () => {
   }
 
   for (const section of SECTION_KEYS) {
-    const list = await getPosts(section);
+    const list = [];
+    for (const p of await getPosts(section)) if (!hasSample(await getPostAirports(p))) list.push(p);
     if (list.length) urls.push({ loc: `/${section}/`, lastmod: lastModified(list[0]) });
   }
 
