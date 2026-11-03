@@ -19,3 +19,7 @@
 /blog/netflix-disney-streaming-unlock-guide     /jiaocheng/liumeiti-jiesuo/               301
 /blog/iplc-iepl-dedicated-line-explained/       /wenzhang/jichang-shi-shenme/             301
 /blog/iplc-iepl-dedicated-line-explained        /wenzhang/jichang-shi-shenme/             301
+
+# 旧站的站点地图地址 → 新站点地图
+/sitemap-index.xml                              /sitemap.xml                              301
+/sitemap-0.xml                                  /sitemap.xml                              301
