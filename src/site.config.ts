@@ -4,9 +4,9 @@
 
 export const SITE = {
   /** 正式域名，必须带 https:// ，结尾不要加 / */
-  url: 'https://xxx.com',
+  url: 'https://jichanghao.com',
   /** 站点名称，会出现在标题、页脚、结构化数据里 */
-  name: 'XXX机场测评',
+  name: '机场好',
   /** 首页 <title>，围绕核心关键词「机场推荐」 */
   homeTitle: '机场推荐 2026：实测好用的机场排行与评测',
   description:

@@ -4,6 +4,11 @@
   // 必须和 Cloudflare 后台里这个 Worker 的名字一致
   "name": "jichang-blog",
   "compatibility_date": "2026-06-01",
+  // 正式域名：部署时自动绑定到这个 Worker
+  "routes": [{ "pattern": "jichanghao.com", "custom_domain": true }],
+  // 关闭 workers.dev 地址和预览地址，避免同一份内容出现在多个网址
+  "workers_dev": false,
+  "preview_urls": false,
   "assets": {
     "directory": "./dist",
     // 找不到页面时返回 dist/404.html，并带 404 状态码
