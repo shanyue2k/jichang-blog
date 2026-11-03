@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 560" width="340" height="560" role="img" aria-labelledby="t d">
+<title id="t">Clash Meta for Android 从 URL 导入订阅界面示意图</title>
+<desc id="d">新配置页面有名称、URL、自动更新三个输入框，右上角是保存按钮。</desc>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#1d2833"/></marker>
+<marker id="ay" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#c99a00"/></marker><style>
+text{font-family:'PingFang SC','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC',sans-serif;fill:#1d2833}
+.n{font-size:26px;font-weight:700}
+.h{font-size:19px;font-weight:700}
+.s{font-size:15px;fill:#5d6875}
+.b{font-size:16px;font-weight:600}
+.box{fill:#fff;stroke:#c9d0d7;stroke-width:1.5}
+.direct{stroke:#1d2833;stroke-width:2.5;fill:none;marker-end:url(#a)}
+.proxy{stroke:#c99a00;stroke-width:2.5;fill:none;stroke-dasharray:7 5;marker-end:url(#ay)}
+</style></defs>
+<rect width="340" height="560" fill="#f3f5f7"/>
+<rect x="20" y="16" width="300" height="528" rx="28" fill="#fff" stroke="#1d2833" stroke-width="3"/>
+<rect x="130" y="26" width="80" height="8" rx="4" fill="#c9d0d7"/>
+<g transform="translate(20 44)">
+<text x="18" y="30" style="font-size:22px">←</text><text x="52" y="30" class="b">新配置</text>
+<rect x="246" y="12" width="30" height="26" rx="4" fill="none" stroke="#1d2833" stroke-width="2"/><path d="M253 25 l6 6 l11 -12" stroke="#1d2833" stroke-width="2.5" fill="none"/>
+<line x1="0" y1="50" x2="300" y2="50" stroke="#e3e7eb"/>
+<text x="18" y="86" style="font-size:13px;fill:#5d6875">名称</text><rect x="14" y="96" width="272" height="44" rx="8" fill="#fff" stroke="#c9d0d7" stroke-width="1.5"/><text x="28" y="124" class="b" style="font-weight:500">我的机场</text><text x="18" y="176" style="font-size:13px;fill:#5d6875">URL</text><rect x="14" y="186" width="272" height="44" rx="8" fill="#fff" stroke="#c9d0d7" stroke-width="1.5"/><text x="28" y="214" class="b" style="font-weight:500">https://••••••••••</text><text x="18" y="250" style="font-size:12.5px;fill:#8c99a6">粘贴机场订阅链接</text><text x="18" y="288" style="font-size:13px;fill:#5d6875">自动更新（分钟）</text><rect x="14" y="298" width="272" height="44" rx="8" fill="#fff" stroke="#c9d0d7" stroke-width="1.5"/><text x="28" y="326" class="b" style="font-weight:500">1440</text><text x="18" y="362" style="font-size:12.5px;fill:#8c99a6">留空则不自动更新</text><rect x="14" y="390" width="272" height="64" rx="10" fill="#fff8d6" stroke="#ffcc00"/><text x="28" y="416" style="font-size:13.5px">填好后点右上角 ✓ 保存，</text><text x="28" y="438" style="font-size:13.5px">回到列表再点一下这个配置选中它</text></g>
+<text x="170" y="530" text-anchor="middle" style="font-size:12px;fill:#8c99a6">示意图，按钮位置以实际 App 为准</text>
+</svg>

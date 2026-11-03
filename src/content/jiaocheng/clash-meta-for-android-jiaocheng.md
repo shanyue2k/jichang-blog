@@ -19,6 +19,11 @@ faq:
 
 整个使用流程可以概括为四步：**装好 App → 导入订阅 → 点启动 → 选节点**。下面每一步都写了具体点哪里，以及容易出错的地方。
 
+<figure>
+  <img src="/images/jiaocheng/cmfa-flow.svg" width="480" height="340" alt="Clash Meta for Android 使用流程：安装 App、导入订阅、启动代理、选择节点" decoding="async" />
+  <figcaption>整个流程分四步，下面逐步展开。</figcaption>
+</figure>
+
 ## 准备工作
 
 - **一部安卓手机**，系统版本不要太旧。
@@ -64,7 +69,12 @@ Releases 页面里每个版本会列出好几个 APK 文件，区别在于适配
 
 第 5 步经常被忽略。配置列表里可以有多份订阅，只有被选中的那份才会生效。
 
-<!-- 截图建议：从 URL 导入的填写界面，订阅链接打码 -->
+<figure>
+  <img src="/images/jiaocheng/cmfa-import.svg" width="340" height="560" alt="Clash Meta for Android 从 URL 导入订阅的页面示意图，包含名称、URL、自动更新三个输入框" loading="lazy" decoding="async" />
+  <figcaption>「从 URL 导入」页面：填好三项后点右上角保存。</figcaption>
+</figure>
+
+<!-- 截图建议：从 URL 导入的填写界面，订阅链接打码（拿到真实截图后替换上面的示意图） -->
 
 > 订阅链接里包含你的账号信息，别发到群里，求助截图时记得打码。
 
@@ -80,7 +90,12 @@ Releases 页面里每个版本会列出好几个 APK 文件，区别在于适配
 
 卡片变成 **运行中** 之后，通知栏会出现常驻通知，状态栏也会有一个钥匙形状的 VPN 图标。
 
-<!-- 截图建议：首页运行中状态 -->
+<figure>
+  <img src="/images/jiaocheng/cmfa-home.svg" width="364" height="500" alt="Clash Meta for Android 首页示意图，顶部是启动卡片，下方是代理、配置、日志、设置入口" loading="lazy" decoding="async" />
+  <figcaption>首页各入口对应本文的步骤：② 配置　③ 启动卡片　④ 代理</figcaption>
+</figure>
+
+<!-- 截图建议：首页运行中状态（拿到真实截图后替换上面的示意图） -->
 
 ## 第四步：选择节点
 
@@ -101,6 +116,11 @@ Releases 页面里每个版本会列出好几个 APK 文件，区别在于适配
 | 规则 | 按订阅里的规则分流，国内直连、国外走代理，**日常用这个** |
 | 全局 | 所有流量都走所选节点 |
 | 直连 | 不走代理 |
+
+<figure>
+  <img src="/images/jiaocheng/proxy-modes.svg" width="520" height="566" alt="规则、全局、直连三种模式下国内和国外流量的走向示意图" loading="lazy" decoding="async" />
+  <figcaption>三种模式的区别：只有「规则」能做到国内直连、国外走节点。</figcaption>
+</figure>
 
 用"规则"模式，国内 App 的速度不受影响，也不会白白消耗机场流量。只有某个国外网站打不开、怀疑规则没覆盖到时，才临时切到"全局"测试一下。
 

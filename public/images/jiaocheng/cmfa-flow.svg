@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 340" width="480" height="340" role="img" aria-labelledby="t d">
+<title id="t">Clash Meta for Android 使用流程总览</title>
+<desc id="d">四个步骤：从 GitHub 下载 arm64-v8a 安装包，从 URL 导入订阅并选中，点首页卡片启动，在代理页选择节点并保持规则模式。</desc>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#1d2833"/></marker>
+<marker id="ay" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#c99a00"/></marker><style>
+text{font-family:'PingFang SC','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC',sans-serif;fill:#1d2833}
+.n{font-size:26px;font-weight:700}
+.h{font-size:19px;font-weight:700}
+.s{font-size:15px;fill:#5d6875}
+.b{font-size:16px;font-weight:600}
+.box{fill:#fff;stroke:#c9d0d7;stroke-width:1.5}
+.direct{stroke:#1d2833;stroke-width:2.5;fill:none;marker-end:url(#a)}
+.proxy{stroke:#c99a00;stroke-width:2.5;fill:none;stroke-dasharray:7 5;marker-end:url(#ay)}
+</style></defs>
+<rect width="480" height="340" fill="#f3f5f7"/>
+<g transform="translate(20 20)"><rect width="212" height="140" rx="10" fill="#fff" stroke="#d8dde3" stroke-width="1.5"/>
+<rect x="16" y="16" width="38" height="38" rx="6" fill="#ffcc00"/><text x="35" y="44" class="n" text-anchor="middle">1</text>
+<text x="66" y="42" class="h" style="">安装 App</text>
+<text x="16" y="90" class="s" style="">GitHub 官方发布页</text>
+<text x="16" y="116" class="s" style="">一般选 arm64-v8a</text></g>
+<g transform="translate(248 20)"><rect width="212" height="140" rx="10" fill="#fff" stroke="#d8dde3" stroke-width="1.5"/>
+<rect x="16" y="16" width="38" height="38" rx="6" fill="#ffcc00"/><text x="35" y="44" class="n" text-anchor="middle">2</text>
+<text x="66" y="42" class="h" style="">导入订阅</text>
+<text x="16" y="90" class="s" style="">配置 → + → 从 URL 导入</text>
+<text x="16" y="116" class="s" style="">保存后点一下选中</text></g>
+<g transform="translate(20 180)"><rect width="212" height="140" rx="10" fill="#fff" stroke="#d8dde3" stroke-width="1.5"/>
+<rect x="16" y="16" width="38" height="38" rx="6" fill="#ffcc00"/><text x="35" y="44" class="n" text-anchor="middle">3</text>
+<text x="66" y="42" class="h" style="">启动代理</text>
+<text x="16" y="90" class="s" style="">点首页「已停止」卡片</text>
+<text x="16" y="116" class="s" style="">允许建立 VPN 连接</text></g>
+<g transform="translate(248 180)"><rect width="212" height="140" rx="10" fill="#1d2833" />
+<rect x="16" y="16" width="38" height="38" rx="6" fill="#ffcc00"/><text x="35" y="44" class="n" text-anchor="middle">4</text>
+<text x="66" y="42" class="h" style="fill:#fff">选择节点</text>
+<text x="16" y="90" class="s" style="fill:#c9d1da">在代理页点选节点</text>
+<text x="16" y="116" class="s" style="fill:#c9d1da">模式保持「规则」</text></g>
+<path d="M233 90 L 244 90" class="direct"/><path d="M233 250 L 244 250" class="direct"/>
+</svg>

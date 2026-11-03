@@ -22,6 +22,11 @@ faq:
 
 这篇教程按实际操作顺序来写：**拿到软件 → 导入订阅 → 选节点连接 → 调整分流 → 处理常见问题**。第一次用的话，跟着从头做一遍大约十分钟。
 
+<figure>
+  <img src="/images/jiaocheng/shadowrocket-flow.svg" width="480" height="340" alt="Shadowrocket 使用流程：下载 App、导入订阅、选节点连接、设好分流" decoding="async" />
+  <figcaption>整个流程分四步，下面逐步展开。</figcaption>
+</figure>
+
 ## 开始之前要准备什么
 
 - **一台 iPhone 或 iPad**，系统版本不要太老，能正常访问 App Store 即可。
@@ -94,7 +99,12 @@ Shadowrocket 是付费应用，需要账号里有余额或绑定了当地的付�
 
 连接成功后，状态栏会出现一个 **VPN** 小图标。这时打开浏览器访问国外网站，能打开就说明一切正常。
 
-<!-- 截图建议：首页已连接状态，节点列表中的延迟数字 -->
+<figure>
+  <img src="/images/jiaocheng/shadowrocket-home.svg" width="364" height="630" alt="Shadowrocket 首页示意图，标出添加按钮、连接开关、全局路由、节点列表和连通性测试的位置" loading="lazy" decoding="async" />
+  <figcaption>① 右上角 + 号：添加订阅　② 连接开关　③ 全局路由　④ 节点列表与延迟　⑤ 连通性测试</figcaption>
+</figure>
+
+<!-- 截图建议：首页已连接状态，节点列表中的延迟数字（拿到真实截图后替换上面的示意图） -->
 
 ## 第四步：选对全局路由，国内外分开走
 
@@ -106,6 +116,11 @@ Shadowrocket 是付费应用，需要账号里有余额或绑定了当地的付�
 | 代理 | 所有流量都走节点 | 某个国外网站在"配置"模式下打不开时临时用 |
 | 直连 | 所有流量都不走节点 | 相当于暂停代理 |
 | 场景 | 按网络环境自动切换 | 进阶用法，新手不用管 |
+
+<figure>
+  <img src="/images/jiaocheng/proxy-modes.svg" width="520" height="566" alt="规则、全局、直连三种模式下国内和国外流量的走向示意图" loading="lazy" decoding="async" />
+  <figcaption>三种模式的区别：只有「规则」能做到国内直连、国外走节点。</figcaption>
+</figure>
 
 选 **配置** 的好处很直接：微信、淘宝、银行 App 这些国内服务不会绕到海外再回来，速度不受影响，也省机场流量。
 
