@@ -1,0 +1,15 @@
+{
+  "_说明": "从旧站 jichanghao.com/reviews/ 整理出来的推广链接备忘。这个文件不会显示在网站上。旧站上的速度、延迟、评分等数据不是实测的，不要沿用。实测过某家之后，再把它按 airports.json 的格式加进榜单。",
+  "_整理日期": "2026-11-03",
+  "airports": [
+    { "name": "闪跃", "url": "https://koolykh88.flashleapaff.com/#/?code=6kHcdCND", "coupon": "shanyue", "couponNote": "旧站写的是 8 折，需要重新确认是否有效", "tested": false },
+    { "name": "微风网络", "url": "https://wep01.breezenetaff.com/#/?code=yPZP8ntR", "tested": false },
+    { "name": "飞猫云", "url": "https://s1.fei9sjf.xyz/#/?code=ARaIAyVa", "tested": false },
+    { "name": "无忧链接", "url": "https://vip02.worryfreeaff.com/#/?code=1iaz8bSh", "tested": false },
+    { "name": "唯兔云", "url": "https://fast.v2yunvipaff.com/#/?code=MI5TU4uc", "tested": false },
+    { "name": "firefly", "url": "https://koolykh88.fireflyaff.com/#/?code=vKGtXoK4", "tested": false },
+    { "name": "跨界云", "url": "https://koolykh88.kuajieaff.com/#/?code=UWUfGLwJ", "tested": false },
+    { "name": "一翻云", "url": "https://wzjc.1flyunaff.cc/#/register?code=JSuuoEmO", "tested": false },
+    { "name": "U1S1", "url": "https://pkdj7.vipaff.cc/#/?code=CmjDmi54", "tested": false }
+  ]
+}
