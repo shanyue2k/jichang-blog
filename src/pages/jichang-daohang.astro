@@ -1,0 +1,195 @@
+---
+// 机场官网导航：只列名称和官网入口，不写任何未经实测的数据
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { PILLAR } from '../site.config';
+import { breadcrumbSchema } from '../lib/schema';
+import links from '../data/affiliate-links.json';
+
+type Item = { id: string; order: number; name: string; url: string; tested: boolean; coupon?: string };
+const items = (links.airports as Item[]).slice().sort((a, b) => a.order - b.order);
+const testedCount = items.filter((i) => i.tested).length;
+
+const crumbs = [
+  { name: '首页', path: '/' },
+  { name: '机场官网导航', path: '/jichang-daohang/' },
+];
+---
+
+<Base
+  title="机场官网导航：常见机场官网入口汇总"
+  description="汇总常见机场的官网入口，方便直接访问。标注尚未实测的机场本站还没有完成评测，不代表推荐。"
+  jsonLd={[breadcrumbSchema(crumbs)]}
+  noindex={testedCount === 0}
+>
+  <div class="wrap">
+    <Breadcrumbs crumbs={crumbs} />
+    <header class="head">
+      <h1>机场官网导航</h1>
+      <p class="lead">
+        这里汇总了常见机场的官网入口，点击即可直接访问。机场的官网地址经常更换，从这里进入可以少踩钓鱼站。
+      </p>
+    </header>
+
+    <div class="notice-box">
+      <p><strong>请先看这两点：</strong></p>
+      <ul>
+        <li>
+          标注<span class="tag tag--pending">尚未实测</span>的机场，本站还没有完成评测，<strong>出现在这里不代表推荐</strong>。实测完成的机场会更新到<a href={PILLAR.path}>机场推荐榜</a>。
+        </li>
+        <li>下面的链接是推广链接，通过它注册价格不变，本站可能获得佣金。第一次购买建议先选月付或最短周期。</li>
+      </ul>
+    </div>
+
+    <ul class="grid">
+      {
+        items.map((i) => (
+          <li class="card">
+            <div class="top">
+              <span class="name">{i.name}</span>
+              {i.tested ? <span class="tag tag--ok">已实测</span> : <span class="tag tag--pending">尚未实测</span>}
+            </div>
+            {i.coupon && <p class="coupon">优惠码：<code>{i.coupon}</code></p>}
+            <a class="go" href={i.url} rel="sponsored nofollow noopener" target="_blank">
+              访问 {i.name} 官网
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <section class="tips prose">
+      <h2>挑机场之前，建议先看</h2>
+      <ul>
+        <li><a href="/wenzhang/jichang-shi-shenme/">机场是什么？订阅、节点、倍率、专线一次讲清</a></li>
+        <li><a href={PILLAR.path}>怎么挑一家适合自己的机场</a></li>
+        <li><a href="/jiaocheng/chatgpt-da-bu-kai/">想用 ChatGPT，选节点要注意什么</a></li>
+        <li><a href="/jiaocheng/liumeiti-jiesuo/">想看 Netflix，怎么判断节点能不能解锁</a></li>
+      </ul>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .head {
+    max-width: 48rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .lead {
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  .notice-box {
+    max-width: 48rem;
+    background: #fff6cc;
+    border: 1px solid #f0d36b;
+    border-radius: var(--radius-sm);
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 2rem;
+    font-size: 0.9375rem;
+  }
+
+  .notice-box p {
+    margin: 0 0 0.3rem;
+  }
+
+  .notice-box ul {
+    margin: 0;
+    padding-left: 1.2em;
+  }
+
+  .notice-box li + li {
+    margin-top: 0.3em;
+  }
+
+  .grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    gap: 0.75rem;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 0.9rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .name {
+    font-weight: 700;
+    font-size: 1.0625rem;
+  }
+
+  .tag {
+    flex: none;
+    font-size: 0.75rem;
+    padding: 0.05rem 0.45rem;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+
+  .tag--pending {
+    background: #eef0f2;
+    color: var(--muted);
+    margin: 0 0.2em;
+  }
+
+  .tag--ok {
+    background: #e3f4ea;
+    color: #136b3a;
+  }
+
+  .coupon {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--ink-soft);
+  }
+
+  .coupon code {
+    font-family: var(--font-mono);
+    background: #eef1f4;
+    padding: 0 0.3em;
+    border-radius: 3px;
+  }
+
+  .go {
+    margin-top: auto;
+    display: block;
+    text-align: center;
+    padding: 0.45rem 0.75rem;
+    border: 2px solid var(--ink);
+    border-radius: var(--radius-sm);
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    text-decoration: none;
+  }
+
+  .go:hover {
+    background: var(--ink);
+    color: #fff;
+  }
+
+  .tips {
+    margin-top: 3rem;
+  }
+
+  .tips h2 {
+    margin-top: 0;
+  }
+</style>

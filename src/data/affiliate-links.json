@@ -1,15 +1,207 @@
 {
-  "_说明": "从旧站 jichanghao.com/reviews/ 整理出来的推广链接备忘。这个文件不会显示在网站上。旧站上的速度、延迟、评分等数据不是实测的，不要沿用。实测过某家之后，再把它按 airports.json 的格式加进榜单。",
-  "_整理日期": "2026-11-03",
+  "_说明": "站长的全部机场推广链接（2026-11-03 整理，共 28 家）。机场官网导航页 /jichang-daohang/ 从这里读取；写文章时也从这里取链接。tested=false 表示还没有实测，不能写任何速度、评分、解锁之类的数据。实测后把数据加进 airports.json 并把 tested 改成 true。",
   "airports": [
-    { "name": "闪跃", "url": "https://koolykh88.flashleapaff.com/#/?code=6kHcdCND", "coupon": "shanyue", "couponNote": "旧站写的是 8 折，需要重新确认是否有效", "tested": false },
-    { "name": "微风网络", "url": "https://wep01.breezenetaff.com/#/?code=yPZP8ntR", "tested": false },
-    { "name": "飞猫云", "url": "https://s1.fei9sjf.xyz/#/?code=ARaIAyVa", "tested": false },
-    { "name": "无忧链接", "url": "https://vip02.worryfreeaff.com/#/?code=1iaz8bSh", "tested": false },
-    { "name": "唯兔云", "url": "https://fast.v2yunvipaff.com/#/?code=MI5TU4uc", "tested": false },
-    { "name": "firefly", "url": "https://koolykh88.fireflyaff.com/#/?code=vKGtXoK4", "tested": false },
-    { "name": "跨界云", "url": "https://koolykh88.kuajieaff.com/#/?code=UWUfGLwJ", "tested": false },
-    { "name": "一翻云", "url": "https://wzjc.1flyunaff.cc/#/register?code=JSuuoEmO", "tested": false },
-    { "name": "U1S1", "url": "https://pkdj7.vipaff.cc/#/?code=CmjDmi54", "tested": false }
+    {
+      "id": "shanyue",
+      "order": 1,
+      "name": "闪跃",
+      "url": "https://koolykh88.flashleapaff.com/#/?code=6kHcdCND",
+      "tested": false,
+      "coupon": "shanyue",
+      "couponNote": "旧站写的是 8 折，使用前需重新确认是否有效"
+    },
+    {
+      "id": "weifeng",
+      "order": 2,
+      "name": "微风网络",
+      "url": "https://wep01.breezenetaff.com/#/?code=yPZP8ntR",
+      "tested": false
+    },
+    {
+      "id": "feimaoyun",
+      "order": 3,
+      "name": "飞猫云",
+      "url": "https://s1.fei9sjf.xyz/#/?code=ARaIAyVa",
+      "tested": false
+    },
+    {
+      "id": "muguang",
+      "order": 4,
+      "name": "暮光加速",
+      "url": "https://varnexa.twilightaff.com/#?code=BXgQcrPp",
+      "tested": false
+    },
+    {
+      "id": "kuajieyun",
+      "order": 5,
+      "name": "跨界云",
+      "url": "https://koolykh88.kuajieaff.com/#/?code=UWUfGLwJ",
+      "tested": false
+    },
+    {
+      "id": "firefly",
+      "order": 6,
+      "name": "Firefly",
+      "url": "https://koolykh88.fireflyaff.com/#/?code=vKGtXoK4",
+      "tested": false
+    },
+    {
+      "id": "wuyou",
+      "order": 7,
+      "name": "无忧链接",
+      "url": "https://vip02.worryfreeaff.com/#/?code=1iaz8bSh",
+      "tested": false
+    },
+    {
+      "id": "lingmao",
+      "order": 8,
+      "name": "灵猫",
+      "url": "https://vip02.civetaff.com/#?code=uofCWONx",
+      "tested": false
+    },
+    {
+      "id": "yifanyun",
+      "order": 9,
+      "name": "一翻云",
+      "url": "https://wzjc.1flyunaff.cc/#/register?code=glcBWFxs",
+      "tested": false,
+      "altUrls": [
+        "https://wzjc.1flyunaff.cc/#/register?code=JSuuoEmO"
+      ],
+      "note": "站长提供了两个推广码：glcBWFxs（标注 koolyhk88）和 JSuuoEmO，目前用 glcBWFxs"
+    },
+    {
+      "id": "weituyun",
+      "order": 10,
+      "name": "唯兔云",
+      "url": "https://fast.v2yunvipaff.com/#/?code=MI5TU4uc",
+      "tested": false
+    },
+    {
+      "id": "xingdaomeng",
+      "order": 11,
+      "name": "星岛梦",
+      "url": "https://kfccbb.xingdaomeng.com/#/?code=DuM0Hk0L",
+      "tested": false
+    },
+    {
+      "id": "u1s1",
+      "order": 12,
+      "name": "U1S1",
+      "url": "https://pkdj7.vipaff.cc/#/?code=CmjDmi54",
+      "tested": false
+    },
+    {
+      "id": "guangsuyun",
+      "order": 13,
+      "name": "光速云",
+      "url": "https://mdlky.gsyaff.com/#/?code=qLcDEGH6",
+      "tested": false
+    },
+    {
+      "id": "bianyuan",
+      "order": 14,
+      "name": "边缘节点",
+      "url": "https://work.edgenovaaff.cc/#/register?code=u9EQpiRd",
+      "tested": false
+    },
+    {
+      "id": "ermaoyun",
+      "order": 15,
+      "name": "二猫云",
+      "url": "https://waaa.2maoyunaff.cc/#/?code=9D1mDPDd",
+      "tested": false
+    },
+    {
+      "id": "yuzhouyun",
+      "order": 16,
+      "name": "宇宙云",
+      "url": "https://wzjc.yuzoucloud.cc/#?code=wosXpe6G",
+      "tested": false
+    },
+    {
+      "id": "kuaili",
+      "order": 17,
+      "name": "快狸",
+      "url": "https://work.kuailicloud.cc/#/register?code=HAR1t07h",
+      "tested": false
+    },
+    {
+      "id": "sogoyun",
+      "order": 18,
+      "name": "Sogo云",
+      "url": "https://wzjc.sogoyunaff.cc/#?code=avYL6oKj",
+      "tested": false
+    },
+    {
+      "id": "kexinyun",
+      "order": 19,
+      "name": "可信云",
+      "url": "https://work.kosingaff.com/#/register?code=4GU1Aspr",
+      "tested": false
+    },
+    {
+      "id": "quanqiuyun",
+      "order": 20,
+      "name": "全球云",
+      "url": "https://sswdh.gcvipaff.com/#/?code=eRpXeR8U",
+      "tested": false
+    },
+    {
+      "id": "jilianyun",
+      "order": 21,
+      "name": "极连云",
+      "url": "https://kdjhao.jlyvipaff.com/#/?code=JoPjBQ04",
+      "tested": false
+    },
+    {
+      "id": "guangnianti",
+      "order": 22,
+      "name": "光年梯",
+      "url": "https://ggmq.gntaff.com/#/?code=YM3AvAcI",
+      "tested": false
+    },
+    {
+      "id": "sujie",
+      "order": 23,
+      "name": "速界",
+      "url": "https://work.speedworldaff.cc/#/register?code=C1BkMf5V",
+      "tested": false
+    },
+    {
+      "id": "flyv",
+      "order": 24,
+      "name": "Flyv",
+      "url": "https://varnexa.flyvaff.com/#/?code=WLcrPF7c",
+      "tested": false
+    },
+    {
+      "id": "tiziyun",
+      "order": 25,
+      "name": "梯子云",
+      "url": "https://varnexa.ladderaff.com/#/?code=edbV60Mz",
+      "tested": false
+    },
+    {
+      "id": "langwang",
+      "order": 26,
+      "name": "浪网",
+      "url": "https://varnexa.wavenetaff.com/#/?code=XbQPcUKp",
+      "tested": false
+    },
+    {
+      "id": "lingdongyun",
+      "order": 27,
+      "name": "灵动云",
+      "url": "https://varnexa.lingdongaff.com/#/?code=ezXeHSYf",
+      "tested": false
+    },
+    {
+      "id": "yinxingren",
+      "order": 28,
+      "name": "隐形人",
+      "url": "https://varnexa.invisibleaff.com/#/?code=9o70JmYZ",
+      "tested": false
+    }
   ]
 }

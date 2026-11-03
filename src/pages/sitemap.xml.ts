@@ -13,6 +13,7 @@ import {
   postPath,
 } from '../lib/content';
 import { escapeXml } from '../lib/format';
+import affiliate from '../data/affiliate-links.json';
 
 export const GET: APIRoute = async () => {
   const urls: { loc: string; lastmod?: Date }[] = [];
@@ -37,6 +38,9 @@ export const GET: APIRoute = async () => {
     if (hasSample(await getPostAirports(post))) continue;
     urls.push({ loc: postPath(post), lastmod: lastModified(post) });
   }
+
+  // 导航页至少有一家实测过才进站点地图
+  if (affiliate.airports.some((a) => a.tested)) urls.push({ loc: '/jichang-daohang/' });
 
   urls.push({ loc: '/ceping-fangfa/' }, { loc: '/about/' });
 
