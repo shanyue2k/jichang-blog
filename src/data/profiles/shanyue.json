@@ -1,7 +1,7 @@
 {
   "id": "shanyue",
   "collectedAt": "2026-11-03",
-  "source": "闪跃官网套餐页（站长提供截图）",
+  "source": "闪跃官网套餐页与节点列表（站长提供截图）",
   "lineType": "全 IPLC 专线",
   "devices": "不限制",
   "rate": "所有节点 x1 倍率",
@@ -13,17 +13,91 @@
     "不限制同时使用的客户端数量",
     "高效客服响应，需要新增节点可联系客服"
   ],
-  "unlock": ["流媒体", "ChatGPT", "TikTok"],
+  "unlock": [
+    "流媒体",
+    "ChatGPT",
+    "TikTok"
+  ],
   "plans": [
-    { "name": "闪跃年付版", "type": "yearly", "price": 96, "trafficGB": 60, "trafficPer": "month", "note": "适用于轻度用户" },
-    { "name": "闪跃年付版（高）", "type": "yearly", "price": 180, "trafficGB": 120, "trafficPer": "month", "note": "适用于中、重度用户" },
-    { "name": "闪动 Flicker", "type": "monthly", "price": 24, "trafficGB": 150, "trafficPer": "month" },
-    { "name": "飞跃 Leap", "type": "monthly", "price": 44, "trafficGB": 300, "trafficPer": "month" },
-    { "name": "瞬移 Teleport", "type": "monthly", "price": 84, "trafficGB": 600, "trafficPer": "month" },
-    { "name": "跃迁 Warp", "type": "monthly", "price": 134, "trafficGB": 1000, "trafficPer": "month" },
-    { "name": "闪跃不限时版", "type": "onetime", "price": 150, "trafficGB": 100, "trafficPer": "total", "note": "无时间限制" },
-    { "name": "闪跃不限时版（高）", "type": "onetime", "price": 288, "trafficGB": 200, "trafficPer": "total", "note": "一次性购买，长期有效不过期" }
+    {
+      "name": "闪跃年付版",
+      "type": "yearly",
+      "price": 96,
+      "trafficGB": 60,
+      "trafficPer": "month",
+      "note": "适用于轻度用户"
+    },
+    {
+      "name": "闪跃年付版（高）",
+      "type": "yearly",
+      "price": 180,
+      "trafficGB": 120,
+      "trafficPer": "month",
+      "note": "适用于中、重度用户"
+    },
+    {
+      "name": "闪动 Flicker",
+      "type": "monthly",
+      "price": 24,
+      "trafficGB": 150,
+      "trafficPer": "month"
+    },
+    {
+      "name": "飞跃 Leap",
+      "type": "monthly",
+      "price": 44,
+      "trafficGB": 300,
+      "trafficPer": "month"
+    },
+    {
+      "name": "瞬移 Teleport",
+      "type": "monthly",
+      "price": 84,
+      "trafficGB": 600,
+      "trafficPer": "month"
+    },
+    {
+      "name": "跃迁 Warp",
+      "type": "monthly",
+      "price": 134,
+      "trafficGB": 1000,
+      "trafficPer": "month"
+    },
+    {
+      "name": "闪跃不限时版",
+      "type": "onetime",
+      "price": 150,
+      "trafficGB": 100,
+      "trafficPer": "total",
+      "note": "无时间限制"
+    },
+    {
+      "name": "闪跃不限时版（高）",
+      "type": "onetime",
+      "price": 288,
+      "trafficGB": 200,
+      "trafficPer": "total",
+      "note": "一次性购买，长期有效不过期"
+    }
   ],
   "discounts": "月付套餐长期购买有折扣：1 年付 8 折、2 年付 7 折、3 年付 6 折",
-  "pending": ["节点地区与数量", "支持的协议", "免费试用", "退款政策"]
+  "pending": [
+    "支持的协议",
+    "免费试用",
+    "退款政策"
+  ],
+  "regions": [
+    "香港",
+    "台湾",
+    "新加坡",
+    "日本",
+    "美国"
+  ],
+  "nodeCount": "约 50 个",
+  "nodeNote": "香港节点最多（13 个），台湾 5 个，新加坡、日本、美国各约 10 个",
+  "groups": [
+    "手动选择",
+    "自动选择",
+    "故障转移"
+  ]
 }

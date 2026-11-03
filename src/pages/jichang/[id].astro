@@ -128,6 +128,18 @@ const jsonLd = [breadcrumbSchema(crumbs), faqSchema(faq)];
               <dd>{pr.lineType}</dd>
             </div>
           )}
+          {pr.regions && (
+            <div>
+              <dt>节点地区</dt>
+              <dd>{pr.regions.join('、')}</dd>
+            </div>
+          )}
+          {pr.nodeCount && (
+            <div>
+              <dt>节点数量</dt>
+              <dd>{pr.nodeCount}</dd>
+            </div>
+          )}
           {pr.devices && (
             <div>
               <dt>设备数</dt>
@@ -186,6 +198,26 @@ const jsonLd = [breadcrumbSchema(crumbs), faqSchema(faq)];
           ))
         }
         {pr.discounts && <p>{pr.discounts}。</p>}
+
+        {
+          pr.regions && (
+            <>
+              <h2>{name}节点分布</h2>
+              <p>
+                根据{name}后台的节点列表，目前提供 {pr.regions.join('、')} 共 {pr.regions.length} 个地区的节点{pr.nodeCount && `，${pr.nodeCount}`}。
+                {pr.nodeNote && `${pr.nodeNote}。`}
+              </p>
+              {pr.groups && (
+                <p>
+                  订阅里自带「{pr.groups.join('」「')}」等策略分组。新手直接用"自动选择"即可，客户端会自动挑延迟最低的节点。
+                </p>
+              )}
+              <p>
+                香港、台湾、日本、新加坡离国内近，适合日常使用；需要用 ChatGPT 时注意不要选香港节点，原因见 <a href="/jiaocheng/chatgpt-da-bu-kai/">ChatGPT 打不开怎么办</a>。
+              </p>
+            </>
+          )
+        }
 
         <h2>官方说明的特点</h2>
         <p>以下内容来自{name}官网的套餐说明，本站尚未逐项验证：</p>

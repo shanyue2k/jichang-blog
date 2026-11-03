@@ -25,6 +25,9 @@ export type Profile = {
   trial?: string;
   refund?: string;
   regions?: string[];
+  nodeCount?: string;
+  nodeNote?: string;
+  groups?: string[];
   protocols?: string[];
   pending?: string[];
 };
