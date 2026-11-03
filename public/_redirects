@@ -1,0 +1,21 @@
+# 旧站 jichanghao.com 的网址 → 新站对应文章（301 永久跳转）
+# 没有对应内容的旧网址不跳转，直接返回 404，避免被搜索引擎当成"软 404"
+
+/appleid/                                       /jiaocheng/waiqu-apple-id-zhuce/          301
+/appleid                                        /jiaocheng/waiqu-apple-id-zhuce/          301
+/blog/                                          /jiaocheng/                               301
+/blog                                           /jiaocheng/                               301
+/clients/                                       /jiaocheng/                               301
+/clients                                        /jiaocheng/                               301
+/reviews/                                       /jichang-tuijian/                         301
+/reviews                                        /jichang-tuijian/                         301
+/blog/clash-verge-rev-setup-guide/              /jiaocheng/clash-verge-rev-jiaocheng/     301
+/blog/clash-verge-rev-setup-guide               /jiaocheng/clash-verge-rev-jiaocheng/     301
+/blog/shadowrocket-ios-tutorial/                /jiaocheng/shadowrocket-jiaocheng/        301
+/blog/shadowrocket-ios-tutorial                 /jiaocheng/shadowrocket-jiaocheng/        301
+/blog/chatgpt-claude-1020-error-fix/            /jiaocheng/chatgpt-da-bu-kai/             301
+/blog/chatgpt-claude-1020-error-fix             /jiaocheng/chatgpt-da-bu-kai/             301
+/blog/netflix-disney-streaming-unlock-guide/    /jiaocheng/liumeiti-jiesuo/               301
+/blog/netflix-disney-streaming-unlock-guide     /jiaocheng/liumeiti-jiesuo/               301
+/blog/iplc-iepl-dedicated-line-explained/       /wenzhang/jichang-shi-shenme/             301
+/blog/iplc-iepl-dedicated-line-explained        /wenzhang/jichang-shi-shenme/             301
