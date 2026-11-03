@@ -196,6 +196,7 @@ const jsonLd = [breadcrumbSchema(crumbs), faqSchema(faq)];
           groups.map((g) => (
             <>
               <h3>{PLAN_TYPE_LABEL[g.type]}套餐</h3>
+              <div class="table-scroll">
               <table>
                 <thead>
                   <tr>
@@ -221,10 +222,11 @@ const jsonLd = [breadcrumbSchema(crumbs), faqSchema(faq)];
                   ))}
                 </tbody>
               </table>
+              </div>
+              {g.type === 'monthly' && pr.discounts && <p class="discount">{pr.discounts}。</p>}
             </>
           ))
         }
-        {pr.discounts && <p>{pr.discounts}。</p>}
 
         {
           pr.regions && (
@@ -253,6 +255,7 @@ const jsonLd = [breadcrumbSchema(crumbs), faqSchema(faq)];
               <p>
                 {name}的节点使用 <strong>{pr.protocols.join('、')}</strong> 协议。买之前先确认你的客户端支持它，否则导入订阅也连不上：
               </p>
+              <div class="table-scroll">
               <table>
                 <thead>
                   <tr><th>客户端</th><th>能否使用</th></tr>
@@ -266,6 +269,7 @@ const jsonLd = [breadcrumbSchema(crumbs), faqSchema(faq)];
                   ))}
                 </tbody>
               </table>
+              </div>
               <p>
                 客户端支持情况依据各应用的官方说明整理，iPhone 客户端的详细对比见 <a href="/jiaocheng/ios-kehuduan-duibi/">iOS 代理客户端怎么选</a>。
               </p>
@@ -415,6 +419,12 @@ const jsonLd = [breadcrumbSchema(crumbs), faqSchema(faq)];
     background: #eef1f4;
     padding: 0 0.35em;
     border-radius: 3px;
+  }
+
+  .discount {
+    margin-top: -0.5em;
+    font-size: 0.9375rem;
+    color: var(--ink-soft);
   }
 
   td.num {

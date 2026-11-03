@@ -274,7 +274,18 @@ p {
   .prose table {
     display: block;
     overflow-x: auto;
+    background: transparent;
   }
+}
+
+/* 放在 .table-scroll 里的表格：外层负责横向滚动，表格本身始终铺满 */
+.prose .table-scroll > table {
+  display: table;
+  margin: 0;
+}
+
+.prose td {
+  background: var(--surface);
 }
 
 .prose th,
