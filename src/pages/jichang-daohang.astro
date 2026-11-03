@@ -21,7 +21,7 @@ const crumbs = [
 
 <Base
   title="机场官网导航：常见机场官网入口汇总"
-  description="汇总常见机场的官网入口，方便直接访问。标注尚未实测的机场本站还没有完成评测，不代表推荐。"
+  description="汇总常见机场的官网入口和套餐资料，可以直接访问官网，也可以查看各家的价格、节点和协议。"
   jsonLd={[breadcrumbSchema(crumbs)]}
   noindex={!indexable}
 >
@@ -35,10 +35,10 @@ const crumbs = [
     </header>
 
     <div class="notice-box">
-      <p><strong>请先看这两点：</strong></p>
+      <p><strong>使用说明：</strong></p>
       <ul>
         <li>
-          标注<span class="tag tag--pending">尚未实测</span>的机场，本站还没有完成评测，<strong>出现在这里不代表推荐</strong>。实测完成的机场会更新到<a href={PILLAR.path}>机场推荐榜</a>。
+          标注<span class="tag tag--info">资料已整理</span>的机场，可以点"查看套餐资料"了解价格、节点和协议。导航只提供官网入口，挑选建议可以参考<a href={PILLAR.path}>机场推荐榜</a>。
         </li>
         <li>下面的链接是推广链接，通过它注册价格不变，本站可能获得佣金。第一次购买建议先选月付或最短周期。</li>
       </ul>
@@ -50,7 +50,11 @@ const crumbs = [
           <li class="card">
             <div class="top">
               <span class="name">{i.name}</span>
-              {i.tested ? <span class="tag tag--ok">已实测</span> : <span class="tag tag--pending">尚未实测</span>}
+              {i.tested ? (
+                <span class="tag tag--ok">已实测</span>
+              ) : getProfile(i.id) ? (
+                <span class="tag tag--info">资料已整理</span>
+              ) : null}
             </div>
             {(() => {
               const pr = getProfile(i.id);
@@ -160,6 +164,12 @@ const crumbs = [
   .tag--pending {
     background: #eef0f2;
     color: var(--muted);
+    margin: 0 0.2em;
+  }
+
+  .tag--info {
+    background: #fff3bf;
+    color: #7a5b00;
     margin: 0 0.2em;
   }
 

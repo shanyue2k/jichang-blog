@@ -80,10 +80,6 @@ const faq = [
         },
       ]
     : []),
-  {
-    q: `本站测试过${name}吗？`,
-    a: `还没有。本页资料整理自${name}官网，速度、稳定性和解锁情况本站尚未实测。完成实测后会更新本页，并在机场推荐榜中给出结论。`,
-  },
 ];
 
 // 各客户端对协议的支持（依据各应用官方说明整理，见 iOS 客户端对比一文）
@@ -101,9 +97,9 @@ const protoKeys = (pr.protocols ?? []).map((p) => p.toUpperCase().replace(/\s+/g
 const clientRows = CLIENTS.map((c) => ({ ...c, ok: protoKeys.length > 0 && protoKeys.every((k) => c.supports.includes(k)) }));
 const unsupported = clientRows.filter((c) => !c.ok).map((c) => c.name.replace(/（.*）/, ''));
 
-if (pr.protocols) faq.splice(faq.length - 1, 0, { q: `${name}用什么协议？哪些客户端能用？`, a: `${name}使用 ${pr.protocols.join('、')} 协议。Clash Verge Rev、v2rayN、Clash Meta for Android、Shadowrocket 等常用客户端都支持${unsupported.length ? `；${unsupported.join('、')}不支持，用不了` : ''}。` });
-if (pr.trial) faq.splice(faq.length - 1, 0, { q: `${name}有免费试用吗？`, a: `${pr.trial}。第一次购买建议先选最便宜的月付套餐，确认好用再买长期套餐。` });
-if (pr.refund) faq.splice(faq.length - 1, 0, { q: `${name}可以退款吗？`, a: `${pr.refund}。购买前最好先看清套餐说明。` });
+if (pr.protocols) faq.push({ q: `${name}用什么协议？哪些客户端能用？`, a: `${name}使用 ${pr.protocols.join('、')} 协议。Clash Verge Rev、v2rayN、Clash Meta for Android、Shadowrocket 等常用客户端都支持${unsupported.length ? `；${unsupported.join('、')}不支持，用不了` : ''}。` });
+if (pr.trial) faq.push({ q: `${name}有免费试用吗？`, a: `${pr.trial}。第一次购买建议先选最便宜的月付套餐，确认好用再买长期套餐。` });
+if (pr.refund) faq.push({ q: `${name}可以退款吗？`, a: `${pr.refund}。购买前最好先看清套餐说明。` });
 
 const jsonLd = [breadcrumbSchema(crumbs), faqSchema(faq)];
 ---
@@ -114,12 +110,12 @@ const jsonLd = [breadcrumbSchema(crumbs), faqSchema(faq)];
     <article class="article">
       <header class="head">
         <h1>{title}</h1>
-        <p class="meta">资料整理于 <time class="num" datetime={collected.toISOString()}>{formatDate(collected)}</time></p>
+        <p class="meta source">
+          <span>资料来源：{name}官网</span>
+          <span>整理于 <time class="num" datetime={collected.toISOString()}>{formatDate(collected)}</time></span>
+          <span>价格以官网为准</span>
+        </p>
       </header>
-
-      <p class="notice">
-        本页资料整理自{name}官网套餐页，本站<strong>尚未实测</strong>{name}的速度、稳定性和解锁情况。下文"官方说明"部分是机场自己的介绍，不代表本站结论。价格可能随时调整，以官网为准。
-      </p>
 
       <section class="facts" aria-label={`${name}基本资料`}>
         <dl>
@@ -289,8 +285,8 @@ const jsonLd = [breadcrumbSchema(crumbs), faqSchema(faq)];
           )
         }
 
-        <h2>官方说明的特点</h2>
-        <p>以下内容来自{name}官网的套餐说明，本站尚未逐项验证：</p>
+        <h2>{name}官方介绍的特点</h2>
+        <p>以下是{name}官网对套餐的介绍：</p>
         <ul>{pr.claims.map((c) => <li>{c}</li>)}</ul>
         <p>
           其中"专线"是机场价格差异最大的因素。专线、中转和直连分别是什么意思，可以看<a href="/wenzhang/jichang-shi-shenme/">机场是什么</a>。
@@ -361,6 +357,12 @@ const jsonLd = [breadcrumbSchema(crumbs), faqSchema(faq)];
 
   .head .meta {
     margin: 0;
+  }
+
+  .source {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.25rem;
   }
 
   .facts {
