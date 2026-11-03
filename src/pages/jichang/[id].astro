@@ -86,6 +86,25 @@ const faq = [
   },
 ];
 
+// 各客户端对协议的支持（依据各应用官方说明整理，见 iOS 客户端对比一文）
+const CLIENTS: { name: string; href?: string; supports: string[] }[] = [
+  { name: 'Clash Verge Rev（Windows / macOS）', href: '/jiaocheng/clash-verge-rev-jiaocheng/', supports: ['VLESS', 'VMESS', 'TROJAN', 'SHADOWSOCKS', 'HYSTERIA2', 'TUIC'] },
+  { name: 'v2rayN（Windows）', href: '/jiaocheng/v2rayn-jiaocheng/', supports: ['VLESS', 'VMESS', 'TROJAN', 'SHADOWSOCKS', 'HYSTERIA2', 'TUIC'] },
+  { name: 'Clash Meta for Android', href: '/jiaocheng/clash-meta-for-android-jiaocheng/', supports: ['VLESS', 'VMESS', 'TROJAN', 'SHADOWSOCKS', 'HYSTERIA2', 'TUIC'] },
+  { name: 'Shadowrocket（iPhone）', href: '/jiaocheng/shadowrocket-jiaocheng/', supports: ['VLESS', 'VMESS', 'TROJAN', 'SHADOWSOCKS', 'HYSTERIA2', 'TUIC'] },
+  { name: 'Stash（iPhone）', supports: ['VLESS', 'VMESS', 'TROJAN', 'SHADOWSOCKS', 'HYSTERIA2', 'TUIC'] },
+  { name: 'Loon（iPhone）', supports: ['VLESS', 'VMESS', 'TROJAN', 'SHADOWSOCKS', 'HYSTERIA2'] },
+  { name: 'Quantumult X（iPhone）', supports: ['VLESS', 'VMESS', 'TROJAN', 'SHADOWSOCKS'] },
+  { name: 'Surge（iPhone）', supports: ['VMESS', 'TROJAN', 'SHADOWSOCKS', 'HYSTERIA2', 'TUIC'] },
+];
+const protoKeys = (pr.protocols ?? []).map((p) => p.toUpperCase().replace(/\s+/g, ''));
+const clientRows = CLIENTS.map((c) => ({ ...c, ok: protoKeys.length > 0 && protoKeys.every((k) => c.supports.includes(k)) }));
+const unsupported = clientRows.filter((c) => !c.ok).map((c) => c.name.replace(/（.*）/, ''));
+
+if (pr.protocols) faq.splice(faq.length - 1, 0, { q: `${name}用什么协议？哪些客户端能用？`, a: `${name}使用 ${pr.protocols.join('、')} 协议。Clash Verge Rev、v2rayN、Clash Meta for Android、Shadowrocket 等常用客户端都支持${unsupported.length ? `；${unsupported.join('、')}不支持，用不了` : ''}。` });
+if (pr.trial) faq.splice(faq.length - 1, 0, { q: `${name}有免费试用吗？`, a: `${pr.trial}。第一次购买建议先选最便宜的月付套餐，确认好用再买长期套餐。` });
+if (pr.refund) faq.splice(faq.length - 1, 0, { q: `${name}可以退款吗？`, a: `${pr.refund}。购买前最好先看清套餐说明。` });
+
 const jsonLd = [breadcrumbSchema(crumbs), faqSchema(faq)];
 ---
 
@@ -138,6 +157,18 @@ const jsonLd = [breadcrumbSchema(crumbs), faqSchema(faq)];
             <div>
               <dt>节点数量</dt>
               <dd>{pr.nodeCount}</dd>
+            </div>
+          )}
+          {pr.protocols && (
+            <div>
+              <dt>协议</dt>
+              <dd>{pr.protocols.join(' / ')}</dd>
+            </div>
+          )}
+          {pr.trial && (
+            <div>
+              <dt>免费试用</dt>
+              <dd>{pr.trial}</dd>
             </div>
           )}
           {pr.devices && (
@@ -215,6 +246,45 @@ const jsonLd = [breadcrumbSchema(crumbs), faqSchema(faq)];
               <p>
                 香港、台湾、日本、新加坡离国内近，适合日常使用；需要用 ChatGPT 时注意不要选香港节点，原因见 <a href="/jiaocheng/chatgpt-da-bu-kai/">ChatGPT 打不开怎么办</a>。
               </p>
+            </>
+          )
+        }
+
+        {
+          pr.protocols && (
+            <>
+              <h2>{name}用什么协议？哪些客户端能用</h2>
+              <p>
+                {name}的节点使用 <strong>{pr.protocols.join('、')}</strong> 协议。买之前先确认你的客户端支持它，否则导入订阅也连不上：
+              </p>
+              <table>
+                <thead>
+                  <tr><th>客户端</th><th>能否使用</th></tr>
+                </thead>
+                <tbody>
+                  {clientRows.map((c) => (
+                    <tr>
+                      <td>{c.href ? <a href={c.href}>{c.name}</a> : c.name}</td>
+                      <td>{c.ok ? '✓ 可以' : '✗ 不支持'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <p>
+                客户端支持情况依据各应用的官方说明整理，iPhone 客户端的详细对比见 <a href="/jiaocheng/ios-kehuduan-duibi/">iOS 代理客户端怎么选</a>。
+              </p>
+            </>
+          )
+        }
+
+        {
+          (pr.trial || pr.refund) && (
+            <>
+              <h2>试用与退款</h2>
+              <ul>
+                {pr.trial && <li><strong>免费试用：</strong>{pr.trial}。想先体验的话，可以买最便宜的月付套餐。</li>}
+                {pr.refund && <li><strong>退款：</strong>{pr.refund}。</li>}
+              </ul>
             </>
           )
         }
