@@ -92,6 +92,11 @@ export function lowestMonthlyPlan(pr: Profile): Plan | undefined {
   return pr.plans.filter((p) => p.type === 'monthly').sort((a, b) => a.price - b.price)[0];
 }
 
+/** 流量显示：1000GB 以上换成 TB */
+export function gb(n: number): string {
+  return n >= 1000 ? `${Number((n / 1000).toFixed(2))}TB` : `${n}GB`;
+}
+
 export function yuan(n: number, digits = 2): string {
   const r = Number(n.toFixed(digits));
   return `¥${r}`;
