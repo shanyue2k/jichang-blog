@@ -1,0 +1,154 @@
+{
+  "id": "tiziyun",
+  "collectedAt": "2026-11-04",
+  "source": "梯子云官网套餐页，以及站长提供的协议信息",
+  "lineType": "中转 / BGP / IEPL 专线（按套餐不同）",
+  "lineNote": "初阶套餐标注中转方案加多入口智能调度，中阶标注 BGP 三网智能优化加高速中转出口，高阶标注核心骨干网 IEPL 专线。套餐说明里写的是 Shadowsocks 协议，站长确认节点协议为 VLESS。",
+  "devices": "不限制同时在线设备数",
+  "rate": "全节点统一 x1 倍率",
+  "protocols": [
+    "VLESS"
+  ],
+  "claims": [
+    "全程不限速，全节点统一 x1 计费倍率",
+    "解锁 Netflix、YouTube、ChatGPT 等主流流媒体和 AI 工具",
+    "高阶套餐使用 IEPL 专线和原生 IP，支持 4K / 8K",
+    "支持 ChatGPT 语音模式、Claude 等 AI 服务",
+    "不限制同时在线设备数"
+  ],
+  "unlock": [
+    "Netflix",
+    "ChatGPT",
+    "Claude"
+  ],
+  "plans": [
+    {
+      "name": "天梯随行·年度保活方案",
+      "type": "yearly",
+      "price": 89,
+      "trafficGB": 60,
+      "trafficPer": "month",
+      "note": "轻量用户限量特惠，先到先得"
+    },
+    {
+      "name": "初阶网络·基础视界",
+      "type": "monthly",
+      "price": 25,
+      "trafficGB": 125,
+      "trafficPer": "month"
+    },
+    {
+      "name": "中阶加速·极清多线",
+      "type": "monthly",
+      "price": 60,
+      "trafficGB": 350,
+      "trafficPer": "month"
+    },
+    {
+      "name": "高阶专线·全球智联",
+      "type": "monthly",
+      "price": 110,
+      "trafficGB": 750,
+      "trafficPer": "month"
+    },
+    {
+      "name": "顶阶商业·全球骨干",
+      "type": "monthly",
+      "price": 190,
+      "trafficGB": 1600,
+      "trafficPer": "month"
+    },
+    {
+      "name": "初阶网络·基础视界",
+      "type": "quarterly",
+      "price": 71.25,
+      "trafficGB": 125,
+      "trafficPer": "month"
+    },
+    {
+      "name": "中阶加速·极清多线",
+      "type": "quarterly",
+      "price": 171,
+      "trafficGB": 350,
+      "trafficPer": "month"
+    },
+    {
+      "name": "高阶专线·全球智联",
+      "type": "quarterly",
+      "price": 313.5,
+      "trafficGB": 750,
+      "trafficPer": "month"
+    },
+    {
+      "name": "顶阶商业·全球骨干",
+      "type": "quarterly",
+      "price": 541.5,
+      "trafficGB": 1600,
+      "trafficPer": "month"
+    },
+    {
+      "name": "初阶网络·基础视界",
+      "type": "semiannual",
+      "price": 135,
+      "trafficGB": 125,
+      "trafficPer": "month"
+    },
+    {
+      "name": "中阶加速·极清多线",
+      "type": "semiannual",
+      "price": 324,
+      "trafficGB": 350,
+      "trafficPer": "month"
+    },
+    {
+      "name": "高阶专线·全球智联",
+      "type": "semiannual",
+      "price": 594,
+      "trafficGB": 750,
+      "trafficPer": "month"
+    },
+    {
+      "name": "顶阶商业·全球骨干",
+      "type": "semiannual",
+      "price": 1026,
+      "trafficGB": 1600,
+      "trafficPer": "month"
+    },
+    {
+      "name": "云端买断·永不限时轻量包",
+      "type": "onetime",
+      "price": 169,
+      "trafficGB": 120,
+      "trafficPer": "total",
+      "note": "一次买断，流量用完即止，不限时"
+    },
+    {
+      "name": "云端买断·永不限时标准包",
+      "type": "onetime",
+      "price": 449,
+      "trafficGB": 350,
+      "trafficPer": "total",
+      "note": "一次买断，流量用完即止，不限时"
+    },
+    {
+      "name": "云端买断·永不限时精英包",
+      "type": "onetime",
+      "price": 849,
+      "trafficGB": 700,
+      "trafficPer": "total",
+      "note": "一次买断，流量用完即止，不限时"
+    },
+    {
+      "name": "云端独享·私人定制专线",
+      "type": "monthly",
+      "custom": true,
+      "price": 680,
+      "trafficGB": 500,
+      "trafficPer": "month",
+      "note": "独立纯净带宽和独享公网 IP，面向 TikTok 直播、独立站、跨境电商；下单后约 2–3 个工作日交付"
+    }
+  ],
+  "pending": [
+    "节点数量与地区分布"
+  ]
+}
