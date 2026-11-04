@@ -82,3 +82,17 @@ faq:                      # 可选，会生成常见问题和 FAQ 结构化数�
 
 1. Bing Webmaster Tools 添加站点（可以直接从 Google Search Console 导入），提交 `https://你的域名/sitemap.xml`
 2. 每次发布或更新文章后运行一次 `npm run indexnow`
+
+## 机场资料（推广链接与官网资料整理）
+
+| 文件 | 内容 |
+| --- | --- |
+| `src/data/affiliate-links.json` | 28 家机场的名称、代号、推广链接、备用链接、优惠码 |
+| `src/data/profiles/<代号>.json` | 每家机场的套餐、节点、协议、线路、官方介绍（资料页 `/jichang/<代号>/` 由它生成） |
+| `src/lib/profiles.ts` | 全站默认值：28 家都没有免费试用，退款需提交工单 |
+
+一键导出（不被搜索引擎收录）：
+
+- https://jichanghao.com/export/jichang-airports.csv ：一机场一行，Excel 直接打开
+- https://jichanghao.com/export/jichang-plans.csv ：一套餐一行，方便排序比价
+- https://jichanghao.com/export/jichang-data.json ：完整资料
