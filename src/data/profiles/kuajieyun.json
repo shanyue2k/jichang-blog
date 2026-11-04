@@ -1,7 +1,7 @@
 {
   "id": "kuajieyun",
   "collectedAt": "2026-11-04",
-  "source": "跨界云官网套餐页（站长提供截图）",
+  "source": "跨界云官网套餐页，以及站长提供的节点与协议信息",
   "lineType": "IPLC 高端线路",
   "devices": "不限制",
   "rate": "所有节点 x1 倍率",
@@ -14,17 +14,95 @@
     "月付套餐可以随时升档",
     "长期购买折扣可与优惠码叠加"
   ],
-  "unlock": ["Netflix", "Disney+", "ChatGPT", "Claude"],
+  "unlock": [
+    "Netflix",
+    "Disney+",
+    "ChatGPT",
+    "Claude"
+  ],
   "plans": [
-    { "name": "跨界年付版", "type": "yearly", "price": 96, "trafficGB": 60, "trafficPer": "month", "note": "适合每天看剧 1 小时内、单设备用户" },
-    { "name": "年付版", "type": "yearly", "price": 150, "trafficGB": 100, "trafficPer": "month", "note": "适合每天看剧 1.5–2 小时、一两台设备" },
-    { "name": "轻云 Lite（季付特惠）", "type": "quarterly", "price": 43, "trafficGB": 120, "trafficPer": "month", "note": "季付特别优惠" },
-    { "name": "轻云 Lite", "type": "monthly", "price": 20, "trafficGB": 120, "trafficPer": "month", "note": "适合每天看剧 2 小时内、1–2 台设备" },
-    { "name": "跃云 Leap", "type": "monthly", "price": 40, "trafficGB": 330, "trafficPer": "month", "note": "适合全家共用、多设备、常下载的用户" },
-    { "name": "凌云 Soar", "type": "monthly", "price": 90, "trafficGB": 830, "trafficPer": "month", "note": "适合 4K 重度观影和大量下载" },
-    { "name": "无界 Infinity", "type": "monthly", "price": 130, "trafficGB": 1800, "trafficPer": "month", "note": "适合多屏 4K、大型下载、小团队共用" },
-    { "name": "跨界·不限时包", "type": "onetime", "price": 200, "trafficGB": 300, "trafficPer": "total", "note": "长期有效、不按周期刷新；需要重置流量可手动重置，费用为原价 9 折（¥180）" }
+    {
+      "name": "跨界年付版",
+      "type": "yearly",
+      "price": 96,
+      "trafficGB": 60,
+      "trafficPer": "month",
+      "note": "适合每天看剧 1 小时内、单设备用户"
+    },
+    {
+      "name": "年付版",
+      "type": "yearly",
+      "price": 150,
+      "trafficGB": 100,
+      "trafficPer": "month",
+      "note": "适合每天看剧 1.5–2 小时、一两台设备"
+    },
+    {
+      "name": "轻云 Lite（季付特惠）",
+      "type": "quarterly",
+      "price": 43,
+      "trafficGB": 120,
+      "trafficPer": "month",
+      "note": "季付特别优惠"
+    },
+    {
+      "name": "轻云 Lite",
+      "type": "monthly",
+      "price": 20,
+      "trafficGB": 120,
+      "trafficPer": "month",
+      "note": "适合每天看剧 2 小时内、1–2 台设备"
+    },
+    {
+      "name": "跃云 Leap",
+      "type": "monthly",
+      "price": 40,
+      "trafficGB": 330,
+      "trafficPer": "month",
+      "note": "适合全家共用、多设备、常下载的用户"
+    },
+    {
+      "name": "凌云 Soar",
+      "type": "monthly",
+      "price": 90,
+      "trafficGB": 830,
+      "trafficPer": "month",
+      "note": "适合 4K 重度观影和大量下载"
+    },
+    {
+      "name": "无界 Infinity",
+      "type": "monthly",
+      "price": 130,
+      "trafficGB": 1800,
+      "trafficPer": "month",
+      "note": "适合多屏 4K、大型下载、小团队共用"
+    },
+    {
+      "name": "跨界·不限时包",
+      "type": "onetime",
+      "price": 200,
+      "trafficGB": 300,
+      "trafficPer": "total",
+      "note": "长期有效、不按周期刷新；需要重置流量可手动重置，费用为原价 9 折（¥180）"
+    }
   ],
   "discounts": "月付套餐长期购买有折扣：年付 8 折、两年 7 折、三年 6 折，可与优惠码叠加",
-  "pending": ["节点地区与数量", "支持的协议"]
+  "pending": [],
+  "regions": [
+    "香港",
+    "台湾",
+    "新加坡",
+    "日本",
+    "美国"
+  ],
+  "nodeCount": "约 50 个",
+  "nodeNote": "香港节点最多（13 个），台湾 5 个，新加坡、日本、美国各约 10 个",
+  "groups": [
+    "手动选择",
+    "自动选择",
+    "故障转移"
+  ],
+  "protocols": [
+    "VLESS"
+  ]
 }
