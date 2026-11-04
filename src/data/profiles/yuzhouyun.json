@@ -1,0 +1,162 @@
+{
+  "id": "yuzhouyun",
+  "collectedAt": "2026-11-04",
+  "source": "宇宙云官网套餐页，以及站长提供的节点列表与协议信息",
+  "lineType": "IEPL 专线",
+  "devices": "不限设备数量",
+  "rate": "全节点 x1 倍率，晚高峰不降速",
+  "regions": [
+    "香港",
+    "台湾",
+    "日本",
+    "新加坡",
+    "美国"
+  ],
+  "nodeCount": "60 个",
+  "nodeNote": "香港 20 个，台湾、日本、新加坡、美国各 10 个",
+  "lineNote": "官网套餐卡片写的是「70+ 节点」、台湾 5 个，本站整理时节点列表里是 60 个，其中台湾 10 个，以实际列表为准。",
+  "protocols": [
+    "VLESS"
+  ],
+  "claims": [
+    "全 IEPL 专线，单节点峰值 2.5Gbps",
+    "全节点 x1 倍率，晚高峰不降速",
+    "原生 IP，支持 Netflix、Disney+、ChatGPT、TikTok",
+    "多设备不限量同时在线（电脑、手机、路由器）",
+    "智能路由自动择优",
+    "月付系列每 30 天自动刷新流量"
+  ],
+  "unlock": [
+    "Netflix",
+    "Disney+",
+    "ChatGPT",
+    "TikTok"
+  ],
+  "plans": [
+    {
+      "name": "星云年付小包",
+      "type": "yearly",
+      "price": 96,
+      "trafficGB": 60,
+      "trafficPer": "month"
+    },
+    {
+      "name": "星云年付尊享版",
+      "type": "yearly",
+      "price": 188,
+      "trafficGB": 100,
+      "trafficPer": "month"
+    },
+    {
+      "name": "行星基础版",
+      "type": "monthly",
+      "price": 25,
+      "trafficGB": 160,
+      "trafficPer": "month"
+    },
+    {
+      "name": "恒星标准版",
+      "type": "monthly",
+      "price": 50,
+      "trafficGB": 300,
+      "trafficPer": "month"
+    },
+    {
+      "name": "星系专业版",
+      "type": "monthly",
+      "price": 100,
+      "trafficGB": 700,
+      "trafficPer": "month"
+    },
+    {
+      "name": "寰宇旗舰版",
+      "type": "monthly",
+      "price": 200,
+      "trafficGB": 1500,
+      "trafficPer": "month"
+    },
+    {
+      "name": "行星基础版",
+      "type": "quarterly",
+      "price": 70,
+      "trafficGB": 160,
+      "trafficPer": "month"
+    },
+    {
+      "name": "恒星标准版",
+      "type": "quarterly",
+      "price": 140,
+      "trafficGB": 300,
+      "trafficPer": "month"
+    },
+    {
+      "name": "星系专业版",
+      "type": "quarterly",
+      "price": 285,
+      "trafficGB": 700,
+      "trafficPer": "month"
+    },
+    {
+      "name": "寰宇旗舰版",
+      "type": "quarterly",
+      "price": 570,
+      "trafficGB": 1500,
+      "trafficPer": "month"
+    },
+    {
+      "name": "行星基础版",
+      "type": "semiannual",
+      "price": 130,
+      "trafficGB": 160,
+      "trafficPer": "month"
+    },
+    {
+      "name": "恒星标准版",
+      "type": "semiannual",
+      "price": 260,
+      "trafficGB": 300,
+      "trafficPer": "month"
+    },
+    {
+      "name": "星系专业版",
+      "type": "semiannual",
+      "price": 520,
+      "trafficGB": 700,
+      "trafficPer": "month"
+    },
+    {
+      "name": "寰宇旗舰版",
+      "type": "semiannual",
+      "price": 1020,
+      "trafficGB": 1500,
+      "trafficPer": "month"
+    },
+    {
+      "name": "行星基础版（不限时）",
+      "type": "onetime",
+      "price": 110,
+      "trafficGB": 120,
+      "trafficPer": "total",
+      "note": "一次购买，不限使用时间，流量用完为止，不自动刷新"
+    },
+    {
+      "name": "恒星标准版（不限时）",
+      "type": "onetime",
+      "price": 220,
+      "trafficGB": 240,
+      "trafficPer": "total",
+      "note": "一次购买，不限使用时间，流量用完为止，不自动刷新"
+    },
+    {
+      "name": "宇宙云·家宽定制套餐",
+      "type": "onetime",
+      "custom": true,
+      "price": 600,
+      "trafficGB": 500,
+      "trafficPer": "total",
+      "note": "专属定制节点，独享原生 IP，面向跨境电商、TikTok 直播、社媒推广等；流量、带宽、线路地区（香港、日本、美国、新加坡等）可定制，价格按配置调整，需联系客服确认"
+    }
+  ],
+  "discounts": "月付套餐长期购买有折扣：年付 8 折、两年付 7 折、三年付 6 折",
+  "pending": []
+}
