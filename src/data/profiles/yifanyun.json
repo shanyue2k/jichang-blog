@@ -1,0 +1,179 @@
+{
+  "id": "yifanyun",
+  "collectedAt": "2026-11-04",
+  "source": "一翻云官网套餐页，以及站长提供的节点与协议信息",
+  "lineType": "IEPL 专线",
+  "lineNote": "官网写的是「港/台/新/日/美等 60+ 节点」，本站整理时节点列表里是 55 个，以实际列表为准。",
+  "devices": "不限制设备数量",
+  "regions": [
+    "香港",
+    "台湾",
+    "新加坡",
+    "日本",
+    "美国"
+  ],
+  "nodeCount": "55 个",
+  "nodeNote": "香港 20 个，台湾 5 个，新加坡、日本、美国各 10 个",
+  "protocols": [
+    "VLESS"
+  ],
+  "claims": [
+    "官网标注套餐使用 IEPL 专线，不限速",
+    "所有套餐都不限制设备同时在线",
+    "解锁主流流媒体和各类 AI 工具",
+    "有自研客户端，可以一键连接",
+    "高档套餐（尊享版、极致版）标注晚高峰优先级保障、更高带宽冗余",
+    "不限时包一次性购买，流量长期有效不过期"
+  ],
+  "unlock": [
+    "流媒体",
+    "AI 工具"
+  ],
+  "plans": [
+    {
+      "name": "年付小包",
+      "type": "yearly",
+      "price": 98,
+      "trafficGB": 60,
+      "trafficPer": "month",
+      "note": "年付专属"
+    },
+    {
+      "name": "轻享版·月付",
+      "type": "monthly",
+      "price": 20,
+      "trafficGB": 150,
+      "trafficPer": "month"
+    },
+    {
+      "name": "舒享版·月付",
+      "type": "monthly",
+      "price": 35,
+      "trafficGB": 350,
+      "trafficPer": "month"
+    },
+    {
+      "name": "尊享版·月付",
+      "type": "monthly",
+      "price": 55,
+      "trafficGB": 600,
+      "trafficPer": "month"
+    },
+    {
+      "name": "极致版·月付",
+      "type": "monthly",
+      "price": 95,
+      "trafficGB": 1200,
+      "trafficPer": "month"
+    },
+    {
+      "name": "轻享版·季付",
+      "type": "quarterly",
+      "price": 55,
+      "trafficGB": 150,
+      "trafficPer": "month"
+    },
+    {
+      "name": "舒享版·季付",
+      "type": "quarterly",
+      "price": 98,
+      "trafficGB": 350,
+      "trafficPer": "month"
+    },
+    {
+      "name": "尊享版·季付",
+      "type": "quarterly",
+      "price": 155,
+      "trafficGB": 600,
+      "trafficPer": "month"
+    },
+    {
+      "name": "极致版·季付",
+      "type": "quarterly",
+      "price": 268,
+      "trafficGB": 1200,
+      "trafficPer": "month"
+    },
+    {
+      "name": "轻享版·半年付",
+      "type": "semiannual",
+      "price": 98,
+      "trafficGB": 150,
+      "trafficPer": "month"
+    },
+    {
+      "name": "舒享版·半年付",
+      "type": "semiannual",
+      "price": 178,
+      "trafficGB": 350,
+      "trafficPer": "month"
+    },
+    {
+      "name": "尊享版·半年付",
+      "type": "semiannual",
+      "price": 288,
+      "trafficGB": 600,
+      "trafficPer": "month"
+    },
+    {
+      "name": "极致版·半年付",
+      "type": "semiannual",
+      "price": 498,
+      "trafficGB": 1200,
+      "trafficPer": "month"
+    },
+    {
+      "name": "轻享版·年付",
+      "type": "yearly",
+      "price": 168,
+      "trafficGB": 150,
+      "trafficPer": "month"
+    },
+    {
+      "name": "舒享版·年付",
+      "type": "yearly",
+      "price": 298,
+      "trafficGB": 350,
+      "trafficPer": "month"
+    },
+    {
+      "name": "尊享版·年付",
+      "type": "yearly",
+      "price": 498,
+      "trafficGB": 600,
+      "trafficPer": "month"
+    },
+    {
+      "name": "极致版·年付",
+      "type": "yearly",
+      "price": 888,
+      "trafficGB": 1200,
+      "trafficPer": "month"
+    },
+    {
+      "name": "轻享版·不限时包",
+      "type": "onetime",
+      "price": 100,
+      "trafficGB": 100,
+      "trafficPer": "total",
+      "note": "一次性购买，长期有效不过期"
+    },
+    {
+      "name": "舒享版·不限时包",
+      "type": "onetime",
+      "price": 200,
+      "trafficGB": 250,
+      "trafficPer": "total",
+      "note": "一次性购买，长期有效不过期"
+    },
+    {
+      "name": "尊享版·不限时包",
+      "type": "onetime",
+      "price": 400,
+      "trafficGB": 500,
+      "trafficPer": "total",
+      "note": "一次性购买，长期有效不过期"
+    }
+  ],
+  "pending": []
+}

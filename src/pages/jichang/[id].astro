@@ -38,7 +38,7 @@ const cheapest = lowestMonthly(pr);
 const cheapestMonthly = lowestMonthlyPlan(pr);
 const standard = pr.plans.filter((p) => !p.custom);
 const customPlans = pr.plans.filter((p) => p.custom);
-const groups = (['monthly', 'quarterly', 'yearly', 'onetime'] as Plan['type'][])
+const groups = (['monthly', 'quarterly', 'semiannual', 'yearly', 'onetime'] as Plan['type'][])
   .map((t) => ({ type: t, plans: standard.filter((p) => p.type === t) }))
   .filter((g) => g.plans.length);
 const onetime = standard.filter((p) => p.type === 'onetime');
@@ -221,7 +221,7 @@ const jsonLd = [breadcrumbSchema(crumbs), faqSchema(faq)];
                         {p.name}
                         {p.note && <small class="pnote">{p.note}</small>}
                       </td>
-                      <td class="num">{`${yuan(p.price)}${g.type === 'onetime' ? ' 一次性' : `/${g.type === 'yearly' ? '年' : g.type === 'quarterly' ? '季' : '月'}`}`}</td>
+                      <td class="num">{`${yuan(p.price)}${g.type === 'onetime' ? ' 一次性' : `/${g.type === 'yearly' ? '年' : g.type === 'quarterly' ? '季' : g.type === 'semiannual' ? '半年' : '月'}`}`}</td>
                       <td>{p.trafficPer === 'month' ? `每月 ${gb(p.trafficGB)}` : `${gb(p.trafficGB)}（总量）`}</td>
                       {g.type !== 'onetime' && g.type !== 'monthly' && <td class="num">{yuan(perMonth(p)!)}</td>}
                       <td class="num">{yuan(perGB(p), 3)}</td>

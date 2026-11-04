@@ -3,7 +3,7 @@ import affiliate from '../data/affiliate-links.json';
 
 export type Plan = {
   name: string;
-  type: 'monthly' | 'quarterly' | 'yearly' | 'onetime';
+  type: 'monthly' | 'quarterly' | 'semiannual' | 'yearly' | 'onetime';
   price: number;
   trafficGB: number;
   /** month = 每月重置的流量；total = 一次性总流量 */
@@ -72,11 +72,12 @@ export function profilePath(id: string): string {
   return `/jichang/${id}/`;
 }
 
-const MONTHS: Record<Plan['type'], number> = { monthly: 1, quarterly: 3, yearly: 12, onetime: 0 };
+const MONTHS: Record<Plan['type'], number> = { monthly: 1, quarterly: 3, semiannual: 6, yearly: 12, onetime: 0 };
 
 export const PLAN_TYPE_LABEL: Record<Plan['type'], string> = {
   monthly: '月付',
   quarterly: '季付',
+  semiannual: '半年付',
   yearly: '年付',
   onetime: '不限时',
 };
