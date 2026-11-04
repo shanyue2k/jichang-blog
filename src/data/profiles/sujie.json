@@ -1,0 +1,139 @@
+{
+  "id": "sujie",
+  "collectedAt": "2026-11-04",
+  "source": "速界官网套餐页，以及站长提供的节点列表与协议信息",
+  "lineType": "全 IPLC 专线",
+  "devices": "不限制设备连接数量",
+  "rate": "所有节点 x1 倍率，高峰时段不降速",
+  "regions": [
+    "香港",
+    "台湾",
+    "日本",
+    "新加坡",
+    "美国"
+  ],
+  "nodeCount": "60 个",
+  "nodeNote": "香港 20 个，台湾、日本、新加坡、美国各 10 个",
+  "lineNote": "官网节点说明里还写了韩国、马来西亚、越南、菲律宾、泰国、印度、英国、法国、德国、阿根廷等地区，本站整理时节点列表里只有 5 个地区，以实际列表为准。超速版、光速版的说明文字写的是每月 250G、499G，流量栏显示 260GB、550GB，本站按流量栏记录。",
+  "protocols": [
+    "VLESS"
+  ],
+  "claims": [
+    "全 IPLC 专线网络，提供最高 2.5Gbps 稳定速率",
+    "所有节点 x1 倍率，高峰时段不降速",
+    "原生 IP 线路，解锁 Netflix、Disney+、ChatGPT、TikTok",
+    "不限制设备连接数量，多端同时登录",
+    "智能流量分配与路由优化",
+    "每月自动刷新流量，客服全天在线指导"
+  ],
+  "unlock": [
+    "Netflix",
+    "Disney+",
+    "ChatGPT",
+    "TikTok"
+  ],
+  "plans": [
+    {
+      "name": "单月试用15元",
+      "type": "monthly",
+      "price": 15,
+      "trafficGB": 50,
+      "trafficPer": "month",
+      "note": "限时体验月付小包，不参加优惠活动"
+    },
+    {
+      "name": "限时年付",
+      "type": "yearly",
+      "price": 90,
+      "trafficGB": 70,
+      "trafficPer": "month",
+      "note": "年费小包，面向低流量用户和学生；流量用完可 10 元重置"
+    },
+    {
+      "name": "极速版",
+      "type": "monthly",
+      "price": 25,
+      "trafficGB": 130,
+      "trafficPer": "month"
+    },
+    {
+      "name": "超速版",
+      "type": "monthly",
+      "price": 50,
+      "trafficGB": 260,
+      "trafficPer": "month"
+    },
+    {
+      "name": "光速版",
+      "type": "monthly",
+      "price": 99,
+      "trafficGB": 550,
+      "trafficPer": "month"
+    },
+    {
+      "name": "跃迁版",
+      "type": "monthly",
+      "price": 200,
+      "trafficGB": 1000,
+      "trafficPer": "month"
+    },
+    {
+      "name": "极速版",
+      "type": "quarterly",
+      "price": 70,
+      "trafficGB": 130,
+      "trafficPer": "month"
+    },
+    {
+      "name": "超速版",
+      "type": "quarterly",
+      "price": 142.5,
+      "trafficGB": 260,
+      "trafficPer": "month"
+    },
+    {
+      "name": "光速版",
+      "type": "quarterly",
+      "price": 285,
+      "trafficGB": 550,
+      "trafficPer": "month"
+    },
+    {
+      "name": "跃迁版",
+      "type": "quarterly",
+      "price": 570,
+      "trafficGB": 1000,
+      "trafficPer": "month"
+    },
+    {
+      "name": "极速版",
+      "type": "semiannual",
+      "price": 130,
+      "trafficGB": 130,
+      "trafficPer": "month"
+    },
+    {
+      "name": "超速版",
+      "type": "semiannual",
+      "price": 270,
+      "trafficGB": 260,
+      "trafficPer": "month"
+    },
+    {
+      "name": "光速版",
+      "type": "semiannual",
+      "price": 540,
+      "trafficGB": 550,
+      "trafficPer": "month"
+    },
+    {
+      "name": "跃迁版",
+      "type": "semiannual",
+      "price": 1080,
+      "trafficGB": 1000,
+      "trafficPer": "month"
+    }
+  ],
+  "discounts": "长期购买有折扣：极速版年付 8 折、两年付 7 折、三年付 6 折；超速版、光速版、跃迁版年付 9 折、两年付 8 折、三年付 7 折",
+  "pending": []
+}
