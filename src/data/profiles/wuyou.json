@@ -1,0 +1,28 @@
+{
+  "id": "wuyou",
+  "collectedAt": "2026-11-04",
+  "source": "无忧链接官网套餐页（站长提供截图）",
+  "lineType": "全 IPLC 专线",
+  "lineNote": "大部分套餐标注全 IPLC 专线；“真无忧链接”专线套餐标注的是全 IEPL 专线、原生 IP，单节点峰值 2.5Gbps",
+  "rate": "节点倍率 x1",
+  "claims": [
+    "全 IPLC 专线，节点倍率 x1",
+    "稳定支持 ChatGPT、Gemini 等 AI 服务",
+    "4K 流畅观看 Netflix、Hulu、HBO、Disney+ 等流媒体",
+    "年付套餐每月流量按订单日自动重置",
+    "“真无忧链接”：全 IEPL 专线，原生 IP，解锁 Netflix、Disney+、ChatGPT、TikTok，晚高峰不降速，每 30 天自动刷新流量"
+  ],
+  "unlock": ["Netflix", "Disney+", "ChatGPT", "TikTok"],
+  "plans": [
+    { "name": "MINI 链接", "type": "yearly", "price": 79, "trafficGB": 40, "trafficPer": "month", "note": "每月流量按订单日自动重置" },
+    { "name": "舒心链接", "type": "monthly", "price": 19, "trafficGB": 100, "trafficPer": "month" },
+    { "name": "省心链接", "type": "monthly", "price": 33, "trafficGB": 200, "trafficPer": "month" },
+    { "name": "真无忧链接（专线套餐）", "type": "monthly", "price": 40, "trafficGB": 100, "trafficPer": "month", "note": "全 IEPL 专线，原生 IP，单节点峰值 2.5Gbps" },
+    { "name": "随心链接", "type": "monthly", "price": 77, "trafficGB": 500, "trafficPer": "month" },
+    { "name": "忘忧链接", "type": "monthly", "price": 117, "trafficGB": 1000, "trafficPer": "month" },
+    { "name": "100G 永久不限时", "type": "onetime", "price": 98, "trafficGB": 100, "trafficPer": "total", "note": "永久不限时" },
+    { "name": "300G 永久不限时", "type": "onetime", "price": 288, "trafficGB": 300, "trafficPer": "total", "note": "永久不限时" },
+    { "name": "无忧专业级定制套餐", "type": "monthly", "custom": true, "price": 680, "trafficGB": 500, "trafficPer": "month", "note": "专属定制节点、独享原生 IP，每位用户独立带宽与 IP，适用于跨境电商、TikTok 直播、远程办公；线路与地区需联系客服确认" }
+  ],
+  "pending": ["节点地区与数量", "支持的协议", "设备数限制"]
+}
