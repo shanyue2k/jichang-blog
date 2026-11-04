@@ -45,8 +45,18 @@ export type AffItem = {
   coupon?: string;
 };
 
+/** 站长确认：28 家机场都没有免费试用，退款都需要提交工单（2026-11-04）。某家不同时，在它的资料文件里单独写即可覆盖 */
+const DEFAULTS: Partial<Profile> = {
+  trial: '没有免费试用',
+  refund: '需要提交工单联系客服申请，能否退款以客服答复为准',
+};
+
 const files = import.meta.glob<{ default: Profile }>('../data/profiles/*.json', { eager: true });
-export const profiles: Profile[] = Object.values(files).map((m) => m.default);
+export const profiles: Profile[] = Object.values(files).map((m) => {
+  const p = { ...DEFAULTS, ...m.default } as Profile;
+  p.pending = (p.pending ?? []).filter((x) => x !== '免费试用' && x !== '退款政策');
+  return p;
+});
 
 export function getProfile(id: string): Profile | undefined {
   return profiles.find((p) => p.id === id);
