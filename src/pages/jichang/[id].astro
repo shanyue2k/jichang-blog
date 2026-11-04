@@ -243,7 +243,7 @@ const jsonLd = [breadcrumbSchema(crumbs), faqSchema(faq)];
               <ul>
                 {customPlans.map((p) => (
                   <li>
-                    <strong>{p.name}</strong>：{yuan(p.price)}/月起，每月 {gb(p.trafficGB)}。{p.note}
+                    <strong>{p.name}</strong>：{yuan(p.price)}/月起，{p.trafficGB ? `每月 ${gb(p.trafficGB)}` : '流量按需定制'}。{p.note}
                   </li>
                 ))}
               </ul>

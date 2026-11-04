@@ -42,10 +42,10 @@ export function buildExport() {
         类型: pl.custom ? '定制' : PLAN_TYPE_LABEL[pl.type],
         价格: pl.price,
         计价: pl.type === 'onetime' ? '一次性' : pl.type === 'yearly' ? '每年' : pl.type === 'quarterly' ? '每季' : '每月',
-        流量GB: pl.trafficGB,
+        流量GB: pl.trafficGB || '按需定制',
         流量方式: pl.trafficPer === 'month' ? '每月重置' : '总量不过期',
         折合每月: perMonth(pl) !== null ? r2(perMonth(pl)!) : '',
-        每GB单价: r2(perGB(pl), 3),
+        每GB单价: Number.isFinite(perGB(pl)) ? r2(perGB(pl), 3) : '',
         说明: pl.note ?? '',
       })),
     };

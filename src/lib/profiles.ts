@@ -89,6 +89,7 @@ export function perMonth(p: Plan): number | null {
 
 /** 每 GB 单价 */
 export function perGB(p: Plan): number {
+  if (!p.trafficGB) return NaN;
   if (p.trafficPer === 'total') return p.price / p.trafficGB;
   const m = MONTHS[p.type] || 1;
   return p.price / (p.trafficGB * m);
