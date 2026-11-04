@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import RankTable from '../components/RankTable.astro';
+import HomePicker from '../components/HomePicker.astro';
 import PostList from '../components/PostList.astro';
 import { PILLAR, SECTION_KEYS, SECTIONS, SITE } from '../site.config';
 import { getAllPosts, getPosts, sectionPath } from '../lib/content';
@@ -39,6 +40,8 @@ const counts = Object.fromEntries(
       </div>
     </div>
   </section>
+
+  <HomePicker items={featured} />
 
   <div class="wrap">
     <section class="sections" aria-labelledby="sections-title">

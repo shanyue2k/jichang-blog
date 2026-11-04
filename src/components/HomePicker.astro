@@ -1,0 +1,643 @@
+---
+// 首页互动：3 个问题帮读者从主推机场里挑出最合适的套餐 + 每月流量估算器
+// 数据全部来自 src/data/profiles（官网价格），只在主推机场里挑
+import type { RankedItem } from '../lib/ranking';
+
+interface Props {
+  items: RankedItem[];
+}
+const { items } = Astro.props;
+
+const MONTHS: Record<string, number> = { monthly: 1, quarterly: 3, semiannual: 6, yearly: 12, onetime: 0 };
+const data = items.map((i) => ({
+  id: i.aff.id,
+  rank: i.rank,
+  name: i.aff.name,
+  url: i.aff.url,
+  path: i.path,
+  line: i.profile.lineType ?? '',
+  nodes: i.nodeTotal,
+  plans: i.profile.plans
+    .filter((p) => !p.custom && p.trafficGB > 0)
+    .map((p) => ({ n: p.name, t: p.type, m: MONTHS[p.type], p: p.price, g: p.trafficGB, per: p.trafficPer })),
+}));
+const json = JSON.stringify(data).replace(/</g, '\\u003c');
+---
+
+<section class="picker" aria-labelledby="picker-title">
+  <div class="wrap">
+    <div class="picker-head">
+      <p class="eyebrow">互动选机场</p>
+      <h2 id="picker-title">30 秒帮你挑一家机场</h2>
+      <p class="sub">回答 3 个问题，从本站主推的 {items.length} 家里，按官网价格算出最适合你的套餐。</p>
+    </div>
+
+    <div class="pk-card" id="pk" data-step="1">
+      <ol class="pk-steps" aria-hidden="true">
+        <li data-s="1"><span>1</span>用途</li>
+        <li data-s="2"><span>2</span>预算</li>
+        <li data-s="3"><span>3</span>付费方式</li>
+        <li data-s="4"><span>✓</span>结果</li>
+      </ol>
+
+      <fieldset class="pk-q" data-q="1">
+        <legend>你平时主要用来做什么？</legend>
+        <div class="pk-opts">
+          <button type="button" data-v="60"><b>查资料、刷社交</b><small>Google、Telegram、X，每月约 60GB 够用</small></button>
+          <button type="button" data-v="150"><b>看 YouTube、用 ChatGPT</b><small>高清视频加 AI 工具，每月约 150GB</small></button>
+          <button type="button" data-v="300"><b>天天追剧、看 Netflix</b><small>经常看 1080p / 4K，每月约 300GB</small></button>
+          <button type="button" data-v="600"><b>重度使用或多人共用</b><small>4K、下载、全家一起用，每月 600GB 以上</small></button>
+        </div>
+        <p class="pk-hint">不确定要多少流量？<a href="#calc">用下面的估算器算一算</a></p>
+      </fieldset>
+
+      <fieldset class="pk-q" data-q="2" hidden>
+        <legend>每个月愿意花多少钱？</legend>
+        <div class="pk-opts">
+          <button type="button" data-v="10"><b>10 元以内</b><small>能用就行，越便宜越好</small></button>
+          <button type="button" data-v="30"><b>10 到 30 元</b><small>大多数人的选择</small></button>
+          <button type="button" data-v="60"><b>30 到 60 元</b><small>想要流量多一点</small></button>
+          <button type="button" data-v="9999"><b>不太在乎价格</b><small>流量和稳定优先</small></button>
+        </div>
+        <button type="button" class="pk-back">← 上一步</button>
+      </fieldset>
+
+      <fieldset class="pk-q" data-q="3" hidden>
+        <legend>你想怎么付费？</legend>
+        <div class="pk-opts">
+          <button type="button" data-v="monthly"><b>先买一个月试试</b><small>第一次买机场，推荐这样</small></button>
+          <button type="button" data-v="long"><b>一次买久一点更省</b><small>季付、半年付或年付，折合更便宜</small></button>
+          <button type="button" data-v="onetime"><b>不想按月，买流量包</b><small>一次买断，用完为止，不过期</small></button>
+          <button type="button" data-v="any"><b>都可以，哪个划算选哪个</b><small>按折合每月价格挑</small></button>
+        </div>
+        <button type="button" class="pk-back">← 上一步</button>
+      </fieldset>
+
+      <div class="pk-result" hidden aria-live="polite">
+        <p class="pk-summary" id="pk-summary"></p>
+        <ol class="pk-list" id="pk-list"></ol>
+        <p class="pk-note" id="pk-note"></p>
+        <div class="pk-actions">
+          <button type="button" class="btn btn--ghost" id="pk-restart">重新选一次</button>
+          <a class="btn btn--ghost" href="/jichang-tuijian/">看完整推荐榜</a>
+        </div>
+        <p class="pk-fine">结果按各机场官网价格计算（价格以官网为准），只在本站主推机场里挑。官网链接为推广链接，注册价格不变。</p>
+      </div>
+    </div>
+
+    <div class="calc" id="calc">
+      <h3>每月要多少流量？估算一下</h3>
+      <p class="sub">拖动滑块，按你每天的使用时间估算。数值是常见用量的大致估计，实际会因清晰度和应用不同而变化。</p>
+      <div class="calc-grid">
+        <label>
+          <span>刷网页、社交、聊天<output data-o="web">1</output> 小时/天</span>
+          <input type="range" min="0" max="10" step="0.5" value="1" data-k="web" data-gb="0.1" />
+        </label>
+        <label>
+          <span>看 1080p 视频<output data-o="hd">1</output> 小时/天</span>
+          <input type="range" min="0" max="8" step="0.5" value="1" data-k="hd" data-gb="2" />
+        </label>
+        <label>
+          <span>看 4K 视频<output data-o="uhd">0</output> 小时/天</span>
+          <input type="range" min="0" max="6" step="0.5" value="0" data-k="uhd" data-gb="7" />
+        </label>
+        <label>
+          <span>使用人数<output data-o="ppl">1</output> 人</span>
+          <input type="range" min="1" max="5" step="1" value="1" data-k="ppl" />
+        </label>
+      </div>
+      <div class="calc-out">
+        <p>大约需要 <strong class="num" id="calc-gb">66</strong> GB / 月</p>
+        <button type="button" class="btn" id="calc-use">用这个流量去挑机场</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script type="application/json" id="pk-data" set:html={json} />
+
+<script>
+  type Plan = { n: string; t: string; m: number; p: number; g: number; per: string };
+  type Air = { id: string; rank: number; name: string; url: string; path: string; line: string; nodes: number | null; plans: Plan[] };
+
+  const el = document.getElementById('pk-data');
+  const airs: Air[] = el ? JSON.parse(el.textContent || '[]') : [];
+  const card = document.getElementById('pk') as HTMLElement | null;
+  const state: { need: number; budget: number; pay: string } = { need: 150, budget: 30, pay: 'any' };
+  const yuan = (n: number) => '¥' + Number(n.toFixed(2));
+  const gbText = (n: number) => (n >= 1000 ? Number((n / 1000).toFixed(2)) + 'TB' : n + 'GB');
+  const TYPE: Record<string, string> = { monthly: '月付', quarterly: '季付', semiannual: '半年付', yearly: '年付', onetime: '不限时流量包' };
+
+  function show(step: number) {
+    if (!card) return;
+    card.dataset.step = String(step);
+    card.querySelectorAll<HTMLElement>('.pk-q').forEach((q) => (q.hidden = q.dataset.q !== String(step)));
+    const res = card.querySelector<HTMLElement>('.pk-result');
+    if (res) res.hidden = step !== 4;
+    card.querySelectorAll<HTMLElement>('.pk-steps li').forEach((li) => {
+      const s = Number(li.dataset.s);
+      li.classList.toggle('on', s === step);
+      li.classList.toggle('done', s < step);
+    });
+  }
+
+  // 每个套餐折合「每月花费」：周期套餐 = 价格 / 月数；流量包 = 按每月用量折算能用多久
+  function monthlyCost(pl: Plan, need: number) {
+    if (pl.t === 'onetime') return (pl.p * need) / pl.g;
+    return pl.p / pl.m;
+  }
+  function fits(pl: Plan, need: number) {
+    if (pl.t === 'onetime') return true;
+    return pl.g >= need;
+  }
+  function payOk(pl: Plan, pay: string) {
+    if (pay === 'any') return pl.t !== 'onetime';
+    if (pay === 'monthly') return pl.t === 'monthly';
+    if (pay === 'long') return ['quarterly', 'semiannual', 'yearly'].includes(pl.t);
+    return pl.t === 'onetime';
+  }
+
+  function pick() {
+    const { need, budget, pay } = state;
+    const best: { a: Air; pl: Plan; cost: number }[] = [];
+    for (const a of airs) {
+      let top: { pl: Plan; cost: number } | null = null;
+      for (const pl of a.plans) {
+        if (!payOk(pl, pay) || !fits(pl, need)) continue;
+        const cost = monthlyCost(pl, need);
+        if (!top || cost < top.cost) top = { pl, cost };
+      }
+      if (top) best.push({ a, ...top });
+    }
+    best.sort((x, y) => x.cost - y.cost);
+    const within = best.filter((b) => b.cost <= budget);
+    const list = (within.length ? within : best).slice(0, 3);
+    return { list, overBudget: !within.length && best.length > 0 };
+  }
+
+  function render() {
+    const { list, overBudget } = pick();
+    const sum = document.getElementById('pk-summary');
+    const ul = document.getElementById('pk-list');
+    const note = document.getElementById('pk-note');
+    if (!sum || !ul || !note) return;
+    const payText: Record<string, string> = { monthly: '先买一个月', long: '买长周期', onetime: '买流量包', any: '哪个划算选哪个' };
+    sum.textContent =
+      '每月约 ' + gbText(state.need) + ' 流量 · ' + (state.budget > 1000 ? '预算不限' : '每月 ' + state.budget + ' 元以内') + ' · ' + payText[state.pay];
+    ul.innerHTML = '';
+    if (!list.length) {
+      note.textContent = '主推机场里没有完全符合的套餐，可以换一种付费方式，或者看完整推荐榜里的其他机场。';
+      return;
+    }
+    list.forEach((b, k) => {
+      const li = document.createElement('li');
+      li.className = 'pk-item';
+      const pl = b.pl;
+      const price =
+        pl.t === 'onetime'
+          ? yuan(pl.p) + ' 买 ' + gbText(pl.g) + '，按你的用量约可用 ' + Math.max(1, Math.round(pl.g / state.need)) + ' 个月'
+          : yuan(pl.p) + (pl.m === 1 ? '/月' : ' / ' + TYPE[pl.t] + '，折合 ' + yuan(b.cost) + '/月') + '，每月 ' + gbText(pl.g);
+      li.innerHTML =
+        '<span class="pk-medal">' + (k + 1) + '</span>' +
+        '<div class="pk-body"><p class="pk-name"><a></a><span class="pk-tag"></span></p>' +
+        '<p class="pk-plan"></p><p class="pk-meta"></p></div>' +
+        '<div class="pk-go"><a class="btn pk-off" rel="sponsored nofollow noopener" target="_blank">去官网</a><a class="pk-more">看资料</a></div>';
+      const name = li.querySelector('.pk-name a') as HTMLAnchorElement;
+      name.textContent = b.a.name;
+      name.href = b.a.path;
+      (li.querySelector('.pk-tag') as HTMLElement).textContent = '主推第 ' + b.a.rank + ' 名';
+      (li.querySelector('.pk-plan') as HTMLElement).textContent = '推荐「' + pl.n + '」：' + price;
+      (li.querySelector('.pk-meta') as HTMLElement).textContent = [b.a.line, b.a.nodes ? b.a.nodes + ' 个节点' : ''].filter(Boolean).join(' · ');
+      (li.querySelector('.pk-off') as HTMLAnchorElement).href = b.a.url;
+      const more = li.querySelector('.pk-more') as HTMLAnchorElement;
+      more.href = b.a.path;
+      ul.appendChild(li);
+    });
+    note.textContent = overBudget
+      ? '这个预算下没有流量够用的套餐，上面是最接近的选择；也可以把用途选低一档，或者选「买长周期」更便宜。'
+      : state.pay === 'monthly'
+        ? '先用一两周，晚高峰速度和常用网站都没问题，再买长周期更划算。'
+        : '';
+  }
+
+  if (card) {
+    card.querySelectorAll<HTMLElement>('.pk-q').forEach((q) => {
+      const step = Number(q.dataset.q);
+      q.querySelectorAll<HTMLButtonElement>('.pk-opts button').forEach((b) =>
+        b.addEventListener('click', () => {
+          const v = b.dataset.v || '';
+          if (step === 1) state.need = Number(v);
+          if (step === 2) state.budget = Number(v);
+          if (step === 3) state.pay = v;
+          q.querySelectorAll('.pk-opts button').forEach((x) => x.classList.toggle('sel', x === b));
+          if (step === 3) render();
+          show(step + 1);
+        }),
+      );
+      q.querySelector('.pk-back')?.addEventListener('click', () => show(step - 1));
+    });
+    document.getElementById('pk-restart')?.addEventListener('click', () => show(1));
+    show(1);
+  }
+
+  // 流量估算器
+  const inputs = document.querySelectorAll<HTMLInputElement>('.calc input[type=range]');
+  const out = document.getElementById('calc-gb');
+  let calcGB = 66;
+  function calc() {
+    const v: Record<string, number> = {};
+    inputs.forEach((i) => {
+      v[i.dataset.k || ''] = Number(i.value);
+      const o = document.querySelector('.calc output[data-o="' + i.dataset.k + '"]');
+      if (o) o.textContent = i.value;
+    });
+    const daily = v.web * 0.1 + v.hd * 2 + v.uhd * 7;
+    calcGB = Math.max(10, Math.ceil(daily * 30 * (v.ppl || 1)));
+    if (out) out.textContent = String(calcGB);
+  }
+  inputs.forEach((i) => i.addEventListener('input', calc));
+  calc();
+  document.getElementById('calc-use')?.addEventListener('click', () => {
+    state.need = calcGB;
+    card?.querySelectorAll('.pk-q[data-q="1"] .pk-opts button').forEach((x) => x.classList.remove('sel'));
+    show(2);
+    card?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+</script>
+
+<style>
+  .picker {
+    padding: 2.75rem 0 3rem;
+    background:
+      linear-gradient(180deg, rgba(255, 204, 0, 0.12), rgba(255, 204, 0, 0) 60%),
+      var(--bg);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .picker-head {
+    max-width: 44rem;
+  }
+
+  .eyebrow {
+    display: inline-block;
+    margin: 0 0 0.4rem;
+    padding: 0.1rem 0.6rem;
+    background: var(--slate);
+    color: var(--sign);
+    font-family: var(--font-sign);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    font-size: 0.9rem;
+    border-radius: 3px;
+  }
+
+  .picker h2 {
+    margin: 0 0 0.3rem;
+    font-size: clamp(var(--step-2), 3.5vw, var(--step-3));
+  }
+
+  .sub {
+    color: var(--ink-soft);
+    margin-bottom: 1.25rem;
+  }
+
+  .pk-card {
+    background: var(--surface);
+    border: 2px solid var(--ink);
+    border-radius: var(--radius-md);
+    padding: clamp(1rem, 3vw, 1.75rem);
+    box-shadow: 6px 6px 0 var(--sign);
+  }
+
+  .pk-steps {
+    display: flex;
+    gap: 0.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  .pk-steps li {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+
+  .pk-steps li + li::before {
+    content: '';
+    width: 1.25rem;
+    height: 2px;
+    background: var(--line);
+    margin-right: 0.15rem;
+  }
+
+  .pk-steps span {
+    display: inline-grid;
+    place-items: center;
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 50%;
+    border: 2px solid var(--line);
+    font-family: var(--font-sign);
+    font-weight: 700;
+  }
+
+  .pk-steps li.on {
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  .pk-steps li.on span {
+    background: var(--sign);
+    border-color: var(--ink);
+  }
+
+  .pk-steps li.done span {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: #fff;
+  }
+
+  .pk-q {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    min-width: 0;
+  }
+
+  .pk-q legend {
+    font-size: var(--step-1);
+    font-weight: 700;
+    margin-bottom: 0.9rem;
+    padding: 0;
+  }
+
+  .pk-opts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  @media (max-width: 640px) {
+    .pk-opts {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .pk-opts button {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    text-align: left;
+    padding: 0.9rem 1rem;
+    background: var(--bg);
+    border: 2px solid var(--line);
+    border-radius: var(--radius-sm);
+    font: inherit;
+    color: var(--ink);
+    cursor: pointer;
+    transition:
+      border-color 0.15s,
+      transform 0.15s,
+      background 0.15s;
+  }
+
+  .pk-opts button:hover {
+    border-color: var(--ink);
+    transform: translateY(-2px);
+  }
+
+  .pk-opts button.sel {
+    border-color: var(--ink);
+    background: #fff6cc;
+  }
+
+  .pk-opts b {
+    font-size: 1.0625rem;
+  }
+
+  .pk-opts small {
+    color: var(--muted);
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .pk-hint {
+    margin: 0.9rem 0 0;
+    font-size: 0.9375rem;
+    color: var(--muted);
+  }
+
+  .pk-back {
+    margin-top: 0.9rem;
+    background: none;
+    border: 0;
+    padding: 0;
+    color: var(--link);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .pk-summary {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    background: var(--slate);
+    color: #fff;
+    border-radius: 3px;
+    font-size: 0.9375rem;
+    margin-bottom: 1rem;
+  }
+
+  .pk-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  :global(.pk-item) {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 0.9rem;
+    align-items: center;
+    padding: 0.9rem 1rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--bg);
+    animation: pk-in 0.35s ease both;
+  }
+
+  :global(.pk-item:nth-child(2)) {
+    animation-delay: 0.08s;
+  }
+
+  :global(.pk-item:nth-child(3)) {
+    animation-delay: 0.16s;
+  }
+
+  :global(.pk-item:first-child) {
+    border: 2px solid var(--ink);
+    background: #fffbea;
+  }
+
+  @keyframes pk-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+
+  @media (max-width: 640px) {
+    :global(.pk-item) {
+      grid-template-columns: auto minmax(0, 1fr);
+    }
+    :global(.pk-go) {
+      grid-column: 1 / -1;
+    }
+  }
+
+  :global(.pk-medal) {
+    display: inline-grid;
+    place-items: center;
+    width: 2.2rem;
+    height: 2.2rem;
+    background: var(--sign);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-sign);
+    font-size: 1.3rem;
+    font-weight: 700;
+  }
+
+  :global(.pk-body p) {
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  :global(.pk-name) {
+    font-weight: 700;
+    font-size: 1.125rem;
+  }
+
+  :global(.pk-name a) {
+    color: var(--ink);
+  }
+
+  :global(.pk-tag) {
+    margin-left: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: var(--muted);
+  }
+
+  :global(.pk-plan) {
+    color: var(--ink-soft);
+  }
+
+  :global(.pk-meta) {
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+
+  :global(.pk-go) {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  :global(.pk-go .btn) {
+    padding: 0.45em 1em;
+  }
+
+  .pk-note {
+    margin: 0.9rem 0 0;
+    color: var(--ink-soft);
+  }
+
+  .pk-note:empty {
+    display: none;
+  }
+
+  .pk-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.1rem;
+  }
+
+  .pk-fine {
+    margin: 0.9rem 0 0;
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+
+  .calc {
+    margin-top: 1.75rem;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+  }
+
+  .calc h3 {
+    margin: 0 0 0.3rem;
+  }
+
+  .calc .sub {
+    font-size: 0.9375rem;
+    margin-bottom: 1rem;
+  }
+
+  .calc-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem 2rem;
+  }
+
+  @media (max-width: 640px) {
+    .calc-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .calc label span {
+    display: block;
+    font-size: 0.9375rem;
+  }
+
+  .calc output {
+    font-family: var(--font-sign);
+    font-weight: 700;
+    font-size: 1.15rem;
+    margin: 0 0.25rem 0 0.4rem;
+  }
+
+  .calc input[type='range'] {
+    width: 100%;
+    accent-color: var(--ink);
+  }
+
+  .calc-out {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--line);
+  }
+
+  .calc-out p {
+    margin: 0;
+    font-size: 1.0625rem;
+  }
+
+  .calc-out strong {
+    font-size: 2rem;
+    color: var(--ink);
+  }
+</style>
