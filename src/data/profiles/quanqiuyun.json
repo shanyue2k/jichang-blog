@@ -1,0 +1,162 @@
+{
+  "id": "quanqiuyun",
+  "collectedAt": "2026-11-04",
+  "source": "全球云官网套餐页，以及站长提供的节点列表",
+  "lineType": "BGP 智能调度 + 专线出口",
+  "devices": "不限制设备数量",
+  "rate": "节点倍率 x1",
+  "regions": [
+    "香港",
+    "台湾",
+    "新加坡",
+    "美国",
+    "日本"
+  ],
+  "nodeCount": "12 个",
+  "nodeNote": "香港 5 个，新加坡、美国、日本各 2 个，台湾 1 个；节点名称都标注为「初级」",
+  "lineNote": "套餐说明里写的是 Shadowsocks 协议，但节点列表里所有节点显示的都是 VLESS，本站以节点列表为准。",
+  "protocols": [
+    "VLESS"
+  ],
+  "claims": [
+    "BGP 多线路智能调度 + 专线级出口，全程不限速",
+    "节点流量统一 1x 计费",
+    "Netflix、Hulu、HBO、Disney+、DAZN 等流媒体解锁，支持 4K / 8K",
+    "支持 ChatGPT、Claude 等 AI 应用",
+    "不限制同时在线设备数量"
+  ],
+  "unlock": [
+    "Netflix",
+    "Disney+",
+    "ChatGPT",
+    "Claude"
+  ],
+  "plans": [
+    {
+      "name": "轻量版",
+      "type": "yearly",
+      "price": 99,
+      "trafficGB": 59,
+      "trafficPer": "month",
+      "note": "适合小流量 / 新手用户"
+    },
+    {
+      "name": "BGP 智能优化·入门方案",
+      "type": "monthly",
+      "price": 20,
+      "trafficGB": 120,
+      "trafficPer": "month"
+    },
+    {
+      "name": "BGP 智能优化·进阶方案",
+      "type": "monthly",
+      "price": 40,
+      "trafficGB": 300,
+      "trafficPer": "month"
+    },
+    {
+      "name": "BGP 智能优化·高端方案",
+      "type": "monthly",
+      "price": 100,
+      "trafficGB": 700,
+      "trafficPer": "month"
+    },
+    {
+      "name": "BGP 智能优化·商业方案",
+      "type": "monthly",
+      "price": 180,
+      "trafficGB": 1500,
+      "trafficPer": "month"
+    },
+    {
+      "name": "BGP 智能优化·入门方案",
+      "type": "quarterly",
+      "price": 54,
+      "trafficGB": 120,
+      "trafficPer": "month"
+    },
+    {
+      "name": "BGP 智能优化·进阶方案",
+      "type": "quarterly",
+      "price": 108,
+      "trafficGB": 300,
+      "trafficPer": "month"
+    },
+    {
+      "name": "BGP 智能优化·高端方案",
+      "type": "quarterly",
+      "price": 270,
+      "trafficGB": 700,
+      "trafficPer": "month"
+    },
+    {
+      "name": "BGP 智能优化·商业方案",
+      "type": "quarterly",
+      "price": 486,
+      "trafficGB": 1500,
+      "trafficPer": "month"
+    },
+    {
+      "name": "BGP 智能优化·入门方案",
+      "type": "semiannual",
+      "price": 102,
+      "trafficGB": 120,
+      "trafficPer": "month"
+    },
+    {
+      "name": "BGP 智能优化·进阶方案",
+      "type": "semiannual",
+      "price": 204,
+      "trafficGB": 300,
+      "trafficPer": "month"
+    },
+    {
+      "name": "BGP 智能优化·高端方案",
+      "type": "semiannual",
+      "price": 510,
+      "trafficGB": 700,
+      "trafficPer": "month"
+    },
+    {
+      "name": "BGP 智能优化·商业方案",
+      "type": "semiannual",
+      "price": 918,
+      "trafficGB": 1500,
+      "trafficPer": "month"
+    },
+    {
+      "name": "BGP 智能优化·不限时轻量包",
+      "type": "onetime",
+      "price": 100,
+      "trafficGB": 100,
+      "trafficPer": "total",
+      "note": "一次性流量包，不限使用时间"
+    },
+    {
+      "name": "BGP 智能优化·不限时标准包",
+      "type": "onetime",
+      "price": 360,
+      "trafficGB": 400,
+      "trafficPer": "total",
+      "note": "一次性流量包，不限使用时间"
+    },
+    {
+      "name": "BGP 智能优化·不限时大容量包",
+      "type": "onetime",
+      "price": 700,
+      "trafficGB": 800,
+      "trafficPer": "total",
+      "note": "一次性流量包，不限使用时间"
+    },
+    {
+      "name": "独享私人专线节点",
+      "type": "monthly",
+      "custom": true,
+      "price": 680,
+      "trafficGB": 500,
+      "trafficPer": "month",
+      "note": "独立专属节点，面向跨境电商、TikTok 直播等；需要联系客服定制"
+    }
+  ],
+  "pending": []
+}
