@@ -1,0 +1,144 @@
+{
+  "id": "jilianyun",
+  "collectedAt": "2026-11-04",
+  "source": "极连云官网套餐页，以及站长提供的节点列表与协议信息",
+  "lineType": "全 IPLC 专线",
+  "devices": "不限制同时使用客户端数量",
+  "rate": "所有节点 x1 倍率，晚高峰不限速",
+  "refund": "官网每个套餐都标注「不接受退款服务」，购买前请确认",
+  "regions": [
+    "香港",
+    "新加坡",
+    "日本",
+    "美国",
+    "台湾",
+    "德国",
+    "马来西亚",
+    "英国",
+    "泰国",
+    "西班牙",
+    "韩国"
+  ],
+  "nodeCount": "67 个",
+  "nodeNote": "香港 17 个，新加坡 10 个，日本 13 个（含 4 个直连），美国 12 个（含 4 个直连），台湾 5 个，德国 4 个（直连），马来西亚 2 个，英国、泰国、西班牙、韩国各 1 个",
+  "protocols": [
+    "VLESS"
+  ],
+  "claims": [
+    "全 IPLC 专线，最大提供 2.5Gbps 速率",
+    "所有节点 x1 倍率，晚高峰不限速",
+    "原生 IP，解锁各大流媒体",
+    "解锁 ChatGPT、TikTok",
+    "不限制同时使用客户端数量",
+    "季付以上从购买日起每 30 天自动更新流量"
+  ],
+  "unlock": [
+    "流媒体",
+    "ChatGPT",
+    "TikTok"
+  ],
+  "plans": [
+    {
+      "name": "限时年付套餐体验",
+      "type": "yearly",
+      "price": 96,
+      "trafficGB": 60,
+      "trafficPer": "month",
+      "note": "官网标注不接受退款，请谨慎下单"
+    },
+    {
+      "name": "极连云·基础套餐",
+      "type": "monthly",
+      "price": 18,
+      "trafficGB": 100,
+      "trafficPer": "month"
+    },
+    {
+      "name": "极连云·进阶套餐",
+      "type": "monthly",
+      "price": 32,
+      "trafficGB": 200,
+      "trafficPer": "month"
+    },
+    {
+      "name": "极连云·旗舰套餐",
+      "type": "monthly",
+      "price": 61,
+      "trafficGB": 500,
+      "trafficPer": "month"
+    },
+    {
+      "name": "极连云·尊享套餐",
+      "type": "monthly",
+      "price": 122,
+      "trafficGB": 1000,
+      "trafficPer": "month"
+    },
+    {
+      "name": "极连云·基础套餐",
+      "type": "quarterly",
+      "price": 51.3,
+      "trafficGB": 100,
+      "trafficPer": "month"
+    },
+    {
+      "name": "极连云·进阶套餐",
+      "type": "quarterly",
+      "price": 102,
+      "trafficGB": 200,
+      "trafficPer": "month"
+    },
+    {
+      "name": "极连云·旗舰套餐",
+      "type": "quarterly",
+      "price": 183,
+      "trafficGB": 500,
+      "trafficPer": "month"
+    },
+    {
+      "name": "极连云·尊享套餐",
+      "type": "quarterly",
+      "price": 410.4,
+      "trafficGB": 1000,
+      "trafficPer": "month"
+    },
+    {
+      "name": "极连云·基础套餐",
+      "type": "semiannual",
+      "price": 97.2,
+      "trafficGB": 100,
+      "trafficPer": "month"
+    },
+    {
+      "name": "极连云·进阶套餐",
+      "type": "semiannual",
+      "price": 194,
+      "trafficGB": 200,
+      "trafficPer": "month"
+    },
+    {
+      "name": "极连云·旗舰套餐",
+      "type": "semiannual",
+      "price": 366,
+      "trafficGB": 500,
+      "trafficPer": "month"
+    },
+    {
+      "name": "极连云·尊享套餐",
+      "type": "semiannual",
+      "price": 777.6,
+      "trafficGB": 1000,
+      "trafficPer": "month"
+    },
+    {
+      "name": "极连云·不限时套餐",
+      "type": "onetime",
+      "price": 399,
+      "trafficGB": 600,
+      "trafficPer": "total",
+      "note": "一次性永久流量包，不按周期刷新；手动重置按原价 9 折；不参与长期付折扣"
+    }
+  ],
+  "discounts": "长期购买有折扣：1 年付 8 折、2 年付 7 折、3 年付 6 折",
+  "pending": []
+}
