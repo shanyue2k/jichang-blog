@@ -80,12 +80,38 @@
       "trafficGB": 500,
       "trafficPer": "month",
       "note": "专属定制节点、独享原生 IP，面向跨境电商、TikTok 直播、企业办公；价格按配置调整，需咨询客服"
+    },
+    {
+      "name": "飞猫·星耀版",
+      "type": "semiannual",
+      "price": 127,
+      "trafficGB": 150,
+      "trafficPer": "month"
+    },
+    {
+      "name": "飞猫·星环版",
+      "type": "semiannual",
+      "price": 229,
+      "trafficGB": 300,
+      "trafficPer": "month"
+    },
+    {
+      "name": "飞猫·银河版",
+      "type": "semiannual",
+      "price": 433,
+      "trafficGB": 600,
+      "trafficPer": "month"
+    },
+    {
+      "name": "飞猫·宇宙版",
+      "type": "semiannual",
+      "price": 750,
+      "trafficGB": 1000,
+      "trafficPer": "month"
     }
   ],
   "discounts": "月付套餐长期购买有折扣：年付 8 折、两年付 7 折、三年付 6 折（不适用于不限时套餐）",
-  "pending": [
-    "半年付价格（官网有半年付）"
-  ],
+  "pending": [],
   "protocols": [
     "VLESS"
   ],

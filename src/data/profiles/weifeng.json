@@ -64,11 +64,30 @@
       "trafficGB": 570,
       "trafficPer": "total",
       "note": "永不过期，用完为止"
+    },
+    {
+      "name": "乘风 Riding",
+      "type": "semiannual",
+      "price": 127,
+      "trafficGB": 200,
+      "trafficPer": "month"
+    },
+    {
+      "name": "破风 Breaking",
+      "type": "semiannual",
+      "price": 280,
+      "trafficGB": 500,
+      "trafficPer": "month"
+    },
+    {
+      "name": "御风 Mastery",
+      "type": "semiannual",
+      "price": 637,
+      "trafficGB": 1200,
+      "trafficPer": "month"
     }
   ],
-  "pending": [
-    "半年付价格（官网有半年付）"
-  ],
+  "pending": [],
   "regions": [
     "香港",
     "台湾",

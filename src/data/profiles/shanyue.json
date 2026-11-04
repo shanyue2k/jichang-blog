@@ -78,12 +78,38 @@
       "trafficGB": 200,
       "trafficPer": "total",
       "note": "一次性购买，长期有效不过期"
+    },
+    {
+      "name": "闪动 Flicker",
+      "type": "semiannual",
+      "price": 122,
+      "trafficGB": 150,
+      "trafficPer": "month"
+    },
+    {
+      "name": "飞跃 Leap",
+      "type": "semiannual",
+      "price": 224,
+      "trafficGB": 300,
+      "trafficPer": "month"
+    },
+    {
+      "name": "瞬移 Teleport",
+      "type": "semiannual",
+      "price": 428,
+      "trafficGB": 600,
+      "trafficPer": "month"
+    },
+    {
+      "name": "跃迁 Warp",
+      "type": "semiannual",
+      "price": 698,
+      "trafficGB": 1000,
+      "trafficPer": "month"
     }
   ],
   "discounts": "月付套餐长期购买有折扣：1 年付 8 折、2 年付 7 折、3 年付 6 折",
-  "pending": [
-    "半年付价格（官网有半年付）"
-  ],
+  "pending": [],
   "regions": [
     "香港",
     "台湾",

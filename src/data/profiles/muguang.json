@@ -106,9 +106,35 @@
       "trafficGB": 500,
       "trafficPer": "month",
       "note": "独立带宽和独立公网 IP，适用于独立站、TikTok 直播等定制需求；下单后约 2–3 个工作日交付，定制需求通过工单咨询"
+    },
+    {
+      "name": "暮光·基础版",
+      "type": "semiannual",
+      "price": 103,
+      "trafficGB": 120,
+      "trafficPer": "month"
+    },
+    {
+      "name": "暮光·标准版",
+      "type": "semiannual",
+      "price": 216,
+      "trafficGB": 240,
+      "trafficPer": "month"
+    },
+    {
+      "name": "暮光·旗舰版",
+      "type": "semiannual",
+      "price": 540,
+      "trafficGB": 700,
+      "trafficPer": "month"
+    },
+    {
+      "name": "暮光·至尊版",
+      "type": "semiannual",
+      "price": 972,
+      "trafficGB": 1500,
+      "trafficPer": "month"
     }
   ],
-  "pending": [
-    "半年付价格（官网有半年付）"
-  ]
+  "pending": []
 }

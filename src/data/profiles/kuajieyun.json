@@ -84,12 +84,38 @@
       "trafficGB": 300,
       "trafficPer": "total",
       "note": "长期有效、不按周期刷新；需要重置流量可手动重置，费用为原价 9 折（¥180）"
+    },
+    {
+      "name": "轻云 Lite",
+      "type": "semiannual",
+      "price": 102,
+      "trafficGB": 120,
+      "trafficPer": "month"
+    },
+    {
+      "name": "跃云 Leap",
+      "type": "semiannual",
+      "price": 204,
+      "trafficGB": 330,
+      "trafficPer": "month"
+    },
+    {
+      "name": "凌云 Soar",
+      "type": "semiannual",
+      "price": 459,
+      "trafficGB": 830,
+      "trafficPer": "month"
+    },
+    {
+      "name": "无界 Infinity",
+      "type": "semiannual",
+      "price": 663,
+      "trafficGB": 1800,
+      "trafficPer": "month"
     }
   ],
   "discounts": "月付套餐长期购买有折扣：年付 8 折、两年 7 折、三年 6 折，可与优惠码叠加",
-  "pending": [
-    "半年付价格（官网有半年付）"
-  ],
+  "pending": [],
   "regions": [
     "香港",
     "台湾",
