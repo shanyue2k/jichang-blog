@@ -6,10 +6,18 @@
   "lineNote": "月付和不限时套餐的说明写的是“BGP 多线路智能调度 + 专线级出口”，只有年付轻量版写的是“全 IPLC 专线”；套餐说明里提到 Shadowsocks 协议，但后台节点列表显示全部节点均为 VLESS，以后台为准",
   "devices": "不限制",
   "rate": "所有节点 x1 倍率",
-  "regions": ["香港", "台湾", "日本", "新加坡", "美国"],
+  "regions": [
+    "香港",
+    "台湾",
+    "日本",
+    "新加坡",
+    "美国"
+  ],
   "nodeCount": "60 个（后台节点列表统计）",
   "nodeNote": "香港 20 个，台湾、日本、新加坡、美国各 10 个",
-  "protocols": ["VLESS"],
+  "protocols": [
+    "VLESS"
+  ],
   "claims": [
     "BGP 多线路智能调度 + 专线级出口，全程不限速",
     "所有节点 x1 倍率，流量不放大",
@@ -19,17 +27,88 @@
     "年付轻量版：全 IPLC 专线，单节点峰值最高 2.5Gbps，从购买日起每 30 天刷新流量",
     "不限时流量包永久有效，用完为止"
   ],
-  "unlock": ["Netflix", "Disney+", "ChatGPT", "Claude"],
-  "plans": [
-    { "name": "暮光·年付轻量版", "type": "yearly", "price": 109, "trafficGB": 70, "trafficPer": "month", "note": "适合小流量、新手用户；每 30 天自动刷新流量" },
-    { "name": "暮光·基础版", "type": "monthly", "price": 20, "trafficGB": 120, "trafficPer": "month", "note": "适合日常网页、社交、短视频与轻度流媒体" },
-    { "name": "暮光·标准版", "type": "monthly", "price": 40, "trafficGB": 240, "trafficPer": "month", "note": "适合日常办公与中等频率的视频、流媒体" },
-    { "name": "暮光·旗舰版", "type": "monthly", "price": 100, "trafficGB": 700, "trafficPer": "month", "note": "适合高频使用、流媒体、下载、远程办公" },
-    { "name": "暮光·至尊版", "type": "monthly", "price": 180, "trafficGB": 1500, "trafficPer": "month", "note": "适合团队使用、长时间在线" },
-    { "name": "暮光·不限时轻量包", "type": "onetime", "price": 219, "trafficGB": 150, "trafficPer": "total", "note": "永久有效，用完为止" },
-    { "name": "暮光·不限时标准包", "type": "onetime", "price": 529, "trafficGB": 400, "trafficPer": "total", "note": "永久有效，用完为止" },
-    { "name": "暮光·不限时大容量包", "type": "onetime", "price": 959, "trafficGB": 800, "trafficPer": "total", "note": "永久有效，用完为止" },
-    { "name": "独享私人定制节点", "type": "monthly", "custom": true, "price": 680, "trafficGB": 500, "trafficPer": "month", "note": "独立带宽和独立公网 IP，适用于独立站、TikTok 直播等定制需求；下单后约 2–3 个工作日交付，定制需求通过工单咨询" }
+  "unlock": [
+    "Netflix",
+    "Disney+",
+    "ChatGPT",
+    "Claude"
   ],
-  "pending": []
+  "plans": [
+    {
+      "name": "暮光·年付轻量版",
+      "type": "yearly",
+      "price": 109,
+      "trafficGB": 70,
+      "trafficPer": "month",
+      "note": "适合小流量、新手用户；每 30 天自动刷新流量"
+    },
+    {
+      "name": "暮光·基础版",
+      "type": "monthly",
+      "price": 20,
+      "trafficGB": 120,
+      "trafficPer": "month",
+      "note": "适合日常网页、社交、短视频与轻度流媒体"
+    },
+    {
+      "name": "暮光·标准版",
+      "type": "monthly",
+      "price": 40,
+      "trafficGB": 240,
+      "trafficPer": "month",
+      "note": "适合日常办公与中等频率的视频、流媒体"
+    },
+    {
+      "name": "暮光·旗舰版",
+      "type": "monthly",
+      "price": 100,
+      "trafficGB": 700,
+      "trafficPer": "month",
+      "note": "适合高频使用、流媒体、下载、远程办公"
+    },
+    {
+      "name": "暮光·至尊版",
+      "type": "monthly",
+      "price": 180,
+      "trafficGB": 1500,
+      "trafficPer": "month",
+      "note": "适合团队使用、长时间在线"
+    },
+    {
+      "name": "暮光·不限时轻量包",
+      "type": "onetime",
+      "price": 219,
+      "trafficGB": 150,
+      "trafficPer": "total",
+      "note": "永久有效，用完为止"
+    },
+    {
+      "name": "暮光·不限时标准包",
+      "type": "onetime",
+      "price": 529,
+      "trafficGB": 400,
+      "trafficPer": "total",
+      "note": "永久有效，用完为止"
+    },
+    {
+      "name": "暮光·不限时大容量包",
+      "type": "onetime",
+      "price": 959,
+      "trafficGB": 800,
+      "trafficPer": "total",
+      "note": "永久有效，用完为止"
+    },
+    {
+      "name": "独享私人定制节点",
+      "type": "monthly",
+      "custom": true,
+      "price": 680,
+      "trafficGB": 500,
+      "trafficPer": "month",
+      "note": "独立带宽和独立公网 IP，适用于独立站、TikTok 直播等定制需求；下单后约 2–3 个工作日交付，定制需求通过工单咨询"
+    }
+  ],
+  "pending": [
+    "半年付价格（官网有半年付）"
+  ]
 }
