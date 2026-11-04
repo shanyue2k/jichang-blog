@@ -1,0 +1,150 @@
+{
+  "id": "guangsuyun",
+  "collectedAt": "2026-11-04",
+  "source": "光速云官网套餐页，以及站长提供的节点列表",
+  "lineType": "IEPL / IPLC 专线",
+  "lineNote": "月付系列（极速版、流光版、量子版、无界版）标注全 IEPL 专线，轻量版和 147 永久套餐标注全 IPLC 专线；单节点峰值标注 2.5Gbps。官网节点说明里提到的英国、法国、土耳其、泰国、巴西等地区，本站整理时节点列表里没有看到。",
+  "devices": "不限制同时在线设备数量",
+  "rate": "全节点 x1 倍率，晚高峰不降速",
+  "regions": [
+    "香港",
+    "新加坡",
+    "日本",
+    "美国",
+    "台湾",
+    "马来西亚",
+    "德国"
+  ],
+  "nodeCount": "60 个",
+  "nodeNote": "香港 19 个，新加坡、日本、美国各 10 个，台湾 5 个，马来西亚 2 个，德国 4 个（直连）",
+  "protocols": [
+    "VLESS"
+  ],
+  "claims": [
+    "全节点 x1 倍率，晚高峰不降速",
+    "月付系列全 IEPL 专线，单节点峰值 2.5Gbps",
+    "原生 IP，支持 Netflix、Disney+、ChatGPT、TikTok",
+    "多设备不限量同时在线（电脑、手机、路由器）",
+    "智能路由自动择优，7×24 运维支持",
+    "超过 500 元的订单一次性支付不成功时，需要联系人工客服处理"
+  ],
+  "unlock": [
+    "Netflix",
+    "Disney+",
+    "ChatGPT",
+    "TikTok"
+  ],
+  "plans": [
+    {
+      "name": "光速云·轻量版",
+      "type": "yearly",
+      "price": 99,
+      "trafficGB": 69,
+      "trafficPer": "month",
+      "note": "购买日起每 30 天刷新流量；特殊套餐不支持优惠打折"
+    },
+    {
+      "name": "光速云·极速版",
+      "type": "monthly",
+      "price": 25,
+      "trafficGB": 168,
+      "trafficPer": "month"
+    },
+    {
+      "name": "光速云·流光版",
+      "type": "monthly",
+      "price": 34,
+      "trafficGB": 268,
+      "trafficPer": "month"
+    },
+    {
+      "name": "光速云·量子版",
+      "type": "monthly",
+      "price": 68,
+      "trafficGB": 568,
+      "trafficPer": "month"
+    },
+    {
+      "name": "光速云·无界版",
+      "type": "monthly",
+      "price": 138,
+      "trafficGB": 938,
+      "trafficPer": "month"
+    },
+    {
+      "name": "光速云·极速版",
+      "type": "quarterly",
+      "price": 74,
+      "trafficGB": 168,
+      "trafficPer": "month"
+    },
+    {
+      "name": "光速云·流光版",
+      "type": "quarterly",
+      "price": 96,
+      "trafficGB": 268,
+      "trafficPer": "month"
+    },
+    {
+      "name": "光速云·量子版",
+      "type": "quarterly",
+      "price": 198,
+      "trafficGB": 568,
+      "trafficPer": "month"
+    },
+    {
+      "name": "光速云·无界版",
+      "type": "quarterly",
+      "price": 398,
+      "trafficGB": 938,
+      "trafficPer": "month"
+    },
+    {
+      "name": "光速云·极速版",
+      "type": "semiannual",
+      "price": 94,
+      "trafficGB": 168,
+      "trafficPer": "month"
+    },
+    {
+      "name": "光速云·流光版",
+      "type": "semiannual",
+      "price": 147,
+      "trafficGB": 268,
+      "trafficPer": "month"
+    },
+    {
+      "name": "光速云·量子版",
+      "type": "semiannual",
+      "price": 375,
+      "trafficGB": 568,
+      "trafficPer": "month"
+    },
+    {
+      "name": "光速云·无界版",
+      "type": "semiannual",
+      "price": 567,
+      "trafficGB": 938,
+      "trafficPer": "month"
+    },
+    {
+      "name": "致敬斯诺克147永久套餐",
+      "type": "onetime",
+      "price": 147,
+      "trafficGB": 247,
+      "trafficPer": "total",
+      "note": "一次性永久流量包，不按周期刷新，不参与长期付折扣；特殊套餐不支持优惠打折"
+    },
+    {
+      "name": "光速云·定制套餐",
+      "type": "monthly",
+      "custom": true,
+      "price": 680,
+      "trafficGB": 500,
+      "trafficPer": "month",
+      "note": "美国原生家宽静态 IP，面向跨境电商、TikTok 直播、社媒运营等；流量、带宽、线路与地区（香港 / 日本 / 美国 / 新加坡等）可灵活配置，价格随配置调整"
+    }
+  ],
+  "discounts": "月付套餐长期购买有折扣：年付 8 折、两年付 7 折、三年付 6 折（轻量版和 147 永久套餐不参与）",
+  "pending": []
+}
