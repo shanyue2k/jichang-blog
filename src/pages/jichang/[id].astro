@@ -50,6 +50,8 @@ const gbRange = (list: Plan[], digits = 2) => {
   return lo === hi ? lo : `${lo}–${hi}`;
 };
 
+const nearRegions = (pr.regions ?? []).filter((r) => ['香港', '台湾', '日本', '新加坡', '韩国'].includes(r));
+const hasHK = (pr.regions ?? []).includes('香港');
 const title = `${name}机场怎么样？套餐价格、线路与优惠码整理（${year}）`;
 const description = `${name}机场资料整理：${cheapest ? `套餐最低折合 ${yuan(cheapest.value)}/月，` : ''}${pr.lineType ? `官方标注${pr.lineType}，` : ''}设备数${pr.devices ?? '以官网为准'}。附全部套餐价格、每 GB 单价对比和选购建议。`;
 
@@ -264,7 +266,12 @@ const jsonLd = [breadcrumbSchema(crumbs), faqSchema(faq)];
                 </p>
               )}
               <p>
-                香港、台湾、日本、新加坡离国内近，适合日常使用；需要用 ChatGPT 时注意不要选香港节点，原因见 <a href="/jiaocheng/chatgpt-da-bu-kai/">ChatGPT 打不开怎么办</a>。
+                {nearRegions.length > 0 && `${nearRegions.join('、')}离国内近，适合日常使用。`}
+                {hasHK && (
+                  <>
+                    需要用 ChatGPT 时注意不要选香港节点，原因见 <a href="/jiaocheng/chatgpt-da-bu-kai/">ChatGPT 打不开怎么办</a>。
+                  </>
+                )}
               </p>
             </>
           )
