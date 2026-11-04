@@ -332,6 +332,12 @@ p {
   background: #ffd83d;
 }
 
+button.btn {
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
 .btn--ghost {
   background: transparent;
   color: var(--ink);
