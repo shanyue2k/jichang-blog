@@ -43,9 +43,11 @@ const groups = (['monthly', 'quarterly', 'yearly', 'onetime'] as Plan['type'][])
   .filter((g) => g.plans.length);
 const onetime = standard.filter((p) => p.type === 'onetime');
 const periodic = standard.filter((p) => p.type !== 'onetime');
-const gbRange = (list: Plan[]) => {
+const gbRange = (list: Plan[], digits = 2) => {
   const v = list.map(perGB);
-  return [Math.min(...v), Math.max(...v)];
+  const lo = yuan(Math.min(...v), digits);
+  const hi = yuan(Math.max(...v), digits);
+  return lo === hi ? lo : `${lo}–${hi}`;
 };
 
 const title = `${name}机场怎么样？套餐价格、线路与优惠码整理（${year}）`;
@@ -334,7 +336,7 @@ const jsonLd = [breadcrumbSchema(crumbs), faqSchema(faq)];
           )}
           {onetime.length > 0 && periodic.length > 0 && (
             <li>
-              <strong>用量不固定、偶尔才用：</strong>可以考虑不限时套餐，流量用多少扣多少、不过期。代价是单价更高：不限时套餐每 GB 约 {yuan(gbRange(onetime)[0])}–{yuan(gbRange(onetime)[1])}，周期套餐只要约 {yuan(gbRange(periodic)[0], 3)}–{yuan(gbRange(periodic)[1], 3)}。
+              <strong>用量不固定、偶尔才用：</strong>可以考虑不限时套餐，流量用多少扣多少、不过期。代价是单价更高：不限时套餐每 GB 约 {gbRange(onetime)}，周期套餐只要约 {gbRange(periodic, 3)}。
             </li>
           )}
           <li>
