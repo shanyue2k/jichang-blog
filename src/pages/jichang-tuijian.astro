@@ -133,7 +133,7 @@ const jsonLd = [breadcrumbSchema(crumbs), itemList, faqSchema(faq)];
                 {p.protocols && <li>{p.protocols.join(' / ')}</li>}
                 {p.devices && <li>{p.devices}</li>}
               </ul>
-              {p.regions && p.regions.length > 0 && (
+              {!!p.regions?.length && (
                 <p>
                   <strong>节点地区：</strong>
                   {p.nodeNote ?? p.regions.join('、')}
@@ -167,7 +167,7 @@ const jsonLd = [breadcrumbSchema(crumbs), itemList, faqSchema(faq)];
       }
 
       {
-        others.length > 0 && (
+        !!others.length && (
           <section class="more" aria-labelledby="more-title">
             <h2 id="more-title">其他机场（{others.length} 家）</h2>
             <p>下面这些机场也整理了完整资料，按本站推荐顺序排列，点名字可以看全部套餐。</p>
@@ -184,7 +184,7 @@ const jsonLd = [breadcrumbSchema(crumbs), itemList, faqSchema(faq)];
         <ol>
           {cheapestLow.map((i) => (
             <li>
-              <a href={i.path}>{i.aff.name}</a>：{i.lowestPlanName}，折合约 <span class="num">{yuan(i.lowest!)}</span>/月
+              <a href={i.path}>{i.aff.name}</a>：{i.lowestPlanName}，折合约 <span class="num">{yuan(i.lowest ?? 0)}</span>/月
             </li>
           ))}
         </ol>
@@ -193,7 +193,7 @@ const jsonLd = [breadcrumbSchema(crumbs), itemList, faqSchema(faq)];
         <ol>
           {cheapestMonthly.map((i) => (
             <li>
-              <a href={i.path}>{i.aff.name}</a>：<span class="num">{yuan(i.monthlyFrom!)}</span>/月{i.monthlyFromGB ? `，每月 ${gb(i.monthlyFromGB)}` : ''}
+              <a href={i.path}>{i.aff.name}</a>：<span class="num">{yuan(i.monthlyFrom ?? 0)}</span>/月{i.monthlyFromGB ? `，每月 ${gb(i.monthlyFromGB)}` : ''}
             </li>
           ))}
         </ol>
@@ -202,7 +202,7 @@ const jsonLd = [breadcrumbSchema(crumbs), itemList, faqSchema(faq)];
         <ol>
           {bestGB.map((i) => (
             <li>
-              <a href={i.path}>{i.aff.name}</a>：最低约 <span class="num">{yuan(i.bestPerGB!, 3)}</span>/GB
+              <a href={i.path}>{i.aff.name}</a>：最低约 <span class="num">{yuan(i.bestPerGB ?? 0, 3)}</span>/GB
             </li>
           ))}
         </ol>
@@ -216,29 +216,21 @@ const jsonLd = [breadcrumbSchema(crumbs), itemList, faqSchema(faq)];
           ))}
         </ol>
 
-        {onetime.length > 0 && (
-          <>
-            <h3>用量不固定，想买不限时流量包</h3>
+        {!!onetime.length && <h3>用量不固定，想买不限时流量包</h3>}
+        {!!onetime.length && (
             <p>
               这些机场有一次性购买、不按月清零的流量包：
               {onetime.map((i, k) => (
-                <>
-                  {k > 0 && '、'}
-                  <a href={i.path}>{i.aff.name}</a>
-                </>
+                <span>{k ? '、' : ''}<a href={i.path}>{i.aff.name}</a></span>
               ))}
               。
             </p>
-          </>
         )}
 
         <h3>标注 IPLC / IEPL 专线的机场</h3>
         <p>
           {iplc.map((i, k) => (
-            <>
-              {k > 0 && '、'}
-              <a href={i.path}>{i.aff.name}</a>
-            </>
+            <span>{k ? '、' : ''}<a href={i.path}>{i.aff.name}</a></span>
           ))}
           。专线是各家官网的标注，不同套餐的线路可能不一样，以资料页为准。
         </p>

@@ -31,7 +31,7 @@ const { items, compact = false, caption } = Astro.props;
         items.map((i) => (
           <tr>
             <td class="num rk">
-              <span class={i.rank <= 3 ? 'medal' : ''}>{i.rank}</span>
+              <span class={[1, 2, 3].includes(i.rank) ? 'medal' : ''}>{i.rank}</span>
             </td>
             <th scope="row" class="nm">
               <a href={i.path}>{i.aff.name}</a>
