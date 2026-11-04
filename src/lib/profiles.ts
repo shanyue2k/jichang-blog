@@ -18,6 +18,8 @@ export type Profile = {
   collectedAt: string;
   source: string;
   lineType?: string;
+  /** 节点列表里看到的实际线路情况，和官网说法不一致时写在这里 */
+  lineNote?: string;
   devices?: string;
   rate?: string;
   claims: string[];

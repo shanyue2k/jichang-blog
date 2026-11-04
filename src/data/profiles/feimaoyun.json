@@ -1,11 +1,27 @@
 {
   "id": "feimaoyun",
   "collectedAt": "2026-11-04",
-  "source": "飞猫云官网套餐页（站长提供截图）",
-  "lineType": "全 IPLC 专线",
+  "source": "飞猫云官网套餐页与后台节点列表（站长提供截图）",
+  "lineType": "官网标注全 IPLC 专线",
   "devices": "不限制",
   "rate": "所有节点 x1 倍率",
-  "regions": ["香港", "台湾", "日本", "新加坡", "美国", "韩国", "马来西亚", "越南", "菲律宾", "泰国", "印度", "英国", "法国", "德国", "阿根廷"],
+  "regions": [
+    "香港",
+    "台湾",
+    "日本",
+    "新加坡",
+    "美国",
+    "韩国",
+    "马来西亚",
+    "越南",
+    "菲律宾",
+    "泰国",
+    "印度",
+    "英国",
+    "法国",
+    "德国",
+    "阿根廷"
+  ],
   "nodeCount": "约 80 个（官网标注）",
   "nodeNote": "官网标注香港 20 个，台湾、日本、新加坡、美国各 10 个，韩国 2 到 3 个，其余地区各 1 到 2 个",
   "claims": [
@@ -16,16 +32,75 @@
     "智能流量分配与路由优化",
     "季付及以上用户，从购买日起每 30 天自动刷新流量"
   ],
-  "unlock": ["Netflix", "Disney+", "ChatGPT", "TikTok"],
+  "unlock": [
+    "Netflix",
+    "Disney+",
+    "ChatGPT",
+    "TikTok"
+  ],
   "plans": [
-    { "name": "飞猫·学生版", "type": "yearly", "price": 84, "trafficGB": 50, "trafficPer": "month", "note": "年费小包，适合低流量用户、学生党，每月自动刷新" },
-    { "name": "飞猫·星耀版", "type": "monthly", "price": 25, "trafficGB": 150, "trafficPer": "month" },
-    { "name": "飞猫·星环版", "type": "monthly", "price": 45, "trafficGB": 300, "trafficPer": "month" },
-    { "name": "飞猫·银河版", "type": "monthly", "price": 85, "trafficGB": 600, "trafficPer": "month" },
-    { "name": "飞猫·宇宙版", "type": "monthly", "price": 150, "trafficGB": 1000, "trafficPer": "month" },
-    { "name": "飞猫·不限时套餐", "type": "onetime", "price": 680, "trafficGB": 1000, "trafficPer": "total", "note": "无时长限制、不自动重置；需要重置流量可手动重置，费用为原价 9 折（¥612）" },
-    { "name": "飞猫·定制套餐", "type": "monthly", "custom": true, "price": 550, "trafficGB": 500, "trafficPer": "month", "note": "专属定制节点、独享原生 IP，面向跨境电商、TikTok 直播、企业办公；价格按配置调整，需咨询客服" }
+    {
+      "name": "飞猫·学生版",
+      "type": "yearly",
+      "price": 84,
+      "trafficGB": 50,
+      "trafficPer": "month",
+      "note": "年费小包，适合低流量用户、学生党，每月自动刷新"
+    },
+    {
+      "name": "飞猫·星耀版",
+      "type": "monthly",
+      "price": 25,
+      "trafficGB": 150,
+      "trafficPer": "month"
+    },
+    {
+      "name": "飞猫·星环版",
+      "type": "monthly",
+      "price": 45,
+      "trafficGB": 300,
+      "trafficPer": "month"
+    },
+    {
+      "name": "飞猫·银河版",
+      "type": "monthly",
+      "price": 85,
+      "trafficGB": 600,
+      "trafficPer": "month"
+    },
+    {
+      "name": "飞猫·宇宙版",
+      "type": "monthly",
+      "price": 150,
+      "trafficGB": 1000,
+      "trafficPer": "month"
+    },
+    {
+      "name": "飞猫·不限时套餐",
+      "type": "onetime",
+      "price": 680,
+      "trafficGB": 1000,
+      "trafficPer": "total",
+      "note": "无时长限制、不自动重置；需要重置流量可手动重置，费用为原价 9 折（¥612）"
+    },
+    {
+      "name": "飞猫·定制套餐",
+      "type": "monthly",
+      "custom": true,
+      "price": 550,
+      "trafficGB": 500,
+      "trafficPer": "month",
+      "note": "专属定制节点、独享原生 IP，面向跨境电商、TikTok 直播、企业办公；价格按配置调整，需咨询客服"
+    }
   ],
   "discounts": "月付套餐长期购买有折扣：年付 8 折、两年付 7 折、三年付 6 折（不适用于不限时套餐）",
-  "pending": ["支持的协议", "免费试用", "退款政策"]
+  "pending": [
+    "各地区节点数量（整理中）",
+    "免费试用",
+    "退款政策"
+  ],
+  "protocols": [
+    "VLESS"
+  ],
+  "lineNote": "后台节点列表中，大部分节点名称标注为 IEPL 专线，另有一部分标注为\"直连 BGP\"的节点；节点按初级、中级、高级分档"
 }

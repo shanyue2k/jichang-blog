@@ -257,6 +257,7 @@ const jsonLd = [breadcrumbSchema(crumbs), faqSchema(faq)];
                 根据{name}后台的节点列表，目前提供 {pr.regions.join('、')} 共 {pr.regions.length} 个地区的节点{pr.nodeCount && `，合计${pr.nodeCount}`}。
                 {pr.nodeNote && `${pr.nodeNote}。`}
               </p>
+              {pr.lineNote && <p>{pr.lineNote}。</p>}
               {pr.groups && (
                 <p>
                   订阅里自带「{pr.groups.join('」「')}」等策略分组。新手直接用"自动选择"即可，客户端会自动挑延迟最低的节点。
