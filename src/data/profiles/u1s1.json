@@ -1,0 +1,87 @@
+{
+  "id": "u1s1",
+  "collectedAt": "2026-11-04",
+  "source": "U1S1 官网套餐页，以及站长提供的节点列表",
+  "lineType": "BGP 三网智能优化 + IEPL 专线出口",
+  "lineNote": "套餐页写的是「全平台 ss 协议支持」，但节点列表里所有节点显示的协议都是 VLESS，本站以节点列表为准。",
+  "devices": "不限设备数量",
+  "rate": "节点倍率 x1",
+  "regions": [
+    "香港",
+    "美国",
+    "日本",
+    "新加坡",
+    "台湾",
+    "马来西亚",
+    "俄罗斯"
+  ],
+  "nodeCount": "66 个",
+  "nodeNote": "香港 20 个，美国 14 个（含 4 个直连），日本 14 个（含 4 个直连），新加坡 10 个，台湾 5 个，马来西亚 2 个，俄罗斯 1 个",
+  "protocols": [
+    "VLESS"
+  ],
+  "claims": [
+    "BGP 三网智能优化 + IEPL 专线出口",
+    "不限速，不限设备数量",
+    "Netflix、Disney+、HBO、DAZN 全平台解锁",
+    "支持 ChatGPT、Claude、Midjourney 等 AI 服务",
+    "每两个月额外增加 200 兆带宽，保证晚高峰冗余",
+    "支持 iOS、Android、Windows、macOS"
+  ],
+  "unlock": [
+    "Netflix",
+    "Disney+",
+    "ChatGPT",
+    "Claude"
+  ],
+  "plans": [
+    {
+      "name": "u1s1·就是好用包",
+      "type": "yearly",
+      "price": 96,
+      "trafficGB": 60,
+      "trafficPer": "month",
+      "note": "按购买日起每自然月重置；面向学生查资料、日常网页、社交聊天、轻量视频"
+    },
+    {
+      "name": "u1s1·普通人真够了包",
+      "type": "monthly",
+      "price": 20,
+      "trafficGB": 120,
+      "trafficPer": "month"
+    },
+    {
+      "name": "u1s1·你以为用不到包",
+      "type": "monthly",
+      "price": 40,
+      "trafficGB": 300,
+      "trafficPer": "month"
+    },
+    {
+      "name": "u1s1·瘾大就拉满包",
+      "type": "monthly",
+      "price": 100,
+      "trafficGB": 700,
+      "trafficPer": "month"
+    },
+    {
+      "name": "u1s1·我全都要包",
+      "type": "monthly",
+      "price": 180,
+      "trafficGB": 1500,
+      "trafficPer": "month"
+    },
+    {
+      "name": "u1s1·定制包",
+      "type": "monthly",
+      "custom": true,
+      "price": 600,
+      "trafficGB": 0,
+      "trafficPer": "month",
+      "note": "针对个人和企业的定制方案，面向跨境电商、TikTok 运营与海外直播等，详情咨询在线客服"
+    }
+  ],
+  "pending": [
+    "季付、半年付价格"
+  ]
+}
