@@ -1,27 +1,22 @@
 {
   "id": "weituyun",
   "collectedAt": "2026-11-04",
-  "source": "唯兔云官网套餐页",
+  "source": "唯兔云官网套餐页，以及站长提供的节点信息",
   "lineType": "全 IPLC 专线",
-  "lineNote": "「年付加强专线」套餐标注的是 IEPL 企业跨境专线，其余套餐标注全 IPLC 专线。",
+  "lineNote": "「年付加强专线」套餐标注的是 IEPL 企业跨境专线，其余套餐标注全 IPLC 专线。官网套餐页写的是 12 个地区约 76 个节点（含英国、法国、泰国、菲律宾、印度），本站整理时节点列表里是 7 个地区 67 个，以实际列表为准。",
   "devices": "不限制客户端数量",
   "rate": "节点倍率 x1",
   "regions": [
     "香港",
     "台湾",
-    "日本",
     "新加坡",
+    "日本",
     "美国",
     "马来西亚",
-    "英国",
-    "德国",
-    "法国",
-    "泰国",
-    "菲律宾",
-    "印度"
+    "德国"
   ],
-  "nodeCount": "76 个（官网标注）",
-  "nodeNote": "官网列出：香港 20 个，台湾、日本、新加坡、美国各 10 个，马来西亚 2 个，英国、德国、法国、泰国、菲律宾、印度各 1 个；需要其他地区可以咨询客服",
+  "nodeCount": "67 个",
+  "nodeNote": "香港 19 个，台湾 5 个，新加坡 10 个，日本 14 个（10 个加另列的 4 个），美国 14 个（10 个加另列的 4 个），马来西亚 2 个，德国 3 个",
   "protocols": [
     "VLESS"
   ],
@@ -107,11 +102,64 @@
       "trafficGB": 500,
       "trafficPer": "total",
       "note": "一次性永久流量包，不按周期刷新；后续续费永久 9 折"
+    },
+    {
+      "name": "唯兔云·普通版",
+      "type": "quarterly",
+      "price": 53.9,
+      "trafficGB": 150,
+      "trafficPer": "month"
+    },
+    {
+      "name": "唯兔云·普通版",
+      "type": "semiannual",
+      "price": 101.9,
+      "trafficGB": 150,
+      "trafficPer": "month"
+    },
+    {
+      "name": "唯兔云·进阶版",
+      "type": "quarterly",
+      "price": 80.9,
+      "trafficGB": 200,
+      "trafficPer": "month"
+    },
+    {
+      "name": "唯兔云·进阶版",
+      "type": "semiannual",
+      "price": 152.9,
+      "trafficGB": 200,
+      "trafficPer": "month"
+    },
+    {
+      "name": "唯兔云·专业版",
+      "type": "quarterly",
+      "price": 161.9,
+      "trafficGB": 500,
+      "trafficPer": "month"
+    },
+    {
+      "name": "唯兔云·专业版",
+      "type": "semiannual",
+      "price": 305.9,
+      "trafficGB": 500,
+      "trafficPer": "month"
+    },
+    {
+      "name": "唯兔云·至尊版",
+      "type": "quarterly",
+      "price": 323.9,
+      "trafficGB": 1000,
+      "trafficPer": "month"
+    },
+    {
+      "name": "唯兔云·至尊版",
+      "type": "semiannual",
+      "price": 611.9,
+      "trafficGB": 1000,
+      "trafficPer": "month"
     }
   ],
   "discounts": "月付套餐长期购买有折扣：1 年付 8 折、2 年付 7 折、3 年付 6 折，节日活动可在此基础上再打折",
-  "pending": [
-    "季付、半年付价格",
-    "节点后台实际数量"
-  ]
+  "pending": []
 }
