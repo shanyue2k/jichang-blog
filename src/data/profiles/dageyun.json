@@ -95,11 +95,27 @@
       "note": "一次性付费，流量用完为止，不按月重置"
     },
     {
+      "name": "福云·限时版",
+      "type": "quarterly",
+      "price": 40,
+      "trafficGB": 50,
+      "trafficPer": "month",
+      "note": "限时版不可用优惠券"
+    },
+    {
       "name": "财云·福利版",
       "type": "quarterly",
       "price": 53.99,
       "trafficGB": 100,
       "trafficPer": "month"
+    },
+    {
+      "name": "福云·限时版",
+      "type": "semiannual",
+      "price": 76,
+      "trafficGB": 50,
+      "trafficPer": "month",
+      "note": "限时版不可用优惠券"
     },
     {
       "name": "财云·福利版",
