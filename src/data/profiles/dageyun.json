@@ -93,9 +93,63 @@
       "trafficGB": 500,
       "trafficPer": "total",
       "note": "一次性付费，流量用完为止，不按月重置"
+    },
+    {
+      "name": "财云·福利版",
+      "type": "quarterly",
+      "price": 53.99,
+      "trafficGB": 100,
+      "trafficPer": "month"
+    },
+    {
+      "name": "财云·福利版",
+      "type": "semiannual",
+      "price": 99.99,
+      "trafficGB": 100,
+      "trafficPer": "month"
+    },
+    {
+      "name": "初云·进阶版",
+      "type": "quarterly",
+      "price": 68,
+      "trafficGB": 150,
+      "trafficPer": "month"
+    },
+    {
+      "name": "初云·进阶版",
+      "type": "semiannual",
+      "price": 128,
+      "trafficGB": 150,
+      "trafficPer": "month"
+    },
+    {
+      "name": "凌云·基础版",
+      "type": "quarterly",
+      "price": 123,
+      "trafficGB": 300,
+      "trafficPer": "month"
+    },
+    {
+      "name": "凌云·基础版",
+      "type": "semiannual",
+      "price": 228,
+      "trafficGB": 300,
+      "trafficPer": "month"
+    },
+    {
+      "name": "御云·高级版",
+      "type": "quarterly",
+      "price": 210,
+      "trafficGB": 600,
+      "trafficPer": "month"
+    },
+    {
+      "name": "御云·高级版",
+      "type": "semiannual",
+      "price": 388,
+      "trafficGB": 600,
+      "trafficPer": "month"
     }
   ],
-  "pending": [
-    "季付、半年付价格"
-  ]
+  "pending": []
 }
