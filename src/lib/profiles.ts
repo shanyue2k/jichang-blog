@@ -52,7 +52,9 @@ const DEFAULTS: Partial<Profile> = {
 };
 
 const files = import.meta.glob<{ default: Profile }>('../data/profiles/*.json', { eager: true });
-export const profiles: Profile[] = Object.values(files).map((m) => {
+export const profiles: Profile[] = Object.values(files)
+  .filter((m) => !(m.default as Profile & { draft?: boolean }).draft)
+  .map((m) => {
   const p = { ...DEFAULTS, ...m.default } as Profile;
   p.pending = (p.pending ?? []).filter((x) => x !== '免费试用' && x !== '退款政策');
   return p;

@@ -1,0 +1,14 @@
+{
+  "id": "muguang",
+  "draft": true,
+  "collectedAt": "2026-11-04",
+  "source": "暮光加速后台节点列表（站长提供截图）",
+  "rate": "所有节点 x1 倍率",
+  "regions": ["香港", "台湾", "日本", "新加坡", "美国"],
+  "nodeCount": "60 个（后台节点列表统计）",
+  "nodeNote": "香港 20 个，台湾、日本、新加坡、美国各 10 个",
+  "protocols": ["VLESS"],
+  "claims": [],
+  "plans": [],
+  "pending": ["套餐价格", "官方介绍的线路类型和特点"]
+}
