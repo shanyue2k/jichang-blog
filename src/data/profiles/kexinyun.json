@@ -1,0 +1,145 @@
+{
+  "id": "kexinyun",
+  "collectedAt": "2026-11-04",
+  "source": "可信云官网套餐页，以及站长提供的节点列表与协议信息",
+  "lineType": "IEPL 专线",
+  "devices": "不限制设备数量",
+  "rate": "节点倍率 x1",
+  "regions": [
+    "香港",
+    "台湾",
+    "日本",
+    "新加坡",
+    "美国"
+  ],
+  "nodeCount": "60 个",
+  "nodeNote": "香港 20 个，台湾、日本、新加坡、美国各 10 个",
+  "lineNote": "官网写的是「60+ 顶级专线节点」，本站整理时节点列表里是 60 个。",
+  "protocols": [
+    "VLESS"
+  ],
+  "claims": [
+    "全 IEPL 专线，不限速，不限制设备数量",
+    "60+ 专线节点，覆盖港、台、新、日、美等地区",
+    "解锁各大流媒体和 AI 工具",
+    "原生 IP 解锁流媒体",
+    "不限制客户端"
+  ],
+  "unlock": [
+    "流媒体",
+    "ChatGPT",
+    "TikTok"
+  ],
+  "plans": [
+    {
+      "name": "可信云年费小礼包",
+      "type": "yearly",
+      "price": 96,
+      "trafficGB": 60,
+      "trafficPer": "month",
+      "note": "小包专属，平均每月约 8 元"
+    },
+    {
+      "name": "可信云月付小包",
+      "type": "monthly",
+      "price": 15,
+      "trafficGB": 60,
+      "trafficPer": "month",
+      "note": "仅支持月付"
+    },
+    {
+      "name": "基础版（Basic）",
+      "type": "monthly",
+      "price": 25,
+      "trafficGB": 150,
+      "trafficPer": "month"
+    },
+    {
+      "name": "标准版（Standard）",
+      "type": "monthly",
+      "price": 50,
+      "trafficGB": 300,
+      "trafficPer": "month"
+    },
+    {
+      "name": "专业版（Pro）",
+      "type": "monthly",
+      "price": 100,
+      "trafficGB": 600,
+      "trafficPer": "month"
+    },
+    {
+      "name": "旗舰版（Ultimate）",
+      "type": "monthly",
+      "price": 200,
+      "trafficGB": 1200,
+      "trafficPer": "month"
+    },
+    {
+      "name": "基础版（Basic）",
+      "type": "quarterly",
+      "price": 71.25,
+      "trafficGB": 150,
+      "trafficPer": "month"
+    },
+    {
+      "name": "标准版（Standard）",
+      "type": "quarterly",
+      "price": 142.5,
+      "trafficGB": 300,
+      "trafficPer": "month"
+    },
+    {
+      "name": "专业版（Pro）",
+      "type": "quarterly",
+      "price": 285,
+      "trafficGB": 600,
+      "trafficPer": "month"
+    },
+    {
+      "name": "旗舰版（Ultimate）",
+      "type": "quarterly",
+      "price": 570,
+      "trafficGB": 1200,
+      "trafficPer": "month"
+    },
+    {
+      "name": "基础版（Basic）",
+      "type": "semiannual",
+      "price": 135,
+      "trafficGB": 150,
+      "trafficPer": "month"
+    },
+    {
+      "name": "标准版（Standard）",
+      "type": "semiannual",
+      "price": 270,
+      "trafficGB": 300,
+      "trafficPer": "month"
+    },
+    {
+      "name": "专业版（Pro）",
+      "type": "semiannual",
+      "price": 540,
+      "trafficGB": 600,
+      "trafficPer": "month"
+    },
+    {
+      "name": "旗舰版（Ultimate）",
+      "type": "semiannual",
+      "price": 1080,
+      "trafficGB": 1200,
+      "trafficPer": "month"
+    },
+    {
+      "name": "可信云轻量不限时",
+      "type": "onetime",
+      "price": 50,
+      "trafficGB": 50,
+      "trafficPer": "total",
+      "note": "官网标注仅限前 100 名用户，售完即止；永久不限时，不参与任何活动"
+    }
+  ],
+  "discounts": "基础版到旗舰版长期购买有折扣：季付 95 折、半年付 9 折、年付 85 折、两年付 8 折、三年付 7 折",
+  "pending": []
+}
