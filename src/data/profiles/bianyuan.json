@@ -1,0 +1,175 @@
+{
+  "id": "bianyuan",
+  "collectedAt": "2026-11-04",
+  "source": "边缘节点官网套餐页，以及站长提供的节点列表",
+  "lineType": "全 IPLC 专线",
+  "devices": "不限制设备连接数量",
+  "rate": "所有节点 x1 倍率，高峰时段不降速",
+  "regions": [
+    "香港",
+    "台湾",
+    "日本",
+    "新加坡",
+    "美国"
+  ],
+  "nodeCount": "60 个",
+  "nodeNote": "香港 20 个，台湾、日本、新加坡、美国各 10 个",
+  "lineNote": "官网节点说明里还写了韩国、马来西亚、越南、菲律宾、泰国、印度、英国、法国、德国、阿根廷等地区，本站整理时节点列表里只有香港、台湾、日本、新加坡、美国 5 个地区，以实际列表为准。",
+  "claims": [
+    "全 IPLC 专线网络，提供最高 2.5Gbps 稳定速率",
+    "所有节点 x1 倍率，高峰时段不降速",
+    "原生 IP 线路，解锁 Netflix、Disney+、ChatGPT、TikTok",
+    "不限制设备连接数量，多端同时登录",
+    "智能流量分配与路由优化",
+    "月付系列套餐每月自动刷新流量"
+  ],
+  "unlock": [
+    "Netflix",
+    "Disney+",
+    "ChatGPT",
+    "TikTok"
+  ],
+  "plans": [
+    {
+      "name": "限时年付",
+      "type": "yearly",
+      "price": 98,
+      "trafficGB": 45,
+      "trafficPer": "month",
+      "note": "年费小包，面向低流量用户和学生；流量用完可 10 元重置"
+    },
+    {
+      "name": "限时体验月付小包",
+      "type": "monthly",
+      "price": 15,
+      "trafficGB": 50,
+      "trafficPer": "month",
+      "note": "体验套餐，不参加优惠活动"
+    },
+    {
+      "name": "极界·标准套餐",
+      "type": "monthly",
+      "price": 22,
+      "trafficGB": 120,
+      "trafficPer": "month"
+    },
+    {
+      "name": "极界·专享套餐",
+      "type": "monthly",
+      "price": 35,
+      "trafficGB": 200,
+      "trafficPer": "month"
+    },
+    {
+      "name": "极界·进阶套餐",
+      "type": "monthly",
+      "price": 50,
+      "trafficGB": 250,
+      "trafficPer": "month"
+    },
+    {
+      "name": "极界·高级套餐",
+      "type": "monthly",
+      "price": 100,
+      "trafficGB": 499,
+      "trafficPer": "month"
+    },
+    {
+      "name": "极界·极限套餐",
+      "type": "monthly",
+      "price": 200,
+      "trafficGB": 1000,
+      "trafficPer": "month"
+    },
+    {
+      "name": "极界·标准套餐",
+      "type": "quarterly",
+      "price": 62,
+      "trafficGB": 120,
+      "trafficPer": "month"
+    },
+    {
+      "name": "极界·专享套餐",
+      "type": "quarterly",
+      "price": 99.75,
+      "trafficGB": 200,
+      "trafficPer": "month"
+    },
+    {
+      "name": "极界·进阶套餐",
+      "type": "quarterly",
+      "price": 145,
+      "trafficGB": 250,
+      "trafficPer": "month"
+    },
+    {
+      "name": "极界·高级套餐",
+      "type": "quarterly",
+      "price": 290,
+      "trafficGB": 499,
+      "trafficPer": "month"
+    },
+    {
+      "name": "极界·极限套餐",
+      "type": "quarterly",
+      "price": 580,
+      "trafficGB": 1000,
+      "trafficPer": "month"
+    },
+    {
+      "name": "极界·标准套餐",
+      "type": "semiannual",
+      "price": 118,
+      "trafficGB": 120,
+      "trafficPer": "month"
+    },
+    {
+      "name": "极界·专享套餐",
+      "type": "semiannual",
+      "price": 189,
+      "trafficGB": 200,
+      "trafficPer": "month"
+    },
+    {
+      "name": "极界·进阶套餐",
+      "type": "semiannual",
+      "price": 270,
+      "trafficGB": 250,
+      "trafficPer": "month"
+    },
+    {
+      "name": "极界·高级套餐",
+      "type": "semiannual",
+      "price": 540,
+      "trafficGB": 499,
+      "trafficPer": "month"
+    },
+    {
+      "name": "极界·极限套餐",
+      "type": "semiannual",
+      "price": 1080,
+      "trafficGB": 1000,
+      "trafficPer": "month"
+    },
+    {
+      "name": "永久不限时100G",
+      "type": "onetime",
+      "price": 100,
+      "trafficGB": 100,
+      "trafficPer": "total",
+      "note": "一次性流量包，无限时长，不自动重置；手动重置按原价 9 折；不参与长期付折扣"
+    },
+    {
+      "name": "永久不限时450G",
+      "type": "onetime",
+      "price": 399,
+      "trafficGB": 450,
+      "trafficPer": "total",
+      "note": "一次性流量包，无限时长，不自动重置；手动重置按原价 9 折；不参与长期付折扣"
+    }
+  ],
+  "discounts": "「极界」系列长期购买有折扣：年付 85 折、两年付 8 折、三年付 75 折",
+  "pending": [
+    "协议"
+  ]
+}
