@@ -1,7 +1,7 @@
 {
   "id": "quanqiuyun",
   "collectedAt": "2026-11-04",
-  "source": "全球云官网套餐页，以及站长提供的节点列表",
+  "source": "全球云官网套餐页，以及站长提供的节点列表与协议信息",
   "lineType": "BGP 智能调度 + 专线出口",
   "devices": "不限制设备数量",
   "rate": "节点倍率 x1",
@@ -14,7 +14,7 @@
   ],
   "nodeCount": "12 个",
   "nodeNote": "香港 5 个，新加坡、美国、日本各 2 个，台湾 1 个；节点名称都标注为「初级」",
-  "lineNote": "套餐说明里写的是 Shadowsocks 协议，但节点列表里所有节点显示的都是 VLESS，本站以节点列表为准。",
+  "lineNote": "套餐说明里写的是 Shadowsocks 协议，但节点列表里的节点协议都是 VLESS，站长确认协议为 VLESS。",
   "protocols": [
     "VLESS"
   ],
