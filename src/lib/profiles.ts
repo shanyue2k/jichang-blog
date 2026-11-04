@@ -9,6 +9,8 @@ export type Plan = {
   /** month = 每月重置的流量；total = 一次性总流量 */
   trafficPer: 'month' | 'total';
   note?: string;
+  /** 定制 / 企业套餐：单独展示，不参与最低价和单价对比 */
+  custom?: boolean;
 };
 
 export type Profile = {
@@ -82,6 +84,7 @@ export function perGB(p: Plan): number {
 export function lowestMonthly(pr: Profile): { plan: Plan; value: number } | null {
   let best: { plan: Plan; value: number } | null = null;
   for (const p of pr.plans) {
+    if (p.custom) continue;
     const v = perMonth(p);
     if (v !== null && (!best || v < best.value)) best = { plan: p, value: v };
   }
@@ -89,7 +92,7 @@ export function lowestMonthly(pr: Profile): { plan: Plan; value: number } | null
 }
 
 export function lowestMonthlyPlan(pr: Profile): Plan | undefined {
-  return pr.plans.filter((p) => p.type === 'monthly').sort((a, b) => a.price - b.price)[0];
+  return pr.plans.filter((p) => p.type === 'monthly' && !p.custom).sort((a, b) => a.price - b.price)[0];
 }
 
 /** 流量显示：1000GB 以上换成 TB */

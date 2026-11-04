@@ -36,11 +36,13 @@ const year = collected.getFullYear();
 
 const cheapest = lowestMonthly(pr);
 const cheapestMonthly = lowestMonthlyPlan(pr);
+const standard = pr.plans.filter((p) => !p.custom);
+const customPlans = pr.plans.filter((p) => p.custom);
 const groups = (['monthly', 'quarterly', 'yearly', 'onetime'] as Plan['type'][])
-  .map((t) => ({ type: t, plans: pr.plans.filter((p) => p.type === t) }))
+  .map((t) => ({ type: t, plans: standard.filter((p) => p.type === t) }))
   .filter((g) => g.plans.length);
-const onetime = pr.plans.filter((p) => p.type === 'onetime');
-const periodic = pr.plans.filter((p) => p.type !== 'onetime');
+const onetime = standard.filter((p) => p.type === 'onetime');
+const periodic = standard.filter((p) => p.type !== 'onetime');
 const gbRange = (list: Plan[]) => {
   const v = list.map(perGB);
   return [Math.min(...v), Math.max(...v)];
@@ -227,6 +229,22 @@ const jsonLd = [breadcrumbSchema(crumbs), faqSchema(faq)];
               {g.type === 'monthly' && pr.discounts && <p class="discount">{pr.discounts}。</p>}
             </>
           ))
+        }
+
+        {
+          customPlans.length > 0 && (
+            <>
+              <h3>定制套餐</h3>
+              <p>面向有特殊需求的用户，不参与上面的价格对比：</p>
+              <ul>
+                {customPlans.map((p) => (
+                  <li>
+                    <strong>{p.name}</strong>：{yuan(p.price)}/月起，每月 {gb(p.trafficGB)}。{p.note}
+                  </li>
+                ))}
+              </ul>
+            </>
+          )
         }
 
         {
