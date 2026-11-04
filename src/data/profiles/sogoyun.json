@@ -1,0 +1,163 @@
+{
+  "id": "sogoyun",
+  "collectedAt": "2026-11-04",
+  "source": "Sogo云官网套餐页，以及站长提供的节点列表与协议信息",
+  "lineType": "IEPL / IPLC 专线",
+  "devices": "不限设备数量",
+  "rate": "全节点 x1 倍率，晚高峰不降速",
+  "lineNote": "月付系列（基础版到顶配版）标注全 IEPL 专线，年付小包和不限时套餐标注全 IPLC 专线；单节点峰值 2.5Gbps。官网节点说明里还写了马来西亚、英国、法国等地区，本站整理时节点列表里只有 5 个地区，以实际列表为准。",
+  "regions": [
+    "香港",
+    "台湾",
+    "日本",
+    "新加坡",
+    "美国"
+  ],
+  "nodeCount": "60 个",
+  "nodeNote": "香港 20 个，台湾、日本、新加坡、美国各 10 个",
+  "protocols": [
+    "VLESS"
+  ],
+  "claims": [
+    "月付系列全 IEPL 专线，单节点峰值 2.5Gbps",
+    "全节点 x1 倍率，晚高峰不降速",
+    "原生 IP，支持 Netflix、Disney+、ChatGPT、TikTok",
+    "多设备不限量同时在线（电脑、手机、路由器）",
+    "智能路由自动择优",
+    "每 30 天自动刷新流量"
+  ],
+  "unlock": [
+    "Netflix",
+    "Disney+",
+    "ChatGPT",
+    "TikTok"
+  ],
+  "plans": [
+    {
+      "name": "小包-年付版",
+      "type": "yearly",
+      "price": 98,
+      "trafficGB": 60,
+      "trafficPer": "month",
+      "note": "适合小流量 / 新手用户；全 IPLC 专线；购买日起每 30 天刷新"
+    },
+    {
+      "name": "基础版",
+      "type": "monthly",
+      "price": 25,
+      "trafficGB": 150,
+      "trafficPer": "month"
+    },
+    {
+      "name": "优选版",
+      "type": "monthly",
+      "price": 45,
+      "trafficGB": 350,
+      "trafficPer": "month"
+    },
+    {
+      "name": "强化版",
+      "type": "monthly",
+      "price": 80,
+      "trafficGB": 550,
+      "trafficPer": "month"
+    },
+    {
+      "name": "顶配版",
+      "type": "monthly",
+      "price": 150,
+      "trafficGB": 1100,
+      "trafficPer": "month"
+    },
+    {
+      "name": "基础版",
+      "type": "quarterly",
+      "price": 65,
+      "trafficGB": 150,
+      "trafficPer": "month"
+    },
+    {
+      "name": "优选版",
+      "type": "quarterly",
+      "price": 125,
+      "trafficGB": 350,
+      "trafficPer": "month"
+    },
+    {
+      "name": "强化版",
+      "type": "quarterly",
+      "price": 230,
+      "trafficGB": 550,
+      "trafficPer": "month"
+    },
+    {
+      "name": "顶配版",
+      "type": "quarterly",
+      "price": 440,
+      "trafficGB": 1100,
+      "trafficPer": "month"
+    },
+    {
+      "name": "基础版",
+      "type": "semiannual",
+      "price": 120,
+      "trafficGB": 150,
+      "trafficPer": "month"
+    },
+    {
+      "name": "优选版",
+      "type": "semiannual",
+      "price": 245,
+      "trafficGB": 350,
+      "trafficPer": "month"
+    },
+    {
+      "name": "强化版",
+      "type": "semiannual",
+      "price": 450,
+      "trafficGB": 550,
+      "trafficPer": "month"
+    },
+    {
+      "name": "顶配版",
+      "type": "semiannual",
+      "price": 870,
+      "trafficGB": 1100,
+      "trafficPer": "month"
+    },
+    {
+      "name": "SOGO基础餐不限时版",
+      "type": "onetime",
+      "price": 120,
+      "trafficGB": 120,
+      "trafficPer": "total",
+      "note": "一次性流量包，无限时长，不自动重置；手动重置按原价 9 折；不参与长期付折扣"
+    },
+    {
+      "name": "SOGO优选餐不限时版",
+      "type": "onetime",
+      "price": 250,
+      "trafficGB": 250,
+      "trafficPer": "total",
+      "note": "一次性流量包，无限时长，不自动重置；手动重置按原价 9 折；不参与长期付折扣"
+    },
+    {
+      "name": "SOGO强化餐不限时版",
+      "type": "onetime",
+      "price": 450,
+      "trafficGB": 450,
+      "trafficPer": "total",
+      "note": "一次性流量包，无限时长，不自动重置；手动重置按原价 9 折；不参与长期付折扣；卡片标题写 450G，流量栏显示 500GB，以官网结算为准"
+    },
+    {
+      "name": "SOGO至尊餐不限时版",
+      "type": "onetime",
+      "price": 850,
+      "trafficGB": 1000,
+      "trafficPer": "total",
+      "note": "一次性流量包，无限时长，不自动重置；手动重置按原价 9 折；不参与长期付折扣"
+    }
+  ],
+  "discounts": "月付套餐长期购买有折扣：年付 8 折、两年付 7 折、三年付 6 折（不限时套餐不参与）",
+  "pending": []
+}
