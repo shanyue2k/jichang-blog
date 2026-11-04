@@ -1,0 +1,142 @@
+{
+  "id": "guangnianti",
+  "collectedAt": "2026-11-04",
+  "source": "光年梯官网套餐页，以及站长提供的节点列表与协议信息",
+  "lineType": "全程 IPLC 专线",
+  "devices": "不限制同时在线客户端数量",
+  "rate": "所有节点 x1 倍率，晚高峰不限速",
+  "refund": "官网每个套餐都标注「不提供退款服务」，购买前请确认",
+  "regions": [
+    "香港",
+    "日本",
+    "美国",
+    "新加坡",
+    "台湾",
+    "德国",
+    "马来西亚",
+    "土耳其"
+  ],
+  "nodeCount": "69 个",
+  "nodeNote": "香港 19 个，日本 14 个（含 4 个直连），美国 14 个（含 4 个直连），新加坡 10 个，台湾 5 个，德国 4 个（直连），马来西亚 2 个，土耳其 1 个",
+  "protocols": [
+    "VLESS"
+  ],
+  "claims": [
+    "全程 IPLC 专线，最高可提供 2.5Gbps 速率",
+    "所有节点 x1 倍率，晚高峰不限速",
+    "原生 IP，解锁主流流媒体平台",
+    "支持解锁 ChatGPT、TikTok",
+    "不限制同时在线客户端数量",
+    "季付及以上从购买日起每 30 天自动重置流量",
+    "工单处理及时"
+  ],
+  "unlock": [
+    "流媒体",
+    "ChatGPT",
+    "TikTok"
+  ],
+  "plans": [
+    {
+      "name": "年付限时套餐",
+      "type": "yearly",
+      "price": 89,
+      "trafficGB": 50,
+      "trafficPer": "month"
+    },
+    {
+      "name": "光年梯 入门版",
+      "type": "monthly",
+      "price": 18,
+      "trafficGB": 110,
+      "trafficPer": "month"
+    },
+    {
+      "name": "光年梯 晋级版",
+      "type": "monthly",
+      "price": 34,
+      "trafficGB": 220,
+      "trafficPer": "month"
+    },
+    {
+      "name": "光年梯 专业版",
+      "type": "monthly",
+      "price": 68,
+      "trafficGB": 450,
+      "trafficPer": "month"
+    },
+    {
+      "name": "光年梯 至尊版",
+      "type": "monthly",
+      "price": 130,
+      "trafficGB": 900,
+      "trafficPer": "month"
+    },
+    {
+      "name": "光年梯 入门版",
+      "type": "quarterly",
+      "price": 50,
+      "trafficGB": 110,
+      "trafficPer": "month"
+    },
+    {
+      "name": "光年梯 晋级版",
+      "type": "quarterly",
+      "price": 100,
+      "trafficGB": 220,
+      "trafficPer": "month"
+    },
+    {
+      "name": "光年梯 专业版",
+      "type": "quarterly",
+      "price": 200,
+      "trafficGB": 450,
+      "trafficPer": "month"
+    },
+    {
+      "name": "光年梯 至尊版",
+      "type": "quarterly",
+      "price": 390,
+      "trafficGB": 900,
+      "trafficPer": "month"
+    },
+    {
+      "name": "光年梯 入门版",
+      "type": "semiannual",
+      "price": 90,
+      "trafficGB": 110,
+      "trafficPer": "month"
+    },
+    {
+      "name": "光年梯 晋级版",
+      "type": "semiannual",
+      "price": 180,
+      "trafficGB": 220,
+      "trafficPer": "month"
+    },
+    {
+      "name": "光年梯 专业版",
+      "type": "semiannual",
+      "price": 375,
+      "trafficGB": 450,
+      "trafficPer": "month"
+    },
+    {
+      "name": "光年梯 至尊版",
+      "type": "semiannual",
+      "price": 702,
+      "trafficGB": 900,
+      "trafficPer": "month"
+    },
+    {
+      "name": "独享私人专线节点",
+      "type": "monthly",
+      "custom": true,
+      "price": 680,
+      "trafficGB": 500,
+      "trafficPer": "month",
+      "note": "独享 IP 专属节点，面向跨境电商、TikTok 直播、远程办公等；支持专属配置与定制"
+    }
+  ],
+  "discounts": "长期购买有折扣：1 年付 8 折、2 年付 7 折、3 年付 6 折，可叠加优惠码",
+  "pending": []
+}
