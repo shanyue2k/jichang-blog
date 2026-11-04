@@ -87,9 +87,9 @@ faq:                      # 可选，会生成常见问题和 FAQ 结构化数�
 
 | 文件 | 内容 |
 | --- | --- |
-| `src/data/affiliate-links.json` | 28 家机场的名称、代号、推广链接、备用链接、优惠码 |
+| `src/data/affiliate-links.json` | 29 家机场的名称、代号、推广链接、备用链接、优惠码 |
 | `src/data/profiles/<代号>.json` | 每家机场的套餐、节点、协议、线路、官方介绍（资料页 `/jichang/<代号>/` 由它生成） |
-| `src/lib/profiles.ts` | 全站默认值：28 家都没有免费试用，退款需提交工单 |
+| `src/lib/profiles.ts` | 全站默认值：29 家都没有免费试用，退款需提交工单 |
 
 一键导出（不被搜索引擎收录）：
 
