@@ -1,0 +1,117 @@
+{
+  "id": "xingdaomeng",
+  "collectedAt": "2026-11-04",
+  "source": "星岛梦官网套餐页",
+  "lineType": "IEPL / IPLC 专线",
+  "lineNote": "月付套餐标注全 IEPL 专线，高校套餐和永久不限时套餐标注全 IPLC 专线；单节点峰值标注 2.5Gbps。",
+  "devices": "不限制同时在线设备数量",
+  "rate": "全节点 x1 倍率，晚高峰不降速",
+  "regions": [
+    "香港",
+    "台湾",
+    "日本",
+    "新加坡",
+    "美国",
+    "马来西亚",
+    "英国",
+    "法国",
+    "德国",
+    "土耳其",
+    "泰国",
+    "巴西"
+  ],
+  "nodeCount": "约 57 个起（官网标注）",
+  "nodeNote": "官网列出：香港 20 个，台湾 5 个，日本、新加坡、美国各 10 个，马来西亚 2 个，另有英国、法国、德国、土耳其、泰国、巴西等地区节点（未写数量）",
+  "claims": [
+    "全节点 x1 倍率，晚高峰不降速",
+    "月付套餐全 IEPL 专线，单节点峰值 2.5Gbps",
+    "原生 IP，支持 Netflix、Disney+、ChatGPT、TikTok",
+    "多设备不限量同时在线（电脑、手机、路由器）",
+    "智能路由自动择优",
+    "月付套餐每 30 天自动刷新流量",
+    "另有美国原生家宽静态 IP 定制套餐"
+  ],
+  "unlock": [
+    "Netflix",
+    "Disney+",
+    "ChatGPT",
+    "TikTok"
+  ],
+  "plans": [
+    {
+      "name": "星岛梦·高校套餐",
+      "type": "yearly",
+      "price": 96,
+      "trafficGB": 60,
+      "trafficPer": "month",
+      "note": "面向小流量 / 学生用户；全 IPLC 专线"
+    },
+    {
+      "name": "星岛梦·超量150G",
+      "type": "monthly",
+      "price": 25,
+      "trafficGB": 150,
+      "trafficPer": "month"
+    },
+    {
+      "name": "星岛梦·进阶300G",
+      "type": "monthly",
+      "price": 50,
+      "trafficGB": 300,
+      "trafficPer": "month"
+    },
+    {
+      "name": "星岛梦·闪光500G",
+      "type": "monthly",
+      "price": 70,
+      "trafficGB": 500,
+      "trafficPer": "month"
+    },
+    {
+      "name": "星岛梦·旗舰1T版",
+      "type": "monthly",
+      "price": 130,
+      "trafficGB": 1000,
+      "trafficPer": "month"
+    },
+    {
+      "name": "星岛梦·永久不限时100",
+      "type": "onetime",
+      "price": 100,
+      "trafficGB": 100,
+      "trafficPer": "total",
+      "note": "一次性永久流量包，不自动重置；手动重置按原价 9 折"
+    },
+    {
+      "name": "星岛梦·永久不限时300",
+      "type": "onetime",
+      "price": 300,
+      "trafficGB": 300,
+      "trafficPer": "total",
+      "note": "一次性永久流量包，不自动重置；手动重置按原价 9 折"
+    },
+    {
+      "name": "星岛梦·永久不限时1TB",
+      "type": "onetime",
+      "price": 600,
+      "trafficGB": 1000,
+      "trafficPer": "total",
+      "note": "一次性永久流量包，不自动重置；手动重置按原价 9 折"
+    },
+    {
+      "name": "星岛梦·美国家宽定制",
+      "type": "monthly",
+      "custom": true,
+      "price": 700,
+      "trafficGB": 500,
+      "trafficPer": "month",
+      "note": "美国原生家宽静态 IP，面向跨境电商、社媒运营、TikTok 直播等对 IP 纯净度要求高的场景；每月含 500GB，重置流量 8 折"
+    }
+  ],
+  "discounts": "月付套餐长期购买有折扣：年付 8 折、两年付 7 折、三年付 6 折（不适用于永久不限时套餐）",
+  "pending": [
+    "季付、半年付价格",
+    "节点后台实际数量",
+    "协议"
+  ]
+}
