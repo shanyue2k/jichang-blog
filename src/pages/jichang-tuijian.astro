@@ -8,7 +8,7 @@ import { PILLAR } from '../site.config';
 import { absoluteUrl } from '../lib/content';
 import { formatDate } from '../lib/format';
 import { breadcrumbSchema, faqSchema } from '../lib/schema';
-import { FEATURED_COUNT, getRanking, monthLabel, rankingUpdated, type RankedItem } from '../lib/ranking';
+import { FEATURED_COUNT, getRanking, isDedicated, isNoRefund, monthLabel, rankingUpdated, type RankedItem } from '../lib/ranking';
 import { gb, yuan } from '../lib/profiles';
 
 const all = getRanking();
@@ -19,8 +19,8 @@ const month = monthLabel(updated);
 const year = updated.getFullYear();
 const indexable = all.length >= 5;
 
-const title = `机场推荐 ${month}｜${all.length} 家机场价格、节点与线路对比`;
-const description = `${year} 年机场推荐榜：整理 ${all.length} 家机场的官网套餐价格、后台节点数量、线路类型和协议，按月更新。附主推 ${FEATURED_COUNT} 家详细资料、价格对比和选购建议。`;
+const title = '机场推荐 ' + month + '｜' + all.length + ' 家机场价格、节点与线路对比';
+const description = year + ' 年机场推荐榜：整理 ' + all.length + ' 家机场的官网套餐价格、后台节点数量、线路类型和协议，按月更新。附主推 ' + FEATURED_COUNT + ' 家详细资料、价格对比和选购建议。';
 
 const crumbs = [
   { name: '首页', path: '/' },
@@ -33,35 +33,32 @@ const cheapestLow = by((i) => i.lowest).slice(0, 5);
 const cheapestMonthly = by((i) => i.monthlyFrom).slice(0, 5);
 const bestGB = by((i) => i.bestPerGB).slice(0, 5);
 const mostNodes = by((i) => (i.nodeTotal === null ? null : -i.nodeTotal)).slice(0, 5);
-const iplc = all.filter((i) => /IPLC|IEPL/.test(i.profile.lineType ?? ''));
+const iplc = all.filter((i) => isDedicated(i));
 const onetime = all.filter((i) => i.hasOnetime);
-const noRefund = all.filter((i) => /不接受|不提供/.test(i.profile.refund ?? ''));
+const noRefund = all.filter((i) => isNoRefund(i));
 
 const pickNote = (i: RankedItem) => {
-  const p = i.profile;
   const bits: string[] = [];
-  if (i.lowest !== null && i.lowestPlanName) bits.push(`长期用最省的是「${i.lowestPlanName}」，折合约 ${yuan(i.lowest)}/月`);
-  if (i.monthlyFrom !== null) bits.push(`想先试一个月，月付最低 ${yuan(i.monthlyFrom)}${i.monthlyFromGB ? `（每月 ${gb(i.monthlyFromGB)}）` : ''}`);
+  if (i.lowest !== null && i.lowestPlanName) bits.push('长期用最省的是「' + i.lowestPlanName + '」，折合约 ' + yuan(i.lowest) + '/月');
+  if (i.monthlyFrom !== null) bits.push('想先试一个月，月付最低 ' + yuan(i.monthlyFrom) + (i.monthlyFromGB ? '（每月 ' + gb(i.monthlyFromGB) + '）' : ''));
   if (i.hasOnetime) bits.push('另有不限时流量包，适合用量不固定的人');
   return bits.join('；') + '。';
 };
 
+const cheapLowText = cheapestLow.slice(0, 3).map((i) => i.aff.name + '（' + yuan(i.lowest ?? 0) + '/月）').join('、');
+const cheapMonthText = cheapestMonthly.slice(0, 3).map((i) => i.aff.name + '（' + yuan(i.monthlyFrom ?? 0) + '）').join('、');
+const featuredNames = featured.map((i) => i.aff.name).join('、');
+const noRefundNames = noRefund.map((i) => i.aff.name).join('、');
+const updatedText = formatDate(updated);
+
 const faq = [
   {
-    q: `${year} 年有哪些机场推荐？`,
-    a: `本站主推的 ${FEATURED_COUNT} 家依次是：${featured.map((i) => i.aff.name).join('、')}。完整榜单共 ${all.length} 家，每家都有单独的资料页，写明套餐价格、节点数量、线路和协议。`,
+    q: year + ' 年有哪些机场推荐？',
+    a: '本站主推的 ' + FEATURED_COUNT + ' 家依次是：' + featuredNames + '。完整榜单共 ' + all.length + ' 家，每家都有单独的资料页，写明套餐价格、节点数量、线路和协议。',
   },
   {
     q: '哪个机场最便宜？',
-    a: cheapestLow.length
-      ? `按 ${formatDate(updated)} 整理的官网价格，折合每月最便宜的是 ${cheapestLow
-          .slice(0, 3)
-          .map((i) => `${i.aff.name}（${yuan(i.lowest!)}/月）`)
-          .join('、')}，基本都是年付小流量套餐。只想买一个月的话，月付最便宜的是 ${cheapestMonthly
-          .slice(0, 3)
-          .map((i) => `${i.aff.name}（${yuan(i.monthlyFrom!)}）`)
-          .join('、')}。价格以官网为准。`
-      : '各家价格见上方对比表。',
+    a: '按 ' + updatedText + ' 整理的官网价格，折合每月最便宜的是 ' + cheapLowText + '，基本都是年付小流量套餐。只想买一个月的话，月付最便宜的是 ' + cheapMonthText + '。价格以官网为准。',
   },
   {
     q: '这些机场有免费试用吗？',
@@ -69,7 +66,7 @@ const faq = [
   },
   {
     q: '买了不满意可以退款吗？',
-    a: `多数机场需要提交工单联系客服申请，能否退款以客服答复为准。${noRefund.length ? `${noRefund.map((i) => i.aff.name).join('、')}在官网标注不提供退款，购买前请留意。` : ''}`,
+    a: '多数机场需要提交工单联系客服申请，能否退款以客服答复为准。' + (noRefundNames ? noRefundNames + '在官网标注不提供退款，购买前请留意。' : ''),
   },
   {
     q: 'IPLC 和 IEPL 专线机场有什么好处？',
@@ -77,14 +74,14 @@ const faq = [
   },
   {
     q: '这个榜单多久更新一次？',
-    a: `每月更新价格和节点，最近一次更新于 ${formatDate(updated)}。机场涨价、换线路或停止运营时会及时调整。`,
+    a: '每月更新价格和节点，最近一次更新于 ' + updatedText + '。机场涨价、换线路或停止运营时会及时调整。',
   },
 ];
 
 const itemList = {
   '@context': 'https://schema.org',
   '@type': 'ItemList',
-  name: `机场推荐 ${month}`,
+  name: '机场推荐 ' + month,
   numberOfItems: all.length,
   itemListElement: all.map((i) => ({
     '@type': 'ListItem',
@@ -111,7 +108,7 @@ const jsonLd = [breadcrumbSchema(crumbs), itemList, faqSchema(faq)];
 
     <section aria-labelledby="top-title">
       <h2 id="top-title" class="sec-title">主推 {FEATURED_COUNT} 家机场一览</h2>
-      <RankTable items={featured} caption={`主推 ${FEATURED_COUNT} 家机场`} />
+      <RankTable items={featured} caption={'主推 ' + FEATURED_COUNT + ' 家机场'} />
       <p class="meta small">"折合最低"按年付等长周期套餐换算成每月价格；表格可以左右滑动。</p>
     </section>
 
@@ -193,7 +190,7 @@ const jsonLd = [breadcrumbSchema(crumbs), itemList, faqSchema(faq)];
         <ol>
           {cheapestMonthly.map((i) => (
             <li>
-              <a href={i.path}>{i.aff.name}</a>：<span class="num">{yuan(i.monthlyFrom ?? 0)}</span>/月{i.monthlyFromGB ? `，每月 ${gb(i.monthlyFromGB)}` : ''}
+              <a href={i.path}>{i.aff.name}</a>：<span class="num">{yuan(i.monthlyFrom ?? 0)}</span>/月{i.monthlyFromGB ? '，每月 ' + gb(i.monthlyFromGB) : ''}
             </li>
           ))}
         </ol>

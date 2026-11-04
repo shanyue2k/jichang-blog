@@ -64,3 +64,6 @@ export function monthLabel(d: Date): string {
   const f = new Intl.DateTimeFormat('zh-CN', { timeZone: 'Asia/Shanghai', year: 'numeric', month: 'numeric' }).formatToParts(d);
   return `${f.find((p) => p.type === 'year')?.value}年${f.find((p) => p.type === 'month')?.value}月`;
 }
+
+export const isDedicated = (i: RankedItem) => /IPLC|IEPL/.test(i.profile.lineType ?? '');
+export const isNoRefund = (i: RankedItem) => /不接受|不提供/.test(i.profile.refund ?? '');
