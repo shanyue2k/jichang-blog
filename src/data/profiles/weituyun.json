@@ -1,0 +1,117 @@
+{
+  "id": "weituyun",
+  "collectedAt": "2026-11-04",
+  "source": "唯兔云官网套餐页",
+  "lineType": "全 IPLC 专线",
+  "lineNote": "「年付加强专线」套餐标注的是 IEPL 企业跨境专线，其余套餐标注全 IPLC 专线。",
+  "devices": "不限制客户端数量",
+  "rate": "节点倍率 x1",
+  "regions": [
+    "香港",
+    "台湾",
+    "日本",
+    "新加坡",
+    "美国",
+    "马来西亚",
+    "英国",
+    "德国",
+    "法国",
+    "泰国",
+    "菲律宾",
+    "印度"
+  ],
+  "nodeCount": "76 个（官网标注）",
+  "nodeNote": "官网列出：香港 20 个，台湾、日本、新加坡、美国各 10 个，马来西亚 2 个，英国、德国、法国、泰国、菲律宾、印度各 1 个；需要其他地区可以咨询客服",
+  "protocols": [
+    "VLESS"
+  ],
+  "claims": [
+    "全 IPLC 专线，VLESS 协议，不限速，不限制客户端",
+    "节点倍率 x1，另外增加了备用直连节点",
+    "原生 IP，解锁 Netflix、Hulu、HBO、Disney+ 等流媒体",
+    "解锁 ChatGPT、TikTok",
+    "客服全天在线指导",
+    "年付小流量套餐面向轻度用户（看新闻、查资料、写论文），当月流量用完可付费重置"
+  ],
+  "unlock": [
+    "Netflix",
+    "Disney+",
+    "ChatGPT",
+    "TikTok"
+  ],
+  "plans": [
+    {
+      "name": "唯兔云·年付加强专线",
+      "type": "yearly",
+      "price": 120,
+      "trafficGB": 75,
+      "trafficPer": "month",
+      "note": "IEPL 企业跨境专线；当月流量用完可付费重置"
+    },
+    {
+      "name": "唯兔云·年付版限量款",
+      "type": "yearly",
+      "price": 79.9,
+      "trafficGB": 45,
+      "trafficPer": "month",
+      "note": "限量款；当月流量用完可付费重置"
+    },
+    {
+      "name": "唯兔云·普通版",
+      "type": "monthly",
+      "price": 19.9,
+      "trafficGB": 150,
+      "trafficPer": "month"
+    },
+    {
+      "name": "唯兔云·进阶版",
+      "type": "monthly",
+      "price": 29.9,
+      "trafficGB": 200,
+      "trafficPer": "month"
+    },
+    {
+      "name": "唯兔云·专业版",
+      "type": "monthly",
+      "price": 59.9,
+      "trafficGB": 500,
+      "trafficPer": "month"
+    },
+    {
+      "name": "唯兔云·至尊版",
+      "type": "monthly",
+      "price": 119.9,
+      "trafficGB": 1000,
+      "trafficPer": "month"
+    },
+    {
+      "name": "唯兔云·永久不限时 100GB",
+      "type": "onetime",
+      "price": 100,
+      "trafficGB": 100,
+      "trafficPer": "total",
+      "note": "一次性永久流量包，不按周期刷新；后续续费永久 9 折"
+    },
+    {
+      "name": "唯兔云·永久不限时 200GB",
+      "type": "onetime",
+      "price": 160,
+      "trafficGB": 200,
+      "trafficPer": "total",
+      "note": "一次性永久流量包，不按周期刷新；后续续费永久 9 折"
+    },
+    {
+      "name": "唯兔云·永久不限时 500GB",
+      "type": "onetime",
+      "price": 340,
+      "trafficGB": 500,
+      "trafficPer": "total",
+      "note": "一次性永久流量包，不按周期刷新；后续续费永久 9 折"
+    }
+  ],
+  "discounts": "月付套餐长期购买有折扣：1 年付 8 折、2 年付 7 折、3 年付 6 折，节日活动可在此基础上再打折",
+  "pending": [
+    "季付、半年付价格",
+    "节点后台实际数量"
+  ]
+}
