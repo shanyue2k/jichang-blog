@@ -1,0 +1,156 @@
+{
+  "id": "ermaoyun",
+  "collectedAt": "2026-11-04",
+  "source": "二猫云官网套餐页，以及站长提供的节点列表",
+  "lineType": "IEPL 专线",
+  "devices": "不限设备数量",
+  "rate": "全节点 x1 倍率，晚高峰不降速",
+  "regions": [
+    "香港",
+    "台湾",
+    "日本",
+    "新加坡",
+    "美国"
+  ],
+  "nodeCount": "60 个",
+  "nodeNote": "香港 20 个，台湾、日本、新加坡、美国各 10 个；每个地区的节点按名称分为初级、中级、高级几档",
+  "lineNote": "套餐卡片上的节点说明写的是台湾 5 个，本站整理时节点列表里台湾节点更多，以实际列表为准。",
+  "claims": [
+    "IEPL 专线，单节点峰值 2.5Gbps",
+    "全节点 x1 倍率，晚高峰不降速",
+    "原生 IP，支持 Netflix、Disney+、ChatGPT、TikTok",
+    "多设备不限量同时在线（电脑、手机、路由器）",
+    "有自研客户端，一键连接",
+    "智能路由自动择优",
+    "月付系列每 30 天自动刷新流量"
+  ],
+  "unlock": [
+    "Netflix",
+    "Disney+",
+    "ChatGPT",
+    "TikTok"
+  ],
+  "plans": [
+    {
+      "name": "二猫年付小包",
+      "type": "yearly",
+      "price": 96,
+      "trafficGB": 60,
+      "trafficPer": "month",
+      "note": "每 30 天刷新流量；卡片简介写 ¥89/年，标价为 ¥96/年，以结算为准"
+    },
+    {
+      "name": "二猫云·白猫套餐",
+      "type": "monthly",
+      "price": 20,
+      "trafficGB": 130,
+      "trafficPer": "month"
+    },
+    {
+      "name": "二猫云·橘猫畅玩版",
+      "type": "monthly",
+      "price": 40,
+      "trafficGB": 230,
+      "trafficPer": "month"
+    },
+    {
+      "name": "二猫云·牛奶猫尊享版",
+      "type": "monthly",
+      "price": 80,
+      "trafficGB": 430,
+      "trafficPer": "month"
+    },
+    {
+      "name": "二猫云·黑猫重度用户版",
+      "type": "monthly",
+      "price": 160,
+      "trafficGB": 850,
+      "trafficPer": "month"
+    },
+    {
+      "name": "二猫云·白猫套餐",
+      "type": "quarterly",
+      "price": 57,
+      "trafficGB": 130,
+      "trafficPer": "month"
+    },
+    {
+      "name": "二猫云·橘猫畅玩版",
+      "type": "quarterly",
+      "price": 114,
+      "trafficGB": 230,
+      "trafficPer": "month"
+    },
+    {
+      "name": "二猫云·牛奶猫尊享版",
+      "type": "quarterly",
+      "price": 228,
+      "trafficGB": 430,
+      "trafficPer": "month"
+    },
+    {
+      "name": "二猫云·黑猫重度用户版",
+      "type": "quarterly",
+      "price": 456,
+      "trafficGB": 850,
+      "trafficPer": "month"
+    },
+    {
+      "name": "二猫云·白猫套餐",
+      "type": "semiannual",
+      "price": 108,
+      "trafficGB": 130,
+      "trafficPer": "month"
+    },
+    {
+      "name": "二猫云·橘猫畅玩版",
+      "type": "semiannual",
+      "price": 216,
+      "trafficGB": 230,
+      "trafficPer": "month"
+    },
+    {
+      "name": "二猫云·牛奶猫尊享版",
+      "type": "semiannual",
+      "price": 432,
+      "trafficGB": 430,
+      "trafficPer": "month"
+    },
+    {
+      "name": "二猫云·黑猫重度用户版",
+      "type": "semiannual",
+      "price": 864,
+      "trafficGB": 850,
+      "trafficPer": "month"
+    },
+    {
+      "name": "二猫云·不限时套餐",
+      "type": "onetime",
+      "price": 100,
+      "trafficGB": 100,
+      "trafficPer": "total",
+      "note": "流量永久有效，不每月重置；支持续杯补充流量"
+    },
+    {
+      "name": "二猫云·不限时套餐加大版",
+      "type": "onetime",
+      "price": 199,
+      "trafficGB": 200,
+      "trafficPer": "total",
+      "note": "流量永久有效，不每月重置；支持续杯补充流量"
+    },
+    {
+      "name": "二猫云·美国家宽定制",
+      "type": "monthly",
+      "custom": true,
+      "price": 700,
+      "trafficGB": 500,
+      "trafficPer": "month",
+      "note": "美国原生家宽静态 IP，面向跨境电商、社媒运营、TikTok 直播等；每月 700 元含 500GB，重置流量 8 折"
+    }
+  ],
+  "discounts": "月付套餐长期购买有折扣：年付 8 折、两年付 7 折、三年付 6 折",
+  "pending": [
+    "协议"
+  ]
+}
