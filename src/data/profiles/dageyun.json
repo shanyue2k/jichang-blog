@@ -1,0 +1,101 @@
+{
+  "id": "dageyun",
+  "collectedAt": "2026-11-04",
+  "source": "大哥云官网套餐页，以及站长提供的节点列表与协议信息",
+  "lineType": "IEPL / IPLC 专线",
+  "lineNote": "福云、财云、初云套餐标注 IEPL 专线，凌云、御云和年付活动包标注全 IPLC 专线。节点列表里每个地区的第 1、2 个节点名称是官网地址和续费提示，第 3 个起按用途标注：香港「日常优选」、台湾「跨境电商」、新加坡「流媒体」、日本「低延迟」、美国「商务办公」。",
+  "devices": "不限制设备同时在线",
+  "rate": "全节点 x1 倍率，晚高峰不限速",
+  "regions": [
+    "香港",
+    "台湾",
+    "新加坡",
+    "日本",
+    "美国"
+  ],
+  "nodeCount": "60 个",
+  "nodeNote": "香港 20 个，台湾、新加坡、日本、美国各 10 个",
+  "protocols": [
+    "VLESS"
+  ],
+  "claims": [
+    "IEPL / IPLC 专线，单节点峰值带宽 2.5Gbps",
+    "全节点 x1 倍率，晚高峰不限速",
+    "原生 IP，支持 Netflix、Disney+、ChatGPT、TikTok",
+    "深度解锁 ChatGPT、Claude、ChatGPT Plus",
+    "智能优选自动负载均衡",
+    "支持 Windows、macOS、iOS、Android 及路由器，不限设备",
+    "每 30 天重置流量，7×24 小时真人客服"
+  ],
+  "unlock": [
+    "Netflix",
+    "Disney+",
+    "ChatGPT",
+    "Claude"
+  ],
+  "plans": [
+    {
+      "name": "年付活动包",
+      "type": "yearly",
+      "price": 96,
+      "trafficGB": 60,
+      "trafficPer": "month",
+      "note": "适合小流量 / 新手用户；全 IPLC 专线"
+    },
+    {
+      "name": "福云·限时版",
+      "type": "monthly",
+      "price": 15,
+      "trafficGB": 50,
+      "trafficPer": "month",
+      "note": "限时版不可用优惠券"
+    },
+    {
+      "name": "财云·福利版",
+      "type": "monthly",
+      "price": 19.99,
+      "trafficGB": 100,
+      "trafficPer": "month"
+    },
+    {
+      "name": "初云·进阶版",
+      "type": "monthly",
+      "price": 25,
+      "trafficGB": 150,
+      "trafficPer": "month"
+    },
+    {
+      "name": "凌云·基础版",
+      "type": "monthly",
+      "price": 43,
+      "trafficGB": 300,
+      "trafficPer": "month"
+    },
+    {
+      "name": "御云·高级版",
+      "type": "monthly",
+      "price": 73,
+      "trafficGB": 600,
+      "trafficPer": "month"
+    },
+    {
+      "name": "闲云·随心包",
+      "type": "onetime",
+      "price": 268,
+      "trafficGB": 200,
+      "trafficPer": "total",
+      "note": "一次性付费，流量用完为止，不按月重置"
+    },
+    {
+      "name": "悠云·长享包",
+      "type": "onetime",
+      "price": 498,
+      "trafficGB": 500,
+      "trafficPer": "total",
+      "note": "一次性付费，流量用完为止，不按月重置"
+    }
+  ],
+  "pending": [
+    "季付、半年付价格"
+  ]
+}
