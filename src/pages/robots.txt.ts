@@ -10,6 +10,7 @@ Disallow: /
 `
     : `User-agent: *
 Allow: /
+Disallow: /export/
 
 Sitemap: ${absoluteUrl('/sitemap.xml')}
 `;
