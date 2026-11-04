@@ -1,0 +1,106 @@
+---
+// 机场推荐榜表格：首页（compact）和推荐页共用
+import type { RankedItem } from '../lib/ranking';
+import { yuan } from '../lib/profiles';
+
+interface Props {
+  items: RankedItem[];
+  compact?: boolean;
+  caption?: string;
+}
+const { items, compact = false, caption } = Astro.props;
+---
+
+<div class="table-scroll rank-wrap">
+  <table class="data-table rank-table">
+    {caption && <caption class="visually-hidden">{caption}</caption>}
+    <thead>
+      <tr>
+        <th scope="col">排名</th>
+        <th scope="col">机场</th>
+        <th scope="col">月付起价</th>
+        <th scope="col">折合最低</th>
+        {!compact && <th scope="col">线路</th>}
+        <th scope="col">节点</th>
+        {!compact && <th scope="col">协议</th>}
+        <th scope="col"><span class="visually-hidden">操作</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        items.map((i) => (
+          <tr>
+            <td class="num rk">
+              <span class={i.rank <= 3 ? 'medal' : ''}>{i.rank}</span>
+            </td>
+            <th scope="row" class="nm">
+              <a href={i.path}>{i.aff.name}</a>
+            </th>
+            <td class="num nowrap">{i.monthlyFrom !== null ? `${yuan(i.monthlyFrom)}/月` : '—'}</td>
+            <td class="num nowrap">{i.lowest !== null ? `${yuan(i.lowest)}/月` : '—'}</td>
+            {!compact && <td>{i.profile.lineType ?? '—'}</td>}
+            <td class="nowrap">{i.nodeTotal !== null ? `${i.nodeTotal} 个` : '整理中'}</td>
+            {!compact && <td>{i.profile.protocols?.join(' / ') ?? '—'}</td>}
+            <td class="go nowrap">
+              <a href={i.aff.url} rel="sponsored nofollow noopener" target="_blank">官网</a>
+              <span aria-hidden="true"> · </span>
+              <a href={i.path}>资料</a>
+            </td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .rank-wrap {
+    margin: 1rem 0 0.5rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+  }
+
+  .rank-table td,
+  .rank-table th {
+    vertical-align: middle;
+  }
+
+  .rank-table tbody tr:nth-child(even) td,
+  .rank-table tbody tr:nth-child(even) th {
+    background: #f7f9fb;
+  }
+
+  .rank-table tbody th {
+    background: var(--surface);
+    color: var(--ink);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .rk {
+    width: 3.2rem;
+    text-align: center !important;
+  }
+
+  .rk span {
+    display: inline-grid;
+    place-items: center;
+    width: 1.8rem;
+    height: 1.8rem;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+  }
+
+  .rk .medal {
+    background: var(--sign);
+    color: var(--sign-ink);
+  }
+
+  .nowrap {
+    white-space: nowrap;
+  }
+
+  .go a {
+    font-weight: 600;
+  }
+</style>

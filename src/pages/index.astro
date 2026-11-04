@@ -1,18 +1,16 @@
 ---
 import Base from '../layouts/Base.astro';
-import Board from '../components/Board.astro';
+import RankTable from '../components/RankTable.astro';
 import PostList from '../components/PostList.astro';
 import { PILLAR, SECTION_KEYS, SECTIONS, SITE } from '../site.config';
-import { getAllPosts, getPosts, getRankedAirports, getReviewFor, postPath, sectionPath } from '../lib/content';
+import { getAllPosts, getPosts, sectionPath } from '../lib/content';
 import { websiteSchema } from '../lib/schema';
+import { formatDate } from '../lib/format';
+import { FEATURED_COUNT, getRanking, monthLabel, rankingUpdated } from '../lib/ranking';
 
-const airports = (await getRankedAirports()).slice(0, 5);
-const reviewPaths: Record<string, string> = {};
-for (const a of airports) {
-  const r = await getReviewFor(a.id);
-  if (r) reviewPaths[a.id] = postPath(r);
-}
-const updated = airports.length ? new Date(Math.max(...airports.map((a) => a.data.testedAt.getTime()))) : undefined;
+const ranking = getRanking();
+const featured = ranking.slice(0, FEATURED_COUNT);
+const updated = rankingUpdated(ranking);
 
 const latest = (await getAllPosts()).slice(0, 8);
 const counts = Object.fromEntries(
@@ -24,20 +22,20 @@ const counts = Object.fromEntries(
   <section class="hero">
     <div class="wrap hero-grid">
       <div class="intro">
-        <h1>机场推荐与实测评测</h1>
+        <h1>机场推荐 {monthLabel(updated)}</h1>
         <p>
-          每家机场都实际用满一个月以上，记录早中晚测速、晚高峰掉速和流媒体解锁情况。榜单按实测结果排序，每月复测一次。
+          整理了 {ranking.length} 家机场的官网套餐价格、后台节点数量、线路和协议，每月更新。右边是本站主推的 {FEATURED_COUNT} 家，点名字可以看每家的全部套餐和怎么买最划算。
         </p>
         <p class="cta">
           <a class="btn" href={PILLAR.path}>查看完整机场推荐榜</a>
+          <a class="btn btn--ghost" href="/jichang-daohang/">机场官网导航</a>
         </p>
+        <p class="meta">最后更新 <time class="num" datetime={updated.toISOString()}>{formatDate(updated)}</time> · 价格以官网为准</p>
       </div>
       <div class="board-slot">
-        {
-          airports.length > 0 && (
-            <Board airports={airports} reviewPaths={reviewPaths} heading="本月推荐" updated={updated} animate />
-          )
-        }
+        <h2 class="top-title">本站主推 {FEATURED_COUNT} 家机场</h2>
+        <RankTable items={featured} compact caption={`本站主推 ${FEATURED_COUNT} 家机场`} />
+        <p class="meta small">"折合最低"按年付等长周期换算成每月价格。官网链接为推广链接，注册价格不变。</p>
       </div>
     </div>
   </section>
@@ -99,6 +97,18 @@ const counts = Object.fromEntries(
 
   .cta {
     margin-top: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .top-title {
+    margin: 0 0 0.25rem;
+    font-size: var(--step-1);
+  }
+
+  .small {
+    margin-top: 0.25rem;
   }
 
   .sections ul {

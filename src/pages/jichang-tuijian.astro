@@ -1,116 +1,164 @@
 ---
+// 机场推荐榜（承接「机场推荐」关键词）：数据全部来自 src/data/profiles 与 affiliate-links.json
 import Base from '../layouts/Base.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
-import Board from '../components/Board.astro';
 import Faq from '../components/Faq.astro';
-import { PILLAR, SITE } from '../site.config';
-import { getRankedAirports, getReviewFor, hasSample, postPath } from '../lib/content';
-import { formatDate, formatPrice } from '../lib/format';
-import { breadcrumbSchema, faqSchema, itemListSchema } from '../lib/schema';
+import RankTable from '../components/RankTable.astro';
+import { PILLAR } from '../site.config';
+import { absoluteUrl } from '../lib/content';
+import { formatDate } from '../lib/format';
+import { breadcrumbSchema, faqSchema } from '../lib/schema';
+import { FEATURED_COUNT, getRanking, monthLabel, rankingUpdated, type RankedItem } from '../lib/ranking';
+import { gb, yuan } from '../lib/profiles';
 
-const airports = await getRankedAirports();
-const reviewPaths: Record<string, string> = {};
-for (const a of airports) {
-  const r = await getReviewFor(a.id);
-  if (r) reviewPaths[a.id] = postPath(r);
-}
-const updated = airports.length
-  ? new Date(Math.max(...airports.map((a) => a.data.testedAt.getTime())))
-  : new Date();
+const all = getRanking();
+const featured = all.slice(0, FEATURED_COUNT);
+const others = all.slice(FEATURED_COUNT);
+const updated = rankingUpdated(all);
+const month = monthLabel(updated);
 const year = updated.getFullYear();
-const isSample = hasSample(airports);
+const indexable = all.length >= 5;
 
-const title = `机场推荐 ${year}：${airports.length || ''} 家实测好用的机场排行`;
-const description = `${year} 年机场推荐榜，按长期实测的速度、晚高峰稳定性、流媒体与 ChatGPT 解锁情况排序，附价格、线路类型和选购建议，每月更新。`;
+const title = `机场推荐 ${month}｜${all.length} 家机场价格、节点与线路对比`;
+const description = `${year} 年机场推荐榜：整理 ${all.length} 家机场的官网套餐价格、后台节点数量、线路类型和协议，按月更新。附主推 ${FEATURED_COUNT} 家详细资料、价格对比和选购建议。`;
 
 const crumbs = [
   { name: '首页', path: '/' },
   { name: PILLAR.label, path: PILLAR.path },
 ];
 
-// 常见问题：按你的实际情况修改，会同时生成 FAQ 结构化数据
+const by = (key: (i: RankedItem) => number | null) =>
+  all.filter((i) => key(i) !== null).sort((a, b) => (key(a) as number) - (key(b) as number));
+const cheapestLow = by((i) => i.lowest).slice(0, 5);
+const cheapestMonthly = by((i) => i.monthlyFrom).slice(0, 5);
+const bestGB = by((i) => i.bestPerGB).slice(0, 5);
+const mostNodes = by((i) => (i.nodeTotal === null ? null : -i.nodeTotal)).slice(0, 5);
+const iplc = all.filter((i) => /IPLC|IEPL/.test(i.profile.lineType ?? ''));
+const onetime = all.filter((i) => i.hasOnetime);
+const noRefund = all.filter((i) => /不接受|不提供/.test(i.profile.refund ?? ''));
+
+const pickNote = (i: RankedItem) => {
+  const p = i.profile;
+  const bits: string[] = [];
+  if (i.lowest !== null && i.lowestPlanName) bits.push(`长期用最省的是「${i.lowestPlanName}」，折合约 ${yuan(i.lowest)}/月`);
+  if (i.monthlyFrom !== null) bits.push(`想先试一个月，月付最低 ${yuan(i.monthlyFrom)}${i.monthlyFromGB ? `（每月 ${gb(i.monthlyFromGB)}）` : ''}`);
+  if (i.hasOnetime) bits.push('另有不限时流量包，适合用量不固定的人');
+  return bits.join('；') + '。';
+};
+
 const faq = [
   {
-    q: '机场和 VPN 有什么区别？',
-    a: '机场通常提供一份订阅链接，在 Clash 等客户端里导入后可以按规则分流，国内网站直连、国外网站走代理；传统 VPN 一般是全局转发所有流量。机场的节点更多、价格更低，但需要自己装客户端。',
+    q: `${year} 年有哪些机场推荐？`,
+    a: `本站主推的 ${FEATURED_COUNT} 家依次是：${featured.map((i) => i.aff.name).join('、')}。完整榜单共 ${all.length} 家，每家都有单独的资料页，写明套餐价格、节点数量、线路和协议。`,
   },
   {
-    q: '第一次买机场应该选月付还是年付？',
-    a: '建议先买月付或最短周期，用一两周确认晚高峰速度和你常用的网站都正常，再考虑年付。机场有跑路风险，不建议一次购买过长周期。',
+    q: '哪个机场最便宜？',
+    a: cheapestLow.length
+      ? `按 ${formatDate(updated)} 整理的官网价格，折合每月最便宜的是 ${cheapestLow
+          .slice(0, 3)
+          .map((i) => `${i.aff.name}（${yuan(i.lowest!)}/月）`)
+          .join('、')}，基本都是年付小流量套餐。只想买一个月的话，月付最便宜的是 ${cheapestMonthly
+          .slice(0, 3)
+          .map((i) => `${i.aff.name}（${yuan(i.monthlyFrom!)}）`)
+          .join('、')}。价格以官网为准。`
+      : '各家价格见上方对比表。',
   },
   {
-    q: '便宜的机场能用吗？',
-    a: '能用，但要看用途。只刷网页和看 1080p 视频，十元左右的中转机场通常够用；如果要稳定看 4K 或者对延迟敏感，专线机场更合适。',
+    q: '这些机场有免费试用吗？',
+    a: '榜单里的机场都没有免费试用。建议第一次先买最便宜的月付套餐，用一两周确认晚高峰速度和常用网站都正常，再买季付、半年付或年付。',
+  },
+  {
+    q: '买了不满意可以退款吗？',
+    a: `多数机场需要提交工单联系客服申请，能否退款以客服答复为准。${noRefund.length ? `${noRefund.map((i) => i.aff.name).join('、')}在官网标注不提供退款，购买前请留意。` : ''}`,
+  },
+  {
+    q: 'IPLC 和 IEPL 专线机场有什么好处？',
+    a: '专线不走公网出境，晚高峰也比较稳，延迟低，适合看 4K 视频和用 ChatGPT。榜单里多数机场标注了 IPLC 或 IEPL 专线，具体以各家资料页为准。',
   },
   {
     q: '这个榜单多久更新一次？',
-    a: `榜单每月复测更新，最近一次更新于 ${formatDate(updated)}。测试方法见本站的测评方法页面。`,
+    a: `每月更新价格和节点，最近一次更新于 ${formatDate(updated)}。机场涨价、换线路或停止运营时会及时调整。`,
   },
 ];
 
-const jsonLd = [breadcrumbSchema(crumbs), itemListSchema(airports, reviewPaths), faqSchema(faq)];
+const itemList = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: `机场推荐 ${month}`,
+  numberOfItems: all.length,
+  itemListElement: all.map((i) => ({
+    '@type': 'ListItem',
+    position: i.rank,
+    name: i.aff.name,
+    url: absoluteUrl(i.path),
+  })),
+};
+const jsonLd = [breadcrumbSchema(crumbs), itemList, faqSchema(faq)];
 ---
 
-<Base title={title} description={description} jsonLd={jsonLd} noindex={isSample} modified={updated}>
+<Base title={title} description={description} jsonLd={jsonLd} noindex={!indexable} modified={updated}>
   <div class="wrap">
     <Breadcrumbs crumbs={crumbs} />
     <header class="head">
-      <h1>{title}</h1>
+      <h1>机场推荐 {month}</h1>
       <p class="lead">
-        下面的机场都经过至少一个月的实际使用：每天早、中、晚三个时段测速，记录晚高峰掉速和断流，并逐一检查 Netflix、Disney+ 和 ChatGPT 能否正常使用。排名只看实测结果。
+        本页整理了 {all.length} 家机场的官网套餐价格、后台节点数量、线路类型和协议，每月更新。最前面的 {FEATURED_COUNT} 家是本站主推，下面逐家写了价格和怎么买最划算；每家都可以点进资料页看全部套餐。
       </p>
-      <p class="meta">最后更新 <time class="num" datetime={updated.toISOString()}>{formatDate(updated)}</time>。测试怎么做的，见<a href="/ceping-fangfa/">测评方法</a>。</p>
+      <p class="meta">
+        最后更新 <time class="num" datetime={updated.toISOString()}>{formatDate(updated)}</time> · 资料来源：各机场官网套餐页与后台节点列表 · 价格以官网为准
+      </p>
     </header>
 
-    {isSample && <p class="notice">当前榜单是示例数据，页面已设为不被收录。替换 src/data/airports.json 中的数据并去掉 "sample": true 后会自动开放收录。</p>}
-
-    {airports.length > 0 ? (
-      <Board airports={airports} reviewPaths={reviewPaths} heading={`${year} 机场推荐榜`} updated={updated} />
-    ) : (
-      <p class="notice">还没有上榜机场。在 src/data/airports.json 中添加机场并把 rank 设为 1、2、3…</p>
-    )}
+    <section aria-labelledby="top-title">
+      <h2 id="top-title" class="sec-title">主推 {FEATURED_COUNT} 家机场一览</h2>
+      <RankTable items={featured} caption={`主推 ${FEATURED_COUNT} 家机场`} />
+      <p class="meta small">"折合最低"按年付等长周期套餐换算成每月价格；表格可以左右滑动。</p>
+    </section>
 
     <div class="body">
       {
-        airports.map((a) => {
-          const d = a.data;
+        featured.map((i) => {
+          const p = i.profile;
           return (
-            <section class="pick" id={a.id}>
+            <section class="pick" id={i.aff.id}>
               <h2>
-                <span class="num rank">{d.rank}</span>
-                {d.name}：{d.tagline}
+                <span class="num rank">{i.rank}</span>
+                <span>{i.aff.name}</span>
               </h2>
-              <p>
-                <strong>适合：</strong>
-                {d.bestFor}
-              </p>
               <ul class="facts">
-                <li>
-                  起价 <span class="num">{formatPrice(d.priceFrom)}</span>/月{d.priceNote ? `（${d.priceNote}）` : ''}
-                </li>
-                <li>{d.lineType}</li>
-                <li>{d.protocols.join(' / ')}</li>
-                <li>{d.nodeCount} 个节点</li>
-                <li>{d.trial ? '有免费试用' : '无试用'}</li>
+                {i.monthlyFrom !== null && <li>月付 <strong class="num">{yuan(i.monthlyFrom)}</strong> 起</li>}
+                {i.lowest !== null && <li>折合最低 <strong class="num">{yuan(i.lowest)}</strong>/月</li>}
+                {p.lineType && <li>{p.lineType}</li>}
+                {i.nodeTotal !== null && <li>{i.nodeTotal} 个节点 · {i.regionCount} 个地区</li>}
+                {p.protocols && <li>{p.protocols.join(' / ')}</li>}
+                {p.devices && <li>{p.devices}</li>}
               </ul>
-              <div class="pc">
+              {p.regions && p.regions.length > 0 && (
                 <p>
-                  <strong class="ok">优点：</strong>
-                  {d.pros.join('；')}
+                  <strong>节点地区：</strong>
+                  {p.nodeNote ?? p.regions.join('、')}
                 </p>
+              )}
+              <p>
+                <strong>官网介绍的特点：</strong>
+                {p.claims.slice(0, 3).join('；')}。
+              </p>
+              <p>
+                <strong>怎么买划算：</strong>
+                {pickNote(i)}
+              </p>
+              {p.discounts && (
                 <p>
-                  <strong class="bad">缺点：</strong>
-                  {d.cons.join('；')}
+                  <strong>长期付折扣：</strong>
+                  {p.discounts}。
                 </p>
-              </div>
+              )}
               <p class="actions">
-                {reviewPaths[a.id] && (
-                  <a class="btn btn--ghost" href={reviewPaths[a.id]}>
-                    阅读 {d.name} 完整评测
-                  </a>
-                )}
-                <a class="btn" href={d.url} rel="sponsored nofollow noopener" target="_blank">
-                  访问 {d.name} 官网
+                <a class="btn btn--ghost" href={i.path}>
+                  查看 {i.aff.name} 全部套餐
+                </a>
+                <a class="btn" href={i.aff.url} rel="sponsored nofollow noopener" target="_blank">
+                  访问 {i.aff.name} 官网
                 </a>
               </p>
             </section>
@@ -118,24 +166,112 @@ const jsonLd = [breadcrumbSchema(crumbs), itemListSchema(airports, reviewPaths),
         })
       }
 
-      <section class="guide">
+      {
+        others.length > 0 && (
+          <section class="more" aria-labelledby="more-title">
+            <h2 id="more-title">其他机场（{others.length} 家）</h2>
+            <p>下面这些机场也整理了完整资料，按本站推荐顺序排列，点名字可以看全部套餐。</p>
+            <RankTable items={others} caption="其他机场" />
+          </section>
+        )
+      }
+
+      <section class="compare prose" aria-labelledby="cmp-title">
+        <h2 id="cmp-title">按需求挑机场</h2>
+        <p>下面的排名都是按官网价格和后台节点列表直接算出来的，方便按自己的需求快速缩小范围。</p>
+
+        <h3>长期用最省钱（折合每月价格）</h3>
+        <ol>
+          {cheapestLow.map((i) => (
+            <li>
+              <a href={i.path}>{i.aff.name}</a>：{i.lowestPlanName}，折合约 <span class="num">{yuan(i.lowest!)}</span>/月
+            </li>
+          ))}
+        </ol>
+
+        <h3>先买一个月试试（月付起价）</h3>
+        <ol>
+          {cheapestMonthly.map((i) => (
+            <li>
+              <a href={i.path}>{i.aff.name}</a>：<span class="num">{yuan(i.monthlyFrom!)}</span>/月{i.monthlyFromGB ? `，每月 ${gb(i.monthlyFromGB)}` : ''}
+            </li>
+          ))}
+        </ol>
+
+        <h3>流量用得多（每 GB 最便宜）</h3>
+        <ol>
+          {bestGB.map((i) => (
+            <li>
+              <a href={i.path}>{i.aff.name}</a>：最低约 <span class="num">{yuan(i.bestPerGB!, 3)}</span>/GB
+            </li>
+          ))}
+        </ol>
+
+        <h3>节点最多</h3>
+        <ol>
+          {mostNodes.map((i) => (
+            <li>
+              <a href={i.path}>{i.aff.name}</a>：{i.nodeTotal} 个节点，覆盖 {i.regionCount} 个地区
+            </li>
+          ))}
+        </ol>
+
+        {onetime.length > 0 && (
+          <>
+            <h3>用量不固定，想买不限时流量包</h3>
+            <p>
+              这些机场有一次性购买、不按月清零的流量包：
+              {onetime.map((i, k) => (
+                <>
+                  {k > 0 && '、'}
+                  <a href={i.path}>{i.aff.name}</a>
+                </>
+              ))}
+              。
+            </p>
+          </>
+        )}
+
+        <h3>标注 IPLC / IEPL 专线的机场</h3>
+        <p>
+          {iplc.map((i, k) => (
+            <>
+              {k > 0 && '、'}
+              <a href={i.path}>{i.aff.name}</a>
+            </>
+          ))}
+          。专线是各家官网的标注，不同套餐的线路可能不一样，以资料页为准。
+        </p>
+      </section>
+
+      <section class="guide prose">
         <h2>怎么挑一家适合自己的机场</h2>
         <h3>先想清楚主要用途</h3>
         <p>
-          只是查资料、刷 YouTube，低价中转机场就够了；经常看 Netflix、Disney+ 的 4K 内容，要优先看解锁情况和晚高峰速度；需要用 ChatGPT 等对 IP 敏感的服务，要确认机场有可用的地区节点。
+          只是查资料、刷 YouTube，选年付小流量套餐最省钱；经常看 Netflix、Disney+ 的 4K 内容，要选流量大一些的月付套餐；需要用 ChatGPT 等对 IP 敏感的服务，要确认机场有美国、日本、新加坡等地区的节点。
         </p>
         <h3>看懂线路类型</h3>
         <p>
-          直连最便宜，但晚高峰最容易慢；中转经过国内服务器再出境，稳定性好一些；IEPL / IPLC 专线不走公网出境，延迟低、高峰期也稳，价格最高。
+          直连最便宜，但晚高峰最容易慢；中转经过国内服务器再出境，稳定性好一些；IEPL / IPLC 专线不走公网出境，延迟低、高峰期也稳，价格也更高。
         </p>
         <h3>先短后长，别一次买太久</h3>
         <p>
-          机场行业有跑路风险。新机场先买月付，用满两周没问题再考虑季付或年付；有免费试用的机场优先试用。
+          榜单里的机场都没有免费试用。第一次买先选月付，用满一两周没问题再考虑季付、半年付或年付。机场行业有跑路风险，不建议一次买两三年。
         </p>
         <h3>确认你的设备能用</h3>
         <p>
-          绝大多数机场都提供 Clash 订阅，Windows、macOS、安卓都能用；iPhone 一般需要外区 Apple ID 下载 Shadowrocket 等客户端。具体操作见 <a href="/jiaocheng/">客户端教程</a>。
+          榜单里的机场都提供订阅链接：电脑用 <a href="/jiaocheng/clash-verge-rev-jiaocheng/">Clash Verge Rev</a> 或 <a href="/jiaocheng/v2rayn-jiaocheng/">v2rayN</a>，iPhone 用 <a href="/jiaocheng/shadowrocket-jiaocheng/">Shadowrocket</a>（需要<a href="/jiaocheng/waiqu-apple-id-zhuce/">外区 Apple ID</a>），安卓用 <a href="/jiaocheng/clash-meta-for-android-jiaocheng/">Clash Meta for Android</a>。
         </p>
+      </section>
+
+      <section class="method prose">
+        <h2>资料来源与排序说明</h2>
+        <ul>
+          <li>价格、套餐和官方介绍来自各机场官网套餐页；节点数量和协议以机场后台的节点列表为准，和官网宣传不一致时，资料页里会写明。</li>
+          <li>排名是本站的推荐顺序，目前还没有加入测速数据；之后完成实测的机场会补上测速和解锁结果。</li>
+          <li>页面里的官网链接是推广链接，通过它注册价格不变，本站可能获得佣金。</li>
+          <li>想直接找官网入口，可以看<a href="/jichang-daohang/">机场官网导航</a>。</li>
+        </ul>
       </section>
 
       <Faq items={faq} />
@@ -146,26 +282,36 @@ const jsonLd = [breadcrumbSchema(crumbs), itemListSchema(airports, reviewPaths),
 <style>
   .head {
     max-width: 48rem;
-    margin-bottom: 1.75rem;
+    margin-bottom: 1.5rem;
   }
 
   .lead {
     color: var(--ink-soft);
   }
 
+  .sec-title {
+    margin-top: 1rem;
+    border-top: 2px solid var(--ink);
+    padding-top: 0.25em;
+  }
+
+  .small {
+    margin-top: 0.25rem;
+  }
+
   .body {
     max-width: var(--measure);
-    margin-top: 3rem;
+    margin-top: 2.5rem;
   }
 
   .pick {
-    padding-bottom: 1.5rem;
+    padding-bottom: 1.25rem;
   }
 
   .pick h2 {
     display: flex;
     gap: 0.6rem;
-    align-items: baseline;
+    align-items: center;
     border-top: 2px solid var(--ink);
     padding-top: 0.5em;
   }
@@ -199,18 +345,6 @@ const jsonLd = [breadcrumbSchema(crumbs), itemListSchema(airports, reviewPaths),
     font-size: 0.9375rem;
   }
 
-  .pc p {
-    margin-bottom: 0.5rem;
-  }
-
-  .ok {
-    color: var(--ok);
-  }
-
-  .bad {
-    color: var(--bad);
-  }
-
   .actions {
     display: flex;
     flex-wrap: wrap;
@@ -218,7 +352,7 @@ const jsonLd = [breadcrumbSchema(crumbs), itemListSchema(airports, reviewPaths),
     margin-top: 1rem;
   }
 
-  .guide h2 {
+  .more h2 {
     border-top: 2px solid var(--ink);
     padding-top: 0.25em;
   }

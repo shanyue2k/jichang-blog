@@ -7,7 +7,6 @@ import {
   getAllPosts,
   getPostAirports,
   getPosts,
-  getRankedAirports,
   hasSample,
   lastModified,
   postPath,
@@ -15,6 +14,7 @@ import {
 import { escapeXml } from '../lib/format';
 import affiliate from '../data/affiliate-links.json';
 import { profilePath, profiles } from '../lib/profiles';
+import { getRanking, rankingUpdated } from '../lib/ranking';
 
 export const GET: APIRoute = async () => {
   const urls: { loc: string; lastmod?: Date }[] = [];
@@ -23,11 +23,8 @@ export const GET: APIRoute = async () => {
 
   urls.push({ loc: '/', lastmod: newest });
 
-  const ranked = await getRankedAirports();
-  if (ranked.length && !hasSample(ranked)) {
-    const tested = new Date(Math.max(...ranked.map((a) => a.data.testedAt.getTime())));
-    urls.push({ loc: PILLAR.path, lastmod: tested });
-  }
+  const ranking = getRanking();
+  if (ranking.length >= 5) urls.push({ loc: PILLAR.path, lastmod: rankingUpdated(ranking) });
 
   for (const section of SECTION_KEYS) {
     const list = [];
