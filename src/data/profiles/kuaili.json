@@ -1,0 +1,138 @@
+{
+  "id": "kuaili",
+  "collectedAt": "2026-11-04",
+  "source": "快狸官网套餐页，以及站长提供的节点列表与协议信息",
+  "lineType": "IEPL 专线",
+  "devices": "不限设备数量",
+  "rate": "全节点 x1 倍率，晚高峰不降速",
+  "regions": [
+    "香港",
+    "台湾",
+    "日本",
+    "新加坡",
+    "美国"
+  ],
+  "nodeCount": "60 个",
+  "nodeNote": "香港 20 个，台湾、日本、新加坡、美国各 10 个",
+  "lineNote": "官网套餐卡片的节点说明写的是台湾 5 个，另有马来西亚、英国、法国、德国、土耳其、泰国、巴西等地区；本站整理时节点列表里只有香港、台湾、日本、新加坡、美国 5 个地区共 60 个，其中台湾 10 个，以实际列表为准。",
+  "protocols": [
+    "VLESS"
+  ],
+  "claims": [
+    "全 IEPL 专线，单节点峰值 2.5Gbps",
+    "全节点 x1 倍率，晚高峰不降速",
+    "原生 IP，支持 Netflix、Disney+、ChatGPT、TikTok",
+    "多设备不限量同时在线（电脑、手机、路由器）",
+    "智能路由自动择优",
+    "每 30 天自动刷新流量"
+  ],
+  "unlock": [
+    "Netflix",
+    "Disney+",
+    "ChatGPT",
+    "TikTok"
+  ],
+  "plans": [
+    {
+      "name": "森狸年付小套餐",
+      "type": "yearly",
+      "price": 120,
+      "trafficGB": 30,
+      "trafficPer": "month"
+    },
+    {
+      "name": "月狸月付小套餐",
+      "type": "monthly",
+      "price": 15,
+      "trafficGB": 50,
+      "trafficPer": "month",
+      "note": "只有月付"
+    },
+    {
+      "name": "小狸基础版",
+      "type": "monthly",
+      "price": 22,
+      "trafficGB": 100,
+      "trafficPer": "month"
+    },
+    {
+      "name": "灵狸标准版",
+      "type": "monthly",
+      "price": 35,
+      "trafficGB": 250,
+      "trafficPer": "month"
+    },
+    {
+      "name": "夜狸强化版",
+      "type": "monthly",
+      "price": 95,
+      "trafficGB": 500,
+      "trafficPer": "month"
+    },
+    {
+      "name": "天狸顶配版",
+      "type": "monthly",
+      "price": 180,
+      "trafficGB": 1000,
+      "trafficPer": "month"
+    },
+    {
+      "name": "小狸基础版",
+      "type": "quarterly",
+      "price": 62,
+      "trafficGB": 100,
+      "trafficPer": "month"
+    },
+    {
+      "name": "灵狸标准版",
+      "type": "quarterly",
+      "price": 103,
+      "trafficGB": 250,
+      "trafficPer": "month"
+    },
+    {
+      "name": "夜狸强化版",
+      "type": "quarterly",
+      "price": 290,
+      "trafficGB": 500,
+      "trafficPer": "month"
+    },
+    {
+      "name": "天狸顶配版",
+      "type": "quarterly",
+      "price": 535,
+      "trafficGB": 1000,
+      "trafficPer": "month"
+    },
+    {
+      "name": "小狸基础版",
+      "type": "semiannual",
+      "price": 125,
+      "trafficGB": 100,
+      "trafficPer": "month"
+    },
+    {
+      "name": "灵狸标准版",
+      "type": "semiannual",
+      "price": 208,
+      "trafficGB": 250,
+      "trafficPer": "month"
+    },
+    {
+      "name": "夜狸强化版",
+      "type": "semiannual",
+      "price": 545,
+      "trafficGB": 500,
+      "trafficPer": "month"
+    },
+    {
+      "name": "天狸顶配版",
+      "type": "semiannual",
+      "price": 1060,
+      "trafficGB": 1000,
+      "trafficPer": "month"
+    }
+  ],
+  "discounts": "月付套餐长期购买有折扣：年付 8 折、两年付 7 折、三年付 6 折",
+  "pending": []
+}
