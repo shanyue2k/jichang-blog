@@ -169,7 +169,8 @@ const json = JSON.stringify(data).replace(/</g, '\\u003c');
       }
       if (top) best.push({ a, ...top });
     }
-    best.sort((x, y) => x.cost - y.cost);
+    best.sort((x, y) => x.cost - y.cost || x.a.rank - y.a.rank);
+    if (pay === 'onetime') return { list: best.slice(0, 3), overBudget: false };
     const within = best.filter((b) => b.cost <= budget);
     const list = (within.length ? within : best).slice(0, 3);
     return { list, overBudget: !within.length && best.length > 0 };
@@ -215,7 +216,9 @@ const json = JSON.stringify(data).replace(/</g, '\\u003c');
     });
     note.textContent = overBudget
       ? '这个预算下没有流量够用的套餐，上面是最接近的选择；也可以把用途选低一档，或者选「买长周期」更便宜。'
-      : state.pay === 'monthly'
+      : state.pay === 'onetime'
+        ? '流量包按每 GB 价格从低到高排列，流量不过期，用量不固定的人最合适。'
+        : state.pay === 'monthly'
         ? '先用一两周，晚高峰速度和常用网站都没问题，再买长周期更划算。'
         : '';
   }
