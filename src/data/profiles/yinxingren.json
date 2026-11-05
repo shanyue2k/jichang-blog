@@ -1,0 +1,162 @@
+{
+  "id": "yinxingren",
+  "collectedAt": "2026-11-05",
+  "source": "隐形人官网套餐页，以及站长提供的节点列表与协议信息",
+  "lineType": "IEPL 专线 / BGP 专线出口",
+  "lineNote": "年付套餐标注全 IEPL 专线；月付系列标注云端多链路调度或 BGP 智能优化加专线出口。官网节点说明还列了韩国、阿根廷、马来西亚等地区，本站整理时节点列表里只有 5 个地区。",
+  "devices": "周期套餐不限制设备数量（一次性流量包有设备数限制，见套餐备注）",
+  "rate": "全节点 x1 倍率，晚高峰不限速",
+  "regions": [
+    "香港",
+    "台湾",
+    "日本",
+    "新加坡",
+    "美国"
+  ],
+  "nodeCount": "60 个",
+  "nodeNote": "香港 20 个，台湾、日本、新加坡、美国各 10 个",
+  "protocols": [
+    "VLESS"
+  ],
+  "claims": [
+    "年付套餐全 IEPL 专线，单节点峰值 2.5Gbps",
+    "全节点 x1 倍率，晚高峰不限速",
+    "原生 IP，支持 Netflix、Disney+、ChatGPT、TikTok",
+    "支持 ChatGPT、GitHub Copilot、Hugging Face 等开发与 AI 工具",
+    "周期套餐不限制同时在线设备数"
+  ],
+  "unlock": [
+    "Netflix",
+    "Disney+",
+    "ChatGPT",
+    "TikTok"
+  ],
+  "plans": [
+    {
+      "name": "星耀风暴 365天不熄",
+      "type": "yearly",
+      "price": 109,
+      "trafficGB": 80,
+      "trafficPer": "month",
+      "note": "适合小流量 / 新手用户；全 IEPL 专线；购买日起每 30 天刷新"
+    },
+    {
+      "name": "隐形人 白银纪元",
+      "type": "monthly",
+      "price": 24,
+      "trafficGB": 144,
+      "trafficPer": "month"
+    },
+    {
+      "name": "隐形人 黄金序列",
+      "type": "monthly",
+      "price": 48,
+      "trafficGB": 360,
+      "trafficPer": "month"
+    },
+    {
+      "name": "隐形人 铂金至臻",
+      "type": "monthly",
+      "price": 105,
+      "trafficGB": 750,
+      "trafficPer": "month"
+    },
+    {
+      "name": "隐形人 钻石穹顶",
+      "type": "monthly",
+      "price": 185,
+      "trafficGB": 1600,
+      "trafficPer": "month"
+    },
+    {
+      "name": "隐形人 白银纪元",
+      "type": "quarterly",
+      "price": 68.4,
+      "trafficGB": 144,
+      "trafficPer": "month"
+    },
+    {
+      "name": "隐形人 黄金序列",
+      "type": "quarterly",
+      "price": 136.8,
+      "trafficGB": 360,
+      "trafficPer": "month"
+    },
+    {
+      "name": "隐形人 铂金至臻",
+      "type": "quarterly",
+      "price": 299.25,
+      "trafficGB": 750,
+      "trafficPer": "month"
+    },
+    {
+      "name": "隐形人 钻石穹顶",
+      "type": "quarterly",
+      "price": 527.25,
+      "trafficGB": 1600,
+      "trafficPer": "month"
+    },
+    {
+      "name": "隐形人 白银纪元",
+      "type": "semiannual",
+      "price": 129.6,
+      "trafficGB": 144,
+      "trafficPer": "month"
+    },
+    {
+      "name": "隐形人 黄金序列",
+      "type": "semiannual",
+      "price": 259.2,
+      "trafficGB": 360,
+      "trafficPer": "month"
+    },
+    {
+      "name": "隐形人 铂金至臻",
+      "type": "semiannual",
+      "price": 567,
+      "trafficGB": 750,
+      "trafficPer": "month"
+    },
+    {
+      "name": "隐形人 钻石穹顶",
+      "type": "semiannual",
+      "price": 999,
+      "trafficGB": 1600,
+      "trafficPer": "month"
+    },
+    {
+      "name": "一次性小流量",
+      "type": "onetime",
+      "price": 229,
+      "trafficGB": 160,
+      "trafficPer": "total",
+      "note": "无时间限制；独享节点，严格限 1 台设备"
+    },
+    {
+      "name": "一次性标准流量包",
+      "type": "onetime",
+      "price": 549,
+      "trafficGB": 420,
+      "trafficPer": "total",
+      "note": "没有过期时间；支持 2 台设备同时在线"
+    },
+    {
+      "name": "一次性精英流量包",
+      "type": "onetime",
+      "price": 1199,
+      "trafficGB": 1000,
+      "trafficPer": "total",
+      "note": "永不过期；支持 3 台设备同时在线"
+    },
+    {
+      "name": "王者定制版",
+      "type": "monthly",
+      "custom": true,
+      "price": 680,
+      "trafficGB": 500,
+      "trafficPer": "month",
+      "note": "独享带宽的定制专线方案，面向企业和高并发业务"
+    }
+  ],
+  "pending": []
+}
