@@ -1,7 +1,7 @@
 {
   "id": "lingdongyun",
   "collectedAt": "2026-11-05",
-  "source": "灵动云官网套餐页，以及站长提供的节点列表",
+  "source": "灵动云官网套餐页，以及站长提供的节点列表与协议信息",
   "lineType": "IEPL / IPLC 专线",
   "devices": "不限制设备数量",
   "rate": "全节点 1.0 倍率计费，不限速",
@@ -155,7 +155,9 @@
       "note": "专线独享流量、独立带宽和专属公网 IP，面向跨境电商、独立站和 TikTok 直播；确认需求后 2–3 个工作日交付"
     }
   ],
-  "pending": [
-    "协议"
-  ]
+  "pending": [],
+  "protocols": [
+    "VLESS"
+  ],
+  "lineNote": "套餐说明里写的是 SS 协议，站长确认节点协议为 VLESS。"
 }
