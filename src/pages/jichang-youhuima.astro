@@ -26,6 +26,7 @@ const renewal = all.filter((i) => i.aff.couponStatus === 'renewal');
 const dead = all.filter((i) => i.aff.couponStatus === 'expired' || i.aff.couponStatus === 'invalid');
 
 const gbAfter = couponDeals(all, 'pergb');
+const multiAfter = couponDeals(all, 'multi');
 const monAfter = couponDeals(all, 'monthly');
 const excludedPlans = [...new Set(all.flatMap((i) =>
   i.aff.coupon
@@ -36,9 +37,11 @@ const excludedPlans = [...new Set(all.flatMap((i) =>
 ))];
 
 const mainM = main ? monAfter.find((d) => d.item === main) : undefined;
+const mainMulti = main ? multiAfter.find((d) => d.item === main) : undefined;
 const mainCalc =
   (mainM ? '月付 ' + yuan(mainM.before) + ' 的「' + mainM.plan.name + '」，用券后 ' + yuan(mainM.after) + '。' : '') +
-  '优惠码用在月付套餐上，年付套餐一般不能用券。';
+  (mainMulti ? '买' + PLAN_TYPE_LABEL[mainMulti.plan.type] + '「' + mainMulti.plan.name + '」，用券后 ' + yuan((mainMulti.after * mainMulti.months)) + '，平均每月 ' + yuan(mainMulti.after) + '。' : '') +
+  '优惠码可用于月付、季付、半年付，年付一般不能用。';
 
 const cyc = (m: number, t: string) => (m === 1 ? '月付' : PLAN_TYPE_LABEL[t as keyof typeof PLAN_TYPE_LABEL]);
 
@@ -68,7 +71,7 @@ const faq = [
   },
   {
     q: '年付套餐能用优惠码吗？',
-    a: '大多数机场的优惠码只能用在月付等短周期套餐上，年付套餐填了也不打折。年付本身价格已经比较低，想省钱可以二选一：月付用券，或者直接买年付。',
+    a: '大多数机场的优惠码可以用在月付、季付和半年付上，年付套餐填了一般不打折。年付本身价格已经比较低，可以算一下：半年付用券和直接买年付，哪个更合适。一切以官网为准。',
   },
   {
     q: '优惠码提示无效怎么办？',
@@ -98,7 +101,7 @@ const jsonLd = [
         下面是 {n} 家机场目前能用的优惠码。大部分是立减 20%（{offCount(20)} 家），也有立减 10% 的（{offCount(10)} 家）。光有码还不够，所以我们按用券后的价格重新排了一遍，顺便把不能用券的套餐和已经失效的码也列出来，省得结算时白填。
       </p>
       <p class="meta">
-        核对日期 <time class="num" datetime={updated.toISOString()}>{formatDate(updated)}</time> · 折扣以结算页面显示为准 · 点优惠码可以直接复制
+        一切以官网为准 · 核对日期 <time class="num" datetime={updated.toISOString()}>{formatDate(updated)}</time> · 折扣以结算页面显示为准 · 点优惠码可以直接复制
       </p>
     </header>
 
@@ -146,7 +149,7 @@ const jsonLd = [
       <section>
         <h2>用券之后，谁最便宜</h2>
         <p>
-          折扣大不代表最后付得少。原价便宜、折扣只有 10% 的机场，用完券可能还是比原价贵、折扣 30% 的便宜。下面两份名单都是按打折后的月付价格排的。
+          折扣大不代表最后付得少。原价便宜、折扣只有 10% 的机场，用完券可能还是比原价贵、折扣 30% 的便宜。下面三份名单都是按打折后的价格排的，只算能用券的月付、季付和半年付。
         </p>
         <h3>先买一个月：用券后月付最低</h3>
         <ol class="deal">
@@ -158,18 +161,29 @@ const jsonLd = [
             </li>
           ))}
         </ol>
-        <h3>流量用得多：用券后月付每 GB 最便宜</h3>
-        <p>只看月费会忽略流量差别。下面按用券后的月付价格除以每月流量，挑出每家每 GB 最便宜的那一档，适合每月要用几百 GB 的人。</p>
+        <h3>买几个月更省：季付、半年付用券后平均每月最低</h3>
+        <p>优惠码也能用在季付和半年付上。一次买三个月或半年，再叠上优惠码，平均下来往往比月付用券更便宜。</p>
+        <ol class="deal">
+          {multiAfter.slice(0, 8).map((d) => (
+            <li class={d.item.rank === 1 ? 'is-main' : ''}>
+              <a href={d.item.path}>{d.item.aff.name}</a>
+              <span>「{d.plan.name}」{cyc(d.months, d.plan.type)} {yuan(d.before * d.months)} → {yuan(d.after * d.months)}，每月 {gb(d.plan.trafficGB)}，填 <code>{d.item.aff.coupon}</code></span>
+              <strong class="num">{yuan(d.after)}/月</strong>
+            </li>
+          ))}
+        </ol>
+        <h3>流量用得多：用券后每 GB 最便宜</h3>
+        <p>只看月费会忽略流量差别。下面把月付、季付、半年付用券后的价格摊到每个月，再除以每月流量，挑出每家每 GB 最便宜的那一档，适合每月要用几百 GB 的人。</p>
         <ol class="deal">
           {gbAfter.slice(0, 8).map((d) => (
             <li class={d.item.rank === 1 ? 'is-main' : ''}>
               <a href={d.item.path}>{d.item.aff.name}</a>
-              <span>「{d.plan.name}」{yuan(d.before)} → {yuan(d.after)}/月，每月 {gb(d.plan.trafficGB)}，填 <code>{d.item.aff.coupon}</code></span>
+              <span>「{d.plan.name}」{cyc(d.months, d.plan.type)}，用券后平均 {yuan(d.after)}/月，每月 {gb(d.plan.trafficGB)}，填 <code>{d.item.aff.coupon}</code></span>
               <strong class="num">{yuan(d.after / d.plan.trafficGB, 3)}/GB</strong>
             </li>
           ))}
         </ol>
-        <p class="meta">只算月付套餐，并排除了官网写明不能用券的套餐。折后价按"立减 X%"计算，个别机场的券可能只对部分套餐有效，以结算页为准。</p>
+        <p class="disclaimer"><strong>声明：</strong>以上折后价按"立减 X%"计算，只算月付、季付和半年付，并排除了官网写明不能用券的套餐。优惠码能否使用、适用哪些套餐、实际折扣多少，一切以机场官网和结算页面为准。</p>
       </section>
 
       <section class="prose">
@@ -180,7 +194,7 @@ const jsonLd = [
         </p>
         <h3>年付套餐一般不能用券</h3>
         <p>
-          大多数机场的优惠码只对月付这类短周期套餐有效，年付填了也不会打折。好在年付本身就便宜，算下来往往比"月付加券"还低，想长期用可以直接看<a href="/pianyi-jichang/">便宜机场推荐</a>里的年付排名。
+          优惠码可以用在月付、季付和半年付上，但大多数机场的年付填了也不会打折。好在年付本身就便宜，算下来往往比"月付加券"还低，想长期用可以直接看<a href="/pianyi-jichang/">便宜机场推荐</a>里的年付排名。
         </p>
         {!!renewal.length && (
           <div>
@@ -366,6 +380,16 @@ const jsonLd = [
 
   .nowrap {
     white-space: nowrap;
+  }
+
+  .disclaimer {
+    margin-top: 1rem;
+    padding: 0.7rem 0.9rem;
+    background: #fff6cc;
+    border: 1px solid #f0d36b;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    color: var(--ink-soft);
   }
 
   .deal {

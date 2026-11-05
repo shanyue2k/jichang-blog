@@ -135,8 +135,10 @@ export const couponExcluded = (p: Plan) => NO_COUPON.some((k) => (p.note ?? '').
 
 export type CouponDeal = { item: RankedItem; plan: Plan; before: number; after: number; months: number };
 
-/** 用券后每家最低的月付价格（kind='monthly'）或月付每 GB 最低（kind='pergb'）；年付等长周期一般不能用券，不参与 */
-export function couponDeals(list: RankedItem[], kind: 'monthly' | 'pergb'): CouponDeal[] {
+/** 优惠码可用于月付、季付、半年付，年付一般不能用。
+ *  kind: monthly=月付最低；multi=季付/半年付折合每月最低；pergb=月付/季付/半年付每 GB 最低 */
+const COUPON_TYPES = ['monthly', 'quarterly', 'semiannual'];
+export function couponDeals(list: RankedItem[], kind: 'monthly' | 'multi' | 'pergb'): CouponDeal[] {
   const out: CouponDeal[] = [];
   for (const item of list) {
     const off = item.aff.couponOff;
@@ -144,7 +146,9 @@ export function couponDeals(list: RankedItem[], kind: 'monthly' | 'pergb'): Coup
     let best: CouponDeal | null = null;
     for (const plan of item.profile.plans) {
       const m = MONTHS_OF[plan.type];
-      if (plan.custom || plan.type !== 'monthly' || couponExcluded(plan) || !plan.trafficGB) continue;
+      if (plan.custom || !COUPON_TYPES.includes(plan.type) || couponExcluded(plan) || !plan.trafficGB) continue;
+      if (kind === 'monthly' && plan.type !== 'monthly') continue;
+      if (kind === 'multi' && plan.type === 'monthly') continue;
       const before = plan.price / m;
       const after = (plan.price * (100 - off)) / 100 / m;
       const key = kind === 'pergb' ? after / plan.trafficGB : after;
