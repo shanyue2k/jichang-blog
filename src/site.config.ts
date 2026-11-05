@@ -17,8 +17,8 @@ export const SITE = {
   indexNowKey: 'fd5439ecec0adee02208cdb4622c3515',
   /** Telegram 频道与交流群 */
   telegram: {
-    channel: 'https://t.me/shanyuejichang',
-    group: 'https://t.me/shanyue2kjichang',
+    channel: 'https://t.me/jichanghao',
+    group: 'https://t.me/jichanghaoqun',
   },
   /** Cloudflare Web Analytics 统计 token（公开值，留空则不加载统计脚本） */
   cfAnalyticsToken: '8b6dae5260044215a6bc92d6ee8adbe3',
