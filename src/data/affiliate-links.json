@@ -1,5 +1,5 @@
 {
-  "_说明": "站长的全部机场推广链接（2026-11-03 整理，2026-11-04 新增大哥云，共 29 家）。机场官网导航页 /jichang-daohang/ 从这里读取；写文章时也从这里取链接。tested=false 表示还没有实测，不能写任何速度、评分、解锁之类的数据。实测后把数据加进 airports.json 并把 tested 改成 true。优惠码 2026-11-05 整理：coupon=可用优惠码，couponOff=立减百分比；couponStatus 为 expired/invalid 的不在网站显示。",
+  "_说明": "站长的全部机场推广链接（2026-11-03 整理，2026-11-04 新增大佬云，共 29 家）。机场官网导航页 /jichang-daohang/ 从这里读取；写文章时也从这里取链接。tested=false 表示还没有实测，不能写任何速度、评分、解锁之类的数据。实测后把数据加进 airports.json 并把 tested 改成 true。优惠码 2026-11-05 整理：coupon=可用优惠码，couponOff=立减百分比；couponStatus 为 expired/invalid 的不在网站显示。",
   "airports": [
     {
       "id": "shanyue",
@@ -44,7 +44,7 @@
     {
       "id": "dageyun",
       "order": 5,
-      "name": "大哥云",
+      "name": "大佬云",
       "url": "https://a01vipaff.dalaoyunaff.com/#/?code=z0ewmNP1",
       "tested": false,
       "coupon": "dly88",
