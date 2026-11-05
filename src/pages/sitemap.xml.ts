@@ -28,6 +28,7 @@ export const GET: APIRoute = async () => {
     urls.push({ loc: PILLAR.path, lastmod: rankingUpdated(ranking) });
     urls.push({ loc: '/pianyi-jichang/', lastmod: rankingUpdated(ranking) });
     urls.push({ loc: '/buxianshi-jichang/', lastmod: rankingUpdated(ranking) });
+    urls.push({ loc: '/jichang-youhuima/', lastmod: rankingUpdated(ranking) });
   }
 
   for (const section of SECTION_KEYS) {

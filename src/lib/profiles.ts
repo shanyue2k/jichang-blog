@@ -43,7 +43,18 @@ export type AffItem = {
   url: string;
   tested: boolean;
   coupon?: string;
+  /** 优惠码立减百分比，例如 20 表示立减 20%（8 折） */
+  couponOff?: number;
+  couponStatus?: 'valid' | 'renewal' | 'expired' | 'invalid';
+  couponNote?: string;
+  renewalCoupon?: string;
 };
+
+/** 立减 20% → 「8 折」；立减 15% → 「85 折」 */
+export function zhe(off: number): string {
+  const v = 100 - off;
+  return (v % 10 === 0 ? String(v / 10) : String(v)) + ' 折';
+}
 
 /** 站长确认：29 家机场都没有免费试用，退款都需要提交工单（2026-11-04）。某家不同时，在它的资料文件里单独写即可覆盖 */
 const DEFAULTS: Partial<Profile> = {

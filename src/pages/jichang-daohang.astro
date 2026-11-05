@@ -7,7 +7,7 @@ import { breadcrumbSchema } from '../lib/schema';
 import links from '../data/affiliate-links.json';
 import { getProfile, lowestMonthly, profilePath, profiles, yuan } from '../lib/profiles';
 
-type Item = { id: string; order: number; name: string; url: string; tested: boolean; coupon?: string };
+type Item = { id: string; order: number; name: string; url: string; tested: boolean; coupon?: string; couponOff?: number };
 const items = (links.airports as Item[]).slice().sort((a, b) => a.order - b.order);
 const testedCount = items.filter((i) => i.tested).length;
 // 至少有 5 家整理了资料，或有任何一家实测过，才开放收录
@@ -67,7 +67,7 @@ const crumbs = [
                 </p>
               ) : null;
             })()}
-            {i.coupon && <p class="coupon">优惠码：<code>{i.coupon}</code></p>}
+            {i.coupon && <p class="coupon">优惠码：<code>{i.coupon}</code>{i.couponOff ? ' 立减 ' + i.couponOff + '%' : ''}</p>}
             <a class="go" href={i.url} rel="sponsored nofollow noopener" target="_blank">
               访问 {i.name} 官网
             </a>

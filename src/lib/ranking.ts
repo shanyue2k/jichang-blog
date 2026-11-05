@@ -128,3 +128,29 @@ export function onetimePacks(list: RankedItem[]): Pack[] {
 }
 
 export const mentionsResetDiscount = (p: Pack) => (p.plan.note ?? '').includes('9 折');
+
+// ---------- 优惠码 ----------
+const NO_COUPON = ['不可用优惠', '不参加优惠', '不支持优惠', '不参与任何活动'];
+export const couponExcluded = (p: Plan) => NO_COUPON.some((k) => (p.note ?? '').includes(k));
+
+export type CouponDeal = { item: RankedItem; plan: Plan; before: number; after: number; months: number };
+
+/** 用券后每家最低的「折合每月」与「月付」价格（排除写明不能用券的套餐） */
+export function couponDeals(list: RankedItem[], kind: 'lowest' | 'monthly'): CouponDeal[] {
+  const out: CouponDeal[] = [];
+  for (const item of list) {
+    const off = item.aff.couponOff;
+    if (!item.aff.coupon || !off) continue;
+    let best: CouponDeal | null = null;
+    for (const plan of item.profile.plans) {
+      const m = MONTHS_OF[plan.type];
+      if (plan.custom || !m || couponExcluded(plan)) continue;
+      if (kind === 'monthly' && plan.type !== 'monthly') continue;
+      const before = plan.price / m;
+      const after = (plan.price * (100 - off)) / 100 / m;
+      if (!best || after < best.after) best = { item, plan, before, after, months: m };
+    }
+    if (best) out.push(best);
+  }
+  return out.sort((a, b) => a.after - b.after || a.item.rank - b.item.rank);
+}

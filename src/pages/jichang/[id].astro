@@ -19,6 +19,7 @@ import {
   gb,
   type Plan,
   type Profile,
+  zhe,
 } from '../../lib/profiles';
 
 export function getStaticPaths() {
@@ -84,7 +85,7 @@ const faq = [
     ? [
         {
           q: `${name}有优惠码吗？`,
-          a: `有，下单时填写优惠码「${aff.coupon}」，具体折扣以结算页面显示为准。`,
+          a: '有，下单时填写优惠码「' + aff.coupon + '」' + (aff.couponOff ? '，立减 ' + aff.couponOff + '%（相当于 ' + zhe(aff.couponOff) + '）' : '') + '，具体折扣以结算页面显示为准。更多机场的优惠码见本站的机场优惠码汇总。',
         },
       ]
     : []),
@@ -190,7 +191,7 @@ const jsonLd = [breadcrumbSchema(crumbs), faqSchema(faq)];
           {aff.coupon && (
             <div>
               <dt>优惠码</dt>
-              <dd><code>{aff.coupon}</code></dd>
+              <dd><code>{aff.coupon}</code>{aff.couponOff ? ' 立减 ' + aff.couponOff + '%' : ''}</dd>
             </div>
           )}
         </dl>
@@ -370,7 +371,7 @@ const jsonLd = [breadcrumbSchema(crumbs), faqSchema(faq)];
 
       <p class="cta">
         <a class="btn" href={aff.url} rel="sponsored nofollow noopener" target="_blank">访问 {name} 官网</a>
-        {aff.coupon && <span>下单时填写优惠码 <code>{aff.coupon}</code></span>}
+        {aff.coupon && <span>下单时填写优惠码 <code>{aff.coupon}</code>{aff.couponOff ? '，立减 ' + aff.couponOff + '%' : ''} · <a href="/jichang-youhuima/">全部优惠码</a></span>}
       </p>
 
       <TelegramCta />

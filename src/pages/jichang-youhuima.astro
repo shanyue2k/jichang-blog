@@ -1,0 +1,415 @@
+---
+// 专题：机场优惠码汇总（长尾词：机场优惠码 / 机场优惠码汇总 / 机场优惠码推荐）
+// 优惠码与折扣写在 src/data/affiliate-links.json（coupon / couponOff / couponStatus）
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Faq from '../components/Faq.astro';
+import TelegramCta from '../components/TelegramCta.astro';
+import { PILLAR } from '../site.config';
+import { absoluteUrl } from '../lib/content';
+import { formatDate } from '../lib/format';
+import { breadcrumbSchema, faqSchema } from '../lib/schema';
+import { couponDeals, getRanking, monthLabel, rankingUpdated } from '../lib/ranking';
+import { PLAN_TYPE_LABEL, gb, yuan, zhe } from '../lib/profiles';
+
+const all = getRanking();
+const COUPON_CHECKED = new Date('2026-11-05T12:00:00+08:00');
+const updated = new Date(Math.max(COUPON_CHECKED.getTime(), rankingUpdated(all).getTime()));
+const month = monthLabel(updated);
+const withCode = all.filter((i) => i.aff.coupon && i.aff.couponOff);
+const n = withCode.length;
+const main = withCode.find((i) => i.rank === 1);
+const others = withCode.filter((i) => i !== main);
+const biggest = withCode.slice().sort((a, b) => (b.aff.couponOff ?? 0) - (a.aff.couponOff ?? 0) || a.rank - b.rank)[0];
+const offCount = (o: number) => withCode.filter((i) => i.aff.couponOff === o).length;
+const renewal = all.filter((i) => i.aff.couponStatus === 'renewal');
+const dead = all.filter((i) => i.aff.couponStatus === 'expired' || i.aff.couponStatus === 'invalid');
+
+const lowAfter = couponDeals(all, 'lowest');
+const monAfter = couponDeals(all, 'monthly');
+const stackable = all.filter((i) => i.aff.coupon && (i.profile.discounts ?? '').includes('叠加'));
+const excludedPlans = all.flatMap((i) =>
+  i.aff.coupon
+    ? i.profile.plans
+        .filter((p) => ['不可用优惠', '不参加优惠', '不支持优惠', '不参与任何活动'].some((k) => (p.note ?? '').includes(k)))
+        .map((p) => i.aff.name + '「' + p.name + '」')
+    : [],
+);
+
+const mainM = main ? monAfter.find((d) => d.item === main) : undefined;
+const mainL = main ? lowAfter.find((d) => d.item === main) : undefined;
+const mainCalc =
+  (mainM ? '月付 ' + yuan(mainM.before) + ' 的「' + mainM.plan.name + '」，用券后 ' + yuan(mainM.after) + '。' : '') +
+  (mainL && mainL.plan !== mainM?.plan ? '长期买最省的「' + mainL.plan.name + '」，用券后平均每月 ' + yuan(mainL.after) + '。' : '');
+
+const cyc = (m: number, t: string) => (m === 1 ? '月付' : PLAN_TYPE_LABEL[t as keyof typeof PLAN_TYPE_LABEL]);
+
+const title = '机场优惠码汇总 ' + month + '｜' + n + ' 家机场可用优惠码与用券后价格';
+const description =
+  '整理 ' + n + ' 家机场目前可用的优惠码和折扣，按用券后的价格重新排了一遍，并写明哪些套餐不能用券、哪些码已经失效。';
+
+const crumbs = [
+  { name: '首页', path: '/' },
+  { name: PILLAR.label, path: PILLAR.path },
+  { name: '机场优惠码汇总', path: '/jichang-youhuima/' },
+];
+
+const l0 = lowAfter[0];
+const faq = [
+  {
+    q: '机场优惠码怎么用？',
+    a: '在机场官网选好套餐，进入结算页面，找到"优惠码"或"优惠券"输入框，填入优惠码后点使用，价格会直接变成折后价。填码一定要在付款之前，付完再填不会退差价。',
+  },
+  {
+    q: '哪家机场的优惠码折扣最大？',
+    a: biggest ? '目前是' + biggest.aff.name + '的「' + biggest.aff.coupon + '」，立减 ' + biggest.aff.couponOff + '%（' + zhe(biggest.aff.couponOff ?? 0) + '）。其余多数是立减 20% 或 10%。' : '见上方表格。',
+  },
+  {
+    q: '用了优惠码，最便宜的是哪家？',
+    a: l0 ? '按折合每月价格算，是' + l0.item.aff.name + '的「' + l0.plan.name + '」，原价平均 ' + yuan(l0.before) + '/月，用券后约 ' + yuan(l0.after) + '/月。实际能否用券以结算页为准。' : '见上方表格。',
+  },
+  {
+    q: '优惠码可以和年付折扣叠加吗？',
+    a: stackable.length
+      ? '看机场。' + stackable.map((i) => i.aff.name).join('、') + '在官网写明长期付折扣可以和优惠码叠加；其他家没有说明，以结算页面实际显示的价格为准。'
+      : '多数机场没有说明，以结算页面实际显示的价格为准。',
+  },
+  {
+    q: '优惠码提示无效怎么办？',
+    a: '先确认没有多打空格、大小写一致；再看套餐说明里有没有写"不可用优惠券"。如果还是不行，可能是机场刚换了码，本站每月核对一次，也可以到本站 Telegram 交流群问。',
+  },
+];
+
+const jsonLd = [
+  breadcrumbSchema(crumbs),
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: '机场优惠码 ' + month,
+    numberOfItems: n,
+    itemListElement: withCode.map((i, k) => ({ '@type': 'ListItem', position: k + 1, name: i.aff.name + ' 优惠码', url: absoluteUrl(i.path) })),
+  },
+  faqSchema(faq),
+];
+---
+
+<Base title={title} description={description} jsonLd={jsonLd} modified={updated}>
+  <div class="wrap">
+    <Breadcrumbs crumbs={crumbs} />
+    <header class="head">
+      <h1>机场优惠码汇总 {month}</h1>
+      <p class="lead">
+        下面是 {n} 家机场目前能用的优惠码。大部分是立减 20%（{offCount(20)} 家），也有立减 10% 的（{offCount(10)} 家）。光有码还不够，所以我们按用券后的价格重新排了一遍，顺便把不能用券的套餐和已经失效的码也列出来，省得结算时白填。
+      </p>
+      <p class="meta">
+        核对日期 <time class="num" datetime={updated.toISOString()}>{formatDate(updated)}</time> · 折扣以结算页面显示为准 · 点优惠码可以直接复制
+      </p>
+    </header>
+
+    {main && (
+      <section class="hero-code" aria-labelledby="main-code">
+        <p class="badge">站长主推</p>
+        <h2 id="main-code"><a href={main.path}>{main.aff.name}</a> 优惠码</h2>
+        <button type="button" class="code big" data-copy={main.aff.coupon}>{main.aff.coupon}<span>点击复制</span></button>
+        <p class="off">立减 {main.aff.couponOff}%，相当于 {zhe(main.aff.couponOff ?? 0)}</p>
+        <p class="calc">
+          {mainCalc}
+        </p>
+        <p class="actions">
+          <a class="btn" href={main.aff.url} rel="sponsored nofollow noopener" target="_blank">去 {main.aff.name} 官网用码</a>
+          <a class="btn btn--ghost btn--light" href={main.path}>看全部套餐</a>
+        </p>
+      </section>
+    )}
+
+    <div class="body">
+      <section>
+        <h2>全部可用优惠码</h2>
+        <p>按本站推荐顺序排列。"用券后月付"是该机场最便宜的月付套餐打折后的价格。</p>
+        <div class="table-scroll">
+          <table class="data-table codes">
+            <thead><tr><th>机场</th><th>优惠码</th><th>折扣</th><th>用券后月付</th><th></th></tr></thead>
+            <tbody>
+              {others.map((i) => {
+                const m = monAfter.find((d) => d.item === i);
+                return (
+                  <tr>
+                    <th scope="row"><a href={i.path}>{i.aff.name}</a></th>
+                    <td><button type="button" class="code" data-copy={i.aff.coupon}>{i.aff.coupon}</button></td>
+                    <td class="nowrap">立减 {i.aff.couponOff}% <small>（{zhe(i.aff.couponOff ?? 0)}）</small></td>
+                    <td class="num nowrap">{m ? yuan(m.after) : '—'}<small>{m ? ' 原 ' + yuan(m.before) : ''}</small></td>
+                    <td class="nowrap"><a href={i.aff.url} rel="sponsored nofollow noopener" target="_blank">官网</a></td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>用券之后，谁最便宜</h2>
+        <p>
+          折扣大不代表最后付得少。原价便宜、折扣只有 10% 的机场，用完券可能还是比原价贵、折扣 30% 的便宜。下面两张表都是按打折后的价格排的。
+        </p>
+        <h3>先买一个月：用券后月付最低</h3>
+        <ol class="deal">
+          {monAfter.slice(0, 8).map((d) => (
+            <li class={d.item.rank === 1 ? 'is-main' : ''}>
+              <a href={d.item.path}>{d.item.aff.name}</a>
+              <span>「{d.plan.name}」{yuan(d.before)} → 填 <code>{d.item.aff.coupon}</code>，每月 {gb(d.plan.trafficGB)}</span>
+              <strong class="num">{yuan(d.after)}</strong>
+            </li>
+          ))}
+        </ol>
+        <h3>长期用：用券后平均每月最低</h3>
+        <ol class="deal">
+          {lowAfter.slice(0, 8).map((d) => (
+            <li class={d.item.rank === 1 ? 'is-main' : ''}>
+              <a href={d.item.path}>{d.item.aff.name}</a>
+              <span>「{d.plan.name}」{cyc(d.months, d.plan.type)}，原价平均 {yuan(d.before)}/月，每月 {gb(d.plan.trafficGB)}</span>
+              <strong class="num">{yuan(d.after)}/月</strong>
+            </li>
+          ))}
+        </ol>
+        <p class="meta">已排除官网写明不能用券的套餐。折后价是按"立减 X%"算出来的，个别机场的券可能只对部分套餐有效，以结算页为准。</p>
+      </section>
+
+      <section class="prose">
+        <h2>用码之前先看这几点</h2>
+        <h3>这些套餐不能用券</h3>
+        <p>
+          {excludedPlans.length ? excludedPlans.join('、') + '在官网写明不参加优惠，填了码也不会打折。这类多半是本来就很便宜的体验或特价套餐。' : '目前整理的套餐都没有写明不能用券。'}
+        </p>
+        <h3>年付折扣能不能叠加，看机场</h3>
+        <p>
+          不少机场买一年本身就打 8 折。{stackable.length ? stackable.map((i) => i.aff.name).join('、') + '写明可以和优惠码叠加；' : ''}其他家没有说明，下单时看结算页最终价格，别按两次折扣自己算。
+        </p>
+        {!!renewal.length && (
+          <div>
+            <h3>只给老用户的续费码</h3>
+            <p>{renewal.map((i) => i.aff.couponNote).join('；')}，所以没放进上面的表。</p>
+          </div>
+        )}
+        {!!dead.length && (
+          <div>
+            <h3>已经失效的码</h3>
+            <p>
+              {dead.map((i) => i.aff.name).join('、')}的优惠码本站核对时已经过期或无效，暂时没有可用的码。这几家照原价买，或者看看
+              <a href="/pianyi-jichang/">便宜机场推荐</a>里的其他选择。
+            </p>
+          </div>
+        )}
+        <h3>码会换，以结算页为准</h3>
+        <p>机场换码、调整折扣很常见。本站每月核对一次；如果你发现哪个码不能用了，欢迎到 Telegram 交流群告诉我们。</p>
+      </section>
+
+      <TelegramCta />
+
+      <section class="prose">
+        <h2>相关页面</h2>
+        <ul>
+          <li><a href={PILLAR.path}>机场推荐 {month}：完整对比</a></li>
+          <li><a href="/pianyi-jichang/">便宜机场推荐</a></li>
+          <li><a href="/buxianshi-jichang/">不限时流量机场推荐</a></li>
+          <li><a href="/jichang-daohang/">机场官网导航</a></li>
+        </ul>
+      </section>
+
+      <Faq items={faq} />
+      <p class="meta small">页面里的官网链接是推广链接，通过它注册并使用优惠码，价格和直接注册一样，本站可能获得佣金。</p>
+    </div>
+  </div>
+</Base>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('button.code').forEach((b) => {
+    b.addEventListener('click', async () => {
+      const code = b.dataset.copy || '';
+      try {
+        await navigator.clipboard.writeText(code);
+      } catch (e) {
+        const t = document.createElement('textarea');
+        t.value = code;
+        document.body.appendChild(t);
+        t.select();
+        try { document.execCommand('copy'); } catch (err) {}
+        t.remove();
+      }
+      b.classList.add('copied');
+      setTimeout(() => b.classList.remove('copied'), 1500);
+    });
+  });
+</script>
+
+<style>
+  .head {
+    max-width: 48rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .lead {
+    color: var(--ink-soft);
+  }
+
+  .hero-code {
+    position: relative;
+    max-width: 52rem;
+    padding: 1.4rem clamp(1rem, 3vw, 1.6rem);
+    background: var(--slate);
+    color: #fff;
+    border-radius: var(--radius-md);
+    box-shadow: 6px 6px 0 var(--sign);
+    margin: 1rem 0 2rem;
+  }
+
+  .hero-code .badge {
+    position: absolute;
+    top: -0.8rem;
+    left: 1.2rem;
+    margin: 0;
+    background: var(--sign);
+    color: var(--sign-ink);
+    font-weight: 700;
+    font-size: 0.875rem;
+    padding: 0.15rem 0.7rem;
+    border-radius: 3px;
+  }
+
+  .hero-code h2 {
+    margin: 0.2rem 0 0.75rem;
+    font-size: var(--step-2);
+  }
+
+  .hero-code h2 a {
+    color: var(--sign);
+  }
+
+  .hero-code .off {
+    margin: 0.6rem 0 0.2rem;
+    font-weight: 700;
+    color: var(--sign);
+  }
+
+  .hero-code .calc {
+    color: #cfd6dd;
+    margin: 0 0 0.75rem;
+  }
+
+  .btn--light {
+    color: #fff;
+    border-color: #fff;
+  }
+
+  .code {
+    position: relative;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 0.2rem 0.6rem;
+    background: #fff6cc;
+    color: var(--ink);
+    border: 1.5px dashed #c9a400;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+  }
+
+  .code.big {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    font-size: 1.75rem;
+    padding: 0.35rem 1rem;
+    background: var(--sign);
+    border-color: var(--sign-ink);
+  }
+
+  .code.big span {
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 400;
+  }
+
+  .code.copied::after {
+    content: '已复制';
+    position: absolute;
+    left: 50%;
+    top: -1.7rem;
+    transform: translateX(-50%);
+    background: var(--ink);
+    color: #fff;
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 400;
+    padding: 0.1rem 0.45rem;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+
+  .body {
+    max-width: 52rem;
+  }
+
+  .body > section > h2,
+  .body .prose h2 {
+    border-top: 2px solid var(--ink);
+    padding-top: 0.25em;
+  }
+
+  .codes tbody th {
+    background: var(--surface);
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  .codes small {
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+
+  .nowrap {
+    white-space: nowrap;
+  }
+
+  .deal {
+    padding-left: 1.4em;
+  }
+
+  .deal li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2rem 0.6rem;
+    align-items: baseline;
+    padding: 0.25rem 0;
+  }
+
+  .deal li a {
+    font-weight: 700;
+  }
+
+  .deal li span {
+    color: var(--ink-soft);
+    font-size: 0.9375rem;
+  }
+
+  .deal li strong {
+    margin-left: auto;
+  }
+
+  .deal li.is-main a::after {
+    content: '站长主推';
+    margin-left: 0.4rem;
+    font-size: 0.75rem;
+    background: var(--ink);
+    color: var(--sign);
+    padding: 0 0.35rem;
+    border-radius: 3px;
+    vertical-align: 0.1em;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+</style>
