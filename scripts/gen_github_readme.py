@@ -52,6 +52,7 @@ w = L.append
 w(f'# 机场推荐 {yy}年{mm}月：{len(rows)} 家机场价格、节点与线路对比\n')
 w(f'> 整理主流机场的官网套餐价格、后台节点数量、线路类型和协议，每月更新。完整资料、互动选机场和流量估算器见 **[机场好 jichanghao.com]({SITE}/)**。\n')
 w(f'最后更新：{collected} · 资料来源：各机场官网套餐页与后台节点列表 · 价格以官网为准\n')
+w('📢 **Telegram 频道：** [t.me/shanyuejichang](https://t.me/shanyuejichang)（每月榜单、涨价与优惠通知） · **交流群：** [t.me/shanyue2kjichang](https://t.me/shanyue2kjichang)\n')
 w('**目录：** [站长主推](#站长主推) · [主推与次推 10 家](#主推与次推-10-家) · [全部机场对比表](#全部机场对比表) · [按需求挑机场](#按需求挑机场) · [客户端教程](#客户端教程) · [常见问题](#常见问题)\n')
 
 # 主推
@@ -154,7 +155,8 @@ w('---\n')
 w(f'- 完整、每月更新的榜单：**[{SITE}/jichang-tuijian/]({SITE}/jichang-tuijian/)**')
 w(f'- 机场官网入口汇总：[{SITE}/jichang-daohang/]({SITE}/jichang-daohang/)')
 w('- 排名为本站推荐顺序，目前尚未加入测速数据。表格中的官网链接为推广链接，通过它注册价格不变，本站可能获得佣金。')
-w('- 发现价格变动或机场异常，欢迎提 Issue。\n')
+w('- Telegram 频道：[t.me/shanyuejichang](https://t.me/shanyuejichang) · 交流群：[t.me/shanyue2kjichang](https://t.me/shanyue2kjichang)')
+w('- 发现价格变动或机场异常，欢迎提 Issue 或到交流群反馈。\n')
 
 out = sys.argv[1] if len(sys.argv) > 1 else 'README.md'
 open(out, 'w').write('\n'.join(L))

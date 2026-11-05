@@ -8,6 +8,11 @@ const year = new Date().getFullYear();
     <div>
       <p class="name">{SITE.name}</p>
       <p class="small">{SITE.description}</p>
+      <p class="tg">
+        <a href={SITE.telegram.channel} rel="noopener" target="_blank">Telegram 频道</a>
+        <span aria-hidden="true">·</span>
+        <a href={SITE.telegram.group} rel="noopener" target="_blank">交流群</a>
+      </p>
     </div>
     <nav aria-label="栏目">
       <ul>
@@ -27,7 +32,7 @@ const year = new Date().getFullYear();
   </div>
   <div class="wrap small legal">
     <p>
-      © {year} {SITE.name}。部分链接为推广链接，通过它购买不会让你多付钱，本站可能获得佣金；这不影响测评结论。请遵守所在地法律法规使用网络服务。
+      © {year} {SITE.name}。部分链接为推广链接，通过它购买不会让你多付钱，本站可能获得佣金；请遵守所在地法律法规使用网络服务。
     </p>
   </div>
 </footer>
@@ -53,6 +58,18 @@ const year = new Date().getFullYear();
     .grid > div {
       grid-column: 1 / -1;
     }
+  }
+
+  .tg {
+    margin-top: 0.75rem;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .tg a {
+    color: var(--sign);
+    font-weight: 600;
   }
 
   .name {

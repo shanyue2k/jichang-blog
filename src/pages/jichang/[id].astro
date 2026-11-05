@@ -1,6 +1,7 @@
 ---
 // 单家机场资料页：全部内容来自官网资料整理，不含任何未经实测的速度或评分
 import Base from '../../layouts/Base.astro';
+import TelegramCta from '../../components/TelegramCta.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import Faq from '../../components/Faq.astro';
 import { formatDate } from '../../lib/format';
@@ -372,7 +373,8 @@ const jsonLd = [breadcrumbSchema(crumbs), faqSchema(faq)];
         {aff.coupon && <span>下单时填写优惠码 <code>{aff.coupon}</code></span>}
       </p>
 
-      <Faq items={faq} />
+      <TelegramCta />
+        <Faq items={faq} />
 
       <p class="more">想看更多机场，可以去<a href="/jichang-daohang/">机场官网导航</a>。</p>
     </article>

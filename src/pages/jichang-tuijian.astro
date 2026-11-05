@@ -6,6 +6,7 @@ import Faq from '../components/Faq.astro';
 import RankTable from '../components/RankTable.astro';
 import Spotlight from '../components/Spotlight.astro';
 import HomePicker from '../components/HomePicker.astro';
+import TelegramCta from '../components/TelegramCta.astro';
 import { PILLAR } from '../site.config';
 import { absoluteUrl } from '../lib/content';
 import { formatDate } from '../lib/format';
@@ -241,6 +242,8 @@ const jsonLd = [breadcrumbSchema(crumbs), itemList, faqSchema(faq)];
           。专线是各家官网的标注，不同套餐的线路可能不一样，以资料页为准。
         </p>
       </section>
+
+      <TelegramCta />
 
       <section class="guide prose">
         <h2>怎么挑一家适合自己的机场</h2>

@@ -1,0 +1,48 @@
+---
+// 加入 Telegram 频道 / 交流群的提示条
+import { SITE } from '../site.config';
+---
+
+<aside class="tg-cta" aria-label="Telegram">
+  <div class="tg-text">
+    <p class="tg-title">机场涨价、换线路、新优惠，第一时间通知</p>
+    <p class="tg-sub">关注 Telegram 频道获取每月榜单更新；有问题可以到交流群里问。</p>
+  </div>
+  <div class="tg-btns">
+    <a class="btn" href={SITE.telegram.channel} rel="noopener" target="_blank">关注频道</a>
+    <a class="btn btn--ghost" href={SITE.telegram.group} rel="noopener" target="_blank">加入交流群</a>
+  </div>
+</aside>
+
+<style>
+  .tg-cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem 1.5rem;
+    margin: 2rem 0;
+    padding: 1.1rem 1.25rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 4px solid #229ed9;
+    border-radius: var(--radius-sm);
+  }
+
+  .tg-title {
+    margin: 0;
+    font-weight: 700;
+  }
+
+  .tg-sub {
+    margin: 0.2rem 0 0;
+    font-size: 0.9375rem;
+    color: var(--ink-soft);
+  }
+
+  .tg-btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+</style>

@@ -15,6 +15,11 @@ export const SITE = {
   author: '站长',
   /** IndexNow 密钥（Bing 即时收录用），换不换都可以，保持 32 位十六进制即可 */
   indexNowKey: 'fd5439ecec0adee02208cdb4622c3515',
+  /** Telegram 频道与交流群 */
+  telegram: {
+    channel: 'https://t.me/shanyuejichang',
+    group: 'https://t.me/shanyue2kjichang',
+  },
   /** Cloudflare Web Analytics 统计 token（公开值，留空则不加载统计脚本） */
   cfAnalyticsToken: '8b6dae5260044215a6bc92d6ee8adbe3',
   /** 站长平台验证码：在 Bing Webmaster / Google Search Console 拿到后填进来 */
