@@ -8,7 +8,7 @@ const publisher = () => ({
   '@type': 'Organization',
   name: SITE.name,
   url: SITE.url,
-  logo: { '@type': 'ImageObject', url: absoluteUrl('/favicon.svg') },
+  logo: { '@type': 'ImageObject', url: absoluteUrl('/icon-512.png') },
 });
 
 export function websiteSchema() {

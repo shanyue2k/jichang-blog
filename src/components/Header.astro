@@ -12,13 +12,8 @@ const isActive = (href: string) => current === href || current.startsWith(href);
 <header class="site-header">
   <div class="wrap bar">
     <a class="brand" href="/" aria-label={`${SITE.name} 首页`}>
-      <span class="mark" aria-hidden="true">
-        <svg viewBox="0 0 24 24" width="22" height="22"><path
-            fill="currentColor"
-            d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"
-          ></path></svg>
-      </span>
-      <span class="brand-name">{SITE.name}</span>
+      <img class="mark" src="/logo-mark.svg" width="36" height="36" alt="" />
+      <span class="brand-name">机场<span class="hao">好</span></span>
     </a>
   </div>
   <nav class="wayfinding" aria-label="主栏目">
@@ -60,17 +55,19 @@ const isActive = (href: string) => current === href || current.startsWith(href);
   }
 
   .mark {
-    display: grid;
-    place-items: center;
-    width: 2rem;
-    height: 2rem;
-    background: var(--sign);
-    color: var(--sign-ink);
-    border-radius: var(--radius-sm);
+    display: block;
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
+    box-shadow: 0 0 0 1px rgba(62, 231, 255, 0.25), 0 0 14px rgba(255, 204, 0, 0.18);
   }
 
-  .mark svg {
-    transform: rotate(45deg);
+  .brand:hover .mark {
+    box-shadow: 0 0 0 1px rgba(62, 231, 255, 0.5), 0 0 18px rgba(255, 204, 0, 0.35);
+  }
+
+  .hao {
+    color: var(--sign);
   }
 
   /* 导视条：机场里那条黄色指示牌 */
