@@ -28,13 +28,13 @@ const dead = all.filter((i) => i.aff.couponStatus === 'expired' || i.aff.couponS
 const lowAfter = couponDeals(all, 'lowest');
 const monAfter = couponDeals(all, 'monthly');
 const stackable = all.filter((i) => i.aff.coupon && (i.profile.discounts ?? '').includes('叠加'));
-const excludedPlans = all.flatMap((i) =>
+const excludedPlans = [...new Set(all.flatMap((i) =>
   i.aff.coupon
     ? i.profile.plans
         .filter((p) => ['不可用优惠', '不参加优惠', '不支持优惠', '不参与任何活动'].some((k) => (p.note ?? '').includes(k)))
         .map((p) => i.aff.name + '「' + p.name + '」')
     : [],
-);
+))];
 
 const mainM = main ? monAfter.find((d) => d.item === main) : undefined;
 const mainL = main ? lowAfter.find((d) => d.item === main) : undefined;
@@ -188,7 +188,7 @@ const jsonLd = [
         {!!renewal.length && (
           <div>
             <h3>只给老用户的续费码</h3>
-            <p>{renewal.map((i) => i.aff.couponNote).join('；')}，所以没放进上面的表。</p>
+            <p>{renewal.map((i) => i.aff.name + '的 ' + i.aff.couponNote).join('；')}，所以没放进上面的表。</p>
           </div>
         )}
         {!!dead.length && (
