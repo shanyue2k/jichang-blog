@@ -61,12 +61,80 @@ const picks = [
     }
   </ul>
   <div class="spot-cta">
+    {item.aff.coupon && (
+      <button type="button" class="spot-code" data-copy={item.aff.coupon} aria-label={'复制优惠码 ' + item.aff.coupon}>
+        <span class="sc-label">优惠码</span>
+        <code>{item.aff.coupon}</code>
+        {item.aff.couponOff ? <span class="sc-off">立减 {item.aff.couponOff}%</span> : null}
+        <span class="sc-tip">点击复制</span>
+      </button>
+    )}
     <a class="btn spot-go" href={item.aff.url} rel="sponsored nofollow noopener" target="_blank">访问 {item.aff.name} 官网 →</a>
     <a class="spot-more" href={item.path}>查看 {item.aff.name} 全部套餐与节点</a>
   </div>
 </article>
 
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.spot-code').forEach((b) => {
+    b.addEventListener('click', async () => {
+      const code = b.dataset.copy || '';
+      try {
+        await navigator.clipboard.writeText(code);
+      } catch (e) {
+        const t = document.createElement('textarea');
+        t.value = code;
+        document.body.appendChild(t);
+        t.select();
+        try {
+          document.execCommand('copy');
+        } catch (err) {}
+        t.remove();
+      }
+      const tip = b.querySelector('.sc-tip');
+      if (tip) tip.textContent = '已复制';
+      setTimeout(() => {
+        if (tip) tip.textContent = '点击复制';
+      }, 1500);
+    });
+  });
+</script>
+
 <style>
+  .spot-code {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.75rem;
+    background: transparent;
+    border: 1.5px dashed var(--sign);
+    border-radius: var(--radius-sm);
+    color: #fff;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .spot-code code {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--sign);
+  }
+
+  .sc-label,
+  .sc-tip {
+    font-size: 0.8125rem;
+    color: #cfd6dd;
+  }
+
+  .sc-off {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    background: var(--sign);
+    color: var(--sign-ink);
+    padding: 0 0.4rem;
+    border-radius: 3px;
+  }
+
   .spot {
     position: relative;
     display: grid;

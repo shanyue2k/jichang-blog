@@ -4,6 +4,7 @@ import { PILLAR, SECTION_KEYS, SECTIONS, SITE } from '../site.config';
 const current = Astro.url.pathname;
 const links = [
   { href: PILLAR.path, label: PILLAR.label },
+  { href: '/jichang-youhuima/', label: '机场优惠码' },
   ...SECTION_KEYS.map((k) => ({ href: `/${k}/`, label: SECTIONS[k].label })),
 ];
 const isActive = (href: string) => current === href || current.startsWith(href);
