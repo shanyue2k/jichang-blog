@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import RankTable from '../components/RankTable.astro';
 import HomePicker from '../components/HomePicker.astro';
+import Spotlight from '../components/Spotlight.astro';
 import PostList from '../components/PostList.astro';
 import { PILLAR, SECTION_KEYS, SECTIONS, SITE } from '../site.config';
 import { getAllPosts, getPosts, sectionPath } from '../lib/content';
@@ -11,6 +12,8 @@ import { FEATURED_COUNT, getRanking, monthLabel, rankingUpdated } from '../lib/r
 
 const ranking = getRanking();
 const featured = ranking.slice(0, FEATURED_COUNT);
+const primary = featured[0];
+const secondary = featured.slice(1);
 const updated = rankingUpdated(ranking);
 
 const latest = (await getAllPosts()).slice(0, 8);
@@ -25,7 +28,7 @@ const counts = Object.fromEntries(
       <div class="intro">
         <h1>机场推荐 {monthLabel(updated)}</h1>
         <p>
-          整理了 {ranking.length} 家机场的官网套餐价格、后台节点数量、线路和协议，每月更新。这里列出本站主推的 {FEATURED_COUNT} 家，点名字可以看每家的全部套餐和怎么买最划算。
+          整理了 {ranking.length} 家机场的官网套餐价格、后台节点数量、线路和协议，每月更新。本站主推 {primary?.aff.name}，另外 {secondary.length} 家为次推，点名字可以看每家的全部套餐和怎么买最划算。
         </p>
         <p class="cta">
           <a class="btn" href={PILLAR.path}>查看完整机场推荐榜</a>
@@ -34,10 +37,13 @@ const counts = Object.fromEntries(
         <p class="meta">最后更新 <time class="num" datetime={updated.toISOString()}>{formatDate(updated)}</time> · 价格以官网为准</p>
       </div>
       <div class="board-slot">
-        <h2 class="top-title">本站主推 {FEATURED_COUNT} 家机场</h2>
-        <RankTable items={featured} compact caption={'本站主推 ' + FEATURED_COUNT + ' 家机场'} />
-        <p class="meta small">"折合最低"按年付等长周期换算成每月价格。官网链接为推广链接，注册价格不变。</p>
+        {primary && <Spotlight item={primary} />}
       </div>
+    </div>
+    <div class="wrap">
+      <h2 class="top-title">次推 {secondary.length} 家机场</h2>
+      <RankTable items={secondary} compact caption={'次推 ' + secondary.length + ' 家机场'} />
+      <p class="meta small">"折合最低"按年付等长周期换算成每月价格。官网链接为推广链接，注册价格不变。</p>
     </div>
   </section>
 
@@ -106,7 +112,7 @@ const counts = Object.fromEntries(
   }
 
   .top-title {
-    margin: 0 0 0.25rem;
+    margin: 1.5rem 0 0.25rem;
     font-size: var(--step-1);
   }
 

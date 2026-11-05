@@ -29,7 +29,7 @@ const json = JSON.stringify(data).replace(/</g, '\\u003c');
     <div class="picker-head">
       <p class="eyebrow">互动选机场</p>
       <h2 id="picker-title">30 秒帮你挑一家机场</h2>
-      <p class="sub">回答 3 个问题，从本站主推的 {items.length} 家里，按官网价格算出最适合你的套餐。</p>
+      <p class="sub">回答 3 个问题，按官网价格算出最适合你的套餐：站长主推的 {items[0]?.aff.name} 会给出对应套餐，另外从 {items.length - 1} 家次推机场里挑出最省钱的两家。</p>
     </div>
 
     <div class="pk-card" id="pk" data-step="1">
@@ -81,7 +81,7 @@ const json = JSON.stringify(data).replace(/</g, '\\u003c');
           <button type="button" class="btn btn--ghost" id="pk-restart">重新选一次</button>
           <a class="btn btn--ghost" href="/jichang-tuijian/">看完整推荐榜</a>
         </div>
-        <p class="pk-fine">结果按各机场官网价格计算（价格以官网为准），只在本站主推机场里挑。官网链接为推广链接，注册价格不变。</p>
+        <p class="pk-fine">结果按各机场官网价格计算（价格以官网为准），只在本站主推和次推机场里挑。官网链接为推广链接，注册价格不变。</p>
       </div>
     </div>
 
@@ -170,10 +170,14 @@ const json = JSON.stringify(data).replace(/</g, '\\u003c');
       if (top) best.push({ a, ...top });
     }
     best.sort((x, y) => x.cost - y.cost || x.a.rank - y.a.rank);
-    if (pay === 'onetime') return { list: best.slice(0, 3), overBudget: false };
-    const within = best.filter((b) => b.cost <= budget);
-    const list = (within.length ? within : best).slice(0, 3);
-    return { list, overBudget: !within.length && best.length > 0 };
+    // 站长主推（第 1 名）有合适套餐时固定放在第一位，其余按价格挑
+    const main = best.find((b) => b.a.rank === 1);
+    const rest = best.filter((b) => b !== main);
+    if (pay === 'onetime') return { list: (main ? [main] : []).concat(rest).slice(0, 3), overBudget: false };
+    const within = rest.filter((b) => b.cost <= budget);
+    const others = (within.length ? within : rest).slice(0, main ? 2 : 3);
+    const overBudget = !within.length && rest.length > 0 && !(main && main.cost <= budget);
+    return { list: (main ? [main] : []).concat(others), overBudget };
   }
 
   function render() {
@@ -206,7 +210,8 @@ const json = JSON.stringify(data).replace(/</g, '\\u003c');
       const name = li.querySelector('.pk-name a') as HTMLAnchorElement;
       name.textContent = b.a.name;
       name.href = b.a.path;
-      (li.querySelector('.pk-tag') as HTMLElement).textContent = '主推第 ' + b.a.rank + ' 名';
+      (li.querySelector('.pk-tag') as HTMLElement).textContent = b.a.rank === 1 ? '站长主推' : '次推 · 按价格算最省';
+      if (b.a.rank === 1) li.classList.add('pk-main');
       (li.querySelector('.pk-plan') as HTMLElement).textContent = '推荐「' + pl.n + '」：' + price;
       (li.querySelector('.pk-meta') as HTMLElement).textContent = [b.a.line, b.a.nodes ? b.a.nodes + ' 个节点' : ''].filter(Boolean).join(' · ');
       (li.querySelector('.pk-off') as HTMLAnchorElement).href = b.a.url;
@@ -485,6 +490,14 @@ const json = JSON.stringify(data).replace(/</g, '\\u003c');
   :global(.pk-item:first-child) {
     border: 2px solid var(--ink);
     background: #fffbea;
+  }
+
+  :global(.pk-item.pk-main .pk-tag) {
+    background: var(--ink);
+    color: var(--sign);
+    padding: 0.05rem 0.45rem;
+    border-radius: 3px;
+    font-weight: 700;
   }
 
   @keyframes pk-in {

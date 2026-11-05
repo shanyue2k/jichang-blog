@@ -4,6 +4,7 @@ import Base from '../layouts/Base.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import Faq from '../components/Faq.astro';
 import RankTable from '../components/RankTable.astro';
+import Spotlight from '../components/Spotlight.astro';
 import { PILLAR } from '../site.config';
 import { absoluteUrl } from '../lib/content';
 import { formatDate } from '../lib/format';
@@ -14,6 +15,7 @@ import { gb, yuan } from '../lib/profiles';
 const all = getRanking();
 const featured = all.slice(0, FEATURED_COUNT);
 const others = all.slice(FEATURED_COUNT);
+const primary = featured[0];
 const updated = rankingUpdated(all);
 const month = monthLabel(updated);
 const year = updated.getFullYear();
@@ -54,7 +56,7 @@ const updatedText = formatDate(updated);
 const faq = [
   {
     q: year + ' 年有哪些机场推荐？',
-    a: '本站主推的 ' + FEATURED_COUNT + ' 家依次是：' + featuredNames + '。完整榜单共 ' + all.length + ' 家，每家都有单独的资料页，写明套餐价格、节点数量、线路和协议。',
+    a: '本站主推 ' + (primary ? primary.aff.name : '') + '，次推依次是：' + featured.slice(1).map((i) => i.aff.name).join('、') + '。完整榜单共 ' + all.length + ' 家，每家都有单独的资料页，写明套餐价格、节点数量、线路和协议。',
   },
   {
     q: '哪个机场最便宜？',
@@ -99,16 +101,18 @@ const jsonLd = [breadcrumbSchema(crumbs), itemList, faqSchema(faq)];
     <header class="head">
       <h1>机场推荐 {month}</h1>
       <p class="lead">
-        本页整理了 {all.length} 家机场的官网套餐价格、后台节点数量、线路类型和协议，每月更新。最前面的 {FEATURED_COUNT} 家是本站主推，下面逐家写了价格和怎么买最划算；每家都可以点进资料页看全部套餐。
+        本页整理了 {all.length} 家机场的官网套餐价格、后台节点数量、线路类型和协议，每月更新。本站主推 {primary?.aff.name}，第 2 到第 {FEATURED_COUNT} 名为次推，下面逐家写了价格和怎么买最划算；每家都可以点进资料页看全部套餐。
       </p>
       <p class="meta">
         最后更新 <time class="num" datetime={updated.toISOString()}>{formatDate(updated)}</time> · 资料来源：各机场官网套餐页与后台节点列表 · 价格以官网为准
       </p>
     </header>
 
+    {primary && <Spotlight item={primary} />}
+
     <section aria-labelledby="top-title">
-      <h2 id="top-title" class="sec-title">主推 {FEATURED_COUNT} 家机场一览</h2>
-      <RankTable items={featured} caption={'主推 ' + FEATURED_COUNT + ' 家机场'} />
+      <h2 id="top-title" class="sec-title">主推与次推 {FEATURED_COUNT} 家机场一览</h2>
+      <RankTable items={featured} caption={'主推与次推 ' + FEATURED_COUNT + ' 家机场'} />
       <p class="meta small">"折合最低"按年付等长周期套餐换算成每月价格；表格可以左右滑动。</p>
     </section>
 
@@ -121,6 +125,7 @@ const jsonLd = [breadcrumbSchema(crumbs), itemList, faqSchema(faq)];
               <h2>
                 <span class="num rank">{i.rank}</span>
                 <span>{i.aff.name}</span>
+                <span class={i.rank === 1 ? 'tier tier--main' : 'tier'}>{i.rank === 1 ? '站长主推' : '次推'}</span>
               </h2>
               <ul class="facts">
                 {i.monthlyFrom !== null && <li>月付 <strong class="num">{yuan(i.monthlyFrom)}</strong> 起</li>}
@@ -315,6 +320,21 @@ const jsonLd = [breadcrumbSchema(crumbs), itemList, faqSchema(faq)];
     border-radius: var(--radius-sm);
     font-size: 1.4rem;
     font-weight: 700;
+  }
+
+  .tier {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    padding: 0.1rem 0.5rem;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    color: var(--muted);
+  }
+
+  .tier--main {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--sign);
   }
 
   .facts {

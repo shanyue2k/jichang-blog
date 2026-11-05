@@ -31,10 +31,11 @@ const { items, compact = false, caption } = Astro.props;
         items.map((i) => (
           <tr>
             <td class="num rk">
-              <span class={[1, 2, 3].includes(i.rank) ? 'medal' : ''}>{i.rank}</span>
+              <span class={i.rank === 1 ? 'medal' : ''}>{i.rank}</span>
             </td>
             <th scope="row" class="nm">
               <a href={i.path}>{i.aff.name}</a>
+              {i.rank === 1 && <span class="tier tier--main">主推</span>}
             </th>
             <td class="num nowrap">{i.monthlyFrom !== null ? `${yuan(i.monthlyFrom)}/月` : '—'}</td>
             <td class="num nowrap">{i.lowest !== null ? `${yuan(i.lowest)}/月` : '—'}</td>
@@ -94,6 +95,19 @@ const { items, compact = false, caption } = Astro.props;
   .rk .medal {
     background: var(--sign);
     color: var(--sign-ink);
+  }
+
+  .tier {
+    margin-left: 0.4rem;
+    padding: 0 0.4rem;
+    font-size: 0.75rem;
+    border-radius: 3px;
+    vertical-align: 0.1em;
+  }
+
+  .tier--main {
+    background: var(--ink);
+    color: var(--sign);
   }
 
   .nowrap {

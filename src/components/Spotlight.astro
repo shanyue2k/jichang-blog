@@ -1,0 +1,211 @@
+---
+// 站长主推机场（排名第 1）的重点展示卡片：首页与推荐页共用，数据来自资料页
+import type { RankedItem } from '../lib/ranking';
+import { PLAN_TYPE_LABEL, gb, perMonth, yuan } from '../lib/profiles';
+
+interface Props {
+  item: RankedItem;
+  headingLevel?: 'h2' | 'h3';
+}
+const { item, headingLevel = 'h2' } = Astro.props;
+const H = headingLevel;
+const p = item.profile;
+
+// 挑 3 个代表套餐：最便宜的月付、最省的长周期、流量最多的月付
+const periodic = p.plans.filter((x) => !x.custom && x.type !== 'onetime');
+const monthly = periodic.filter((x) => x.type === 'monthly').sort((a, b) => a.price - b.price);
+const longest = periodic
+  .filter((x) => x.type !== 'monthly')
+  .sort((a, b) => (perMonth(a) ?? 0) - (perMonth(b) ?? 0));
+const picks = [
+  monthly[0] && { tag: '先试一个月', plan: monthly[0] },
+  longest[0] && { tag: '长期最省', plan: longest[0] },
+  monthly[1] && { tag: '流量更多', plan: monthly[1] },
+].filter(Boolean) as { tag: string; plan: (typeof periodic)[number] }[];
+---
+
+<article class="spot" aria-labelledby={'spot-' + item.aff.id}>
+  <div class="spot-badge">站长主推</div>
+  <div class="spot-main">
+    <H class="spot-title" id={'spot-' + item.aff.id}>
+      <a href={item.path}>{item.aff.name}</a>
+    </H>
+    <p class="spot-line">
+      {[p.lineType, item.nodeTotal ? item.nodeTotal + ' 个节点' : '', p.protocols?.join(' / '), p.devices ? '设备' + p.devices : '']
+        .filter(Boolean)
+        .join(' · ')}
+    </p>
+    <ul class="spot-claims">
+      {p.claims.slice(0, 4).map((c) => <li>{c}</li>)}
+    </ul>
+  </div>
+  <ul class="spot-plans">
+    {
+      picks.map((x) => {
+        const m = perMonth(x.plan);
+        return (
+          <li>
+            <span class="sp-tag">{x.tag}</span>
+            <span class="sp-name">{x.plan.name}</span>
+            <span class="sp-price num">
+              {yuan(x.plan.price)}
+              <small>/{PLAN_TYPE_LABEL[x.plan.type].replace('付', '')}</small>
+            </span>
+            <span class="sp-meta">
+              每月 {gb(x.plan.trafficGB)}
+              {x.plan.type !== 'monthly' && m !== null ? ' · 折合 ' + yuan(m) + '/月' : ''}
+            </span>
+          </li>
+        );
+      })
+    }
+  </ul>
+  <div class="spot-cta">
+    <a class="btn spot-go" href={item.aff.url} rel="sponsored nofollow noopener" target="_blank">访问 {item.aff.name} 官网 →</a>
+    <a class="spot-more" href={item.path}>查看 {item.aff.name} 全部套餐与节点</a>
+  </div>
+</article>
+
+<style>
+  .spot {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: 1rem 1.5rem;
+    padding: 1.4rem clamp(1rem, 3vw, 1.6rem) 1.25rem;
+    background: var(--slate);
+    color: #fff;
+    border-radius: var(--radius-md);
+    box-shadow: 6px 6px 0 var(--sign);
+    margin: 0.5rem 0 1.5rem;
+  }
+
+  @media (max-width: 720px) {
+    .spot {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .spot-badge {
+    position: absolute;
+    top: -0.8rem;
+    left: 1.2rem;
+    background: var(--sign);
+    color: var(--sign-ink);
+    font-weight: 700;
+    font-size: 0.875rem;
+    padding: 0.15rem 0.7rem;
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+  }
+
+  .spot-title {
+    margin: 0.2rem 0 0.25rem;
+    font-size: var(--step-3);
+    border: 0 !important;
+    padding: 0 !important;
+  }
+
+  .spot-title a {
+    color: var(--sign);
+    text-decoration: none;
+  }
+
+  .spot-line {
+    margin: 0 0 0.6rem;
+    color: #cfd6dd;
+    font-size: 0.9375rem;
+  }
+
+  .spot-claims {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .spot-claims li {
+    border: 1px solid #4a5866;
+    border-radius: 3px;
+    padding: 0.05rem 0.55rem;
+    font-size: 0.875rem;
+    color: #e6eaee;
+  }
+
+  .spot-plans {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.5rem;
+    align-self: center;
+  }
+
+  .spot-plans li {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas: 'tag name price' 'tag meta price';
+    gap: 0 0.6rem;
+    align-items: center;
+    background: var(--slate-2);
+    border: 1px solid #3a4754;
+    border-radius: var(--radius-sm);
+    padding: 0.45rem 0.7rem;
+  }
+
+  .sp-tag {
+    grid-area: tag;
+    font-size: 0.75rem;
+    background: #3a4754;
+    color: var(--sign);
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+
+  .sp-name {
+    grid-area: name;
+    font-weight: 600;
+    font-size: 0.9375rem;
+  }
+
+  .sp-meta {
+    grid-area: meta;
+    font-size: 0.8125rem;
+    color: #b8c2cc;
+  }
+
+  .sp-price {
+    grid-area: price;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--sign);
+    white-space: nowrap;
+  }
+
+  .sp-price small {
+    font-size: 0.8rem;
+    color: #b8c2cc;
+    font-weight: 400;
+  }
+
+  .spot-cta {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem 1.25rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #3a4754;
+  }
+
+  .spot-go {
+    font-size: 1.0625rem;
+  }
+
+  .spot-more {
+    color: #e6eaee;
+  }
+</style>
