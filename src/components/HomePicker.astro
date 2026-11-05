@@ -5,8 +5,10 @@ import type { RankedItem } from '../lib/ranking';
 
 interface Props {
   items: RankedItem[];
+  /** 放在已有 .wrap 容器里（推荐页）时去掉外层留白和背景 */
+  embedded?: boolean;
 }
-const { items } = Astro.props;
+const { items, embedded = false } = Astro.props;
 
 const MONTHS: Record<string, number> = { monthly: 1, quarterly: 3, semiannual: 6, yearly: 12, onetime: 0 };
 const data = items.map((i) => ({
@@ -24,8 +26,8 @@ const data = items.map((i) => ({
 const json = JSON.stringify(data).replace(/</g, '\\u003c');
 ---
 
-<section class="picker" aria-labelledby="picker-title">
-  <div class="wrap">
+<section class={embedded ? 'picker picker--embedded' : 'picker'} aria-labelledby="picker-title">
+  <div class={embedded ? '' : 'wrap'}>
     <div class="picker-head">
       <p class="eyebrow">互动选机场</p>
       <h2 id="picker-title">30 秒帮你挑一家机场</h2>
@@ -280,6 +282,12 @@ const json = JSON.stringify(data).replace(/</g, '\\u003c');
       linear-gradient(180deg, rgba(255, 204, 0, 0.12), rgba(255, 204, 0, 0) 60%),
       var(--bg);
     border-bottom: 1px solid var(--line);
+  }
+
+  .picker--embedded {
+    padding: 0.5rem 0 1rem;
+    background: none;
+    border-bottom: 0;
   }
 
   .picker-head {

@@ -5,6 +5,7 @@ import Breadcrumbs from '../components/Breadcrumbs.astro';
 import Faq from '../components/Faq.astro';
 import RankTable from '../components/RankTable.astro';
 import Spotlight from '../components/Spotlight.astro';
+import HomePicker from '../components/HomePicker.astro';
 import { PILLAR } from '../site.config';
 import { absoluteUrl } from '../lib/content';
 import { formatDate } from '../lib/format';
@@ -115,6 +116,9 @@ const jsonLd = [breadcrumbSchema(crumbs), itemList, faqSchema(faq)];
       <RankTable items={featured} caption={'主推与次推 ' + FEATURED_COUNT + ' 家机场'} />
       <p class="meta small">"折合最低"按年付等长周期套餐换算成每月价格；表格可以左右滑动。</p>
     </section>
+
+    <HomePicker items={featured} embedded />
+
 
     <div class="body">
       {
