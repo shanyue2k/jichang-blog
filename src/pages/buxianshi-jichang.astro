@@ -1,0 +1,477 @@
+---
+// 专题：不限时流量机场（长尾词：机场不限时套餐 / 不限时流量包 / 不限时推荐 / 按量付费 / 流量计费）
+// 数据全部来自 src/data/profiles 里 type 为 onetime 的套餐
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Faq from '../components/Faq.astro';
+import TelegramCta from '../components/TelegramCta.astro';
+import { PILLAR } from '../site.config';
+import { absoluteUrl } from '../lib/content';
+import { formatDate } from '../lib/format';
+import { breadcrumbSchema, faqSchema } from '../lib/schema';
+import {
+  cheapestForUsage,
+  getRanking,
+  mentionsResetDiscount,
+  monthLabel,
+  onetimePacks,
+  rankingUpdated,
+  type Pack,
+} from '../lib/ranking';
+import { gb, yuan } from '../lib/profiles';
+
+const all = getRanking();
+const updated = rankingUpdated(all);
+const month = monthLabel(updated);
+const packs = onetimePacks(all);
+const withPacks = all.filter((i) => packs.some((p) => p.item === i));
+const nAll = all.length;
+const nPack = withPacks.length;
+
+// 每家单价最低的一个包
+const bestPerAirport = withPacks
+  .map((i) => packs.filter((p) => p.item === i).sort((a, b) => a.perGB - b.perGB)[0])
+  .sort((a, b) => a.perGB - b.perGB || a.item.rank - b.item.rank);
+
+// 按包的大小分三档
+const bands = [
+  { label: '小包：100GB 上下', min: 0, max: 160, who: '只是偶尔查资料、出差备用' },
+  { label: '中包：200 到 500GB', min: 161, max: 500, who: '用量时多时少，不想每月续费' },
+  { label: '大包：500GB 以上', min: 501, max: 99999, who: '一次买断、用一两年' },
+].map((b) => ({
+  ...b,
+  list: packs
+    .filter((p) => !p.limited && p.plan.trafficGB >= b.min && p.plan.trafficGB <= b.max)
+    .sort((a, c) => a.perGB - c.perGB || a.plan.price - c.plan.price)
+    .slice(0, 5),
+}));
+
+// 流量包 vs 按月买：按每月用量算
+const minPerGB = bestPerAirport[0]?.perGB ?? 0;
+const typicalPack = packs.filter((p) => p.plan.trafficGB === 100 && !p.limited).sort((a, b) => a.plan.price - b.plan.price)[0];
+const monthlyOnly = (need: number) => {
+  let best: { name: string; price: number; air: string } | null = null;
+  for (const i of all)
+    for (const p of i.profile.plans)
+      if (!p.custom && p.type === 'monthly' && p.trafficGB >= need && (!best || p.price < best.price))
+        best = { name: p.name, price: p.price, air: i.aff.name };
+  return best;
+};
+const compare = [10, 20, 40, 80].map((u) => {
+  const packCost = minPerGB * u;
+  const typ = typicalPack ? typicalPack.perGB * u : 0;
+  const m = monthlyOnly(u);
+  const y = cheapestForUsage(all, u)[0];
+  return { u, packCost, typ, m, y };
+});
+const breakEvenGB = compare.find((c) => c.m && c.typ >= c.m.price)?.u;
+
+const main = all[0];
+const mainPacks = main ? packs.filter((p) => p.item === main).sort((a, b) => a.perGB - b.perGB) : [];
+const mainRank = main ? bestPerAirport.findIndex((p) => p.item === main) + 1 : 0;
+
+const devLimited = packs.filter((p) => p.deviceNote);
+const devAirports = [...new Set(devLimited.map((p) => p.item.aff.name))];
+const resetCount = new Set(packs.filter(mentionsResetDiscount).map((p) => p.item.aff.name)).size;
+const limitedOnes = packs.filter((p) => p.limited);
+const noPack = all.filter((i) => !withPacks.includes(i)).map((i) => i.aff.name);
+
+const b0 = bestPerAirport[0];
+const cheapIn = packs.filter((p) => !p.limited).sort((a, b) => a.plan.price - b.plan.price || a.perGB - b.perGB)[0];
+
+const title = '不限时流量机场推荐 ' + month + '｜' + nPack + ' 家机场流量包价格、每 GB 单价与限制对比';
+const description =
+  '整理 ' + nPack + ' 家有不限时流量包的机场：一次买断、流量不过期的套餐价格和每 GB 单价，按包的大小分档比较，并算清楚什么用量下流量包比按月买划算。';
+
+const crumbs = [
+  { name: '首页', path: '/' },
+  { name: PILLAR.label, path: PILLAR.path },
+  { name: '不限时流量机场', path: '/buxianshi-jichang/' },
+];
+
+const faq = [
+  {
+    q: '不限时流量包是什么意思？',
+    a: '一次付钱买一定的流量，比如 100GB，没有使用期限，用完为止，不会每月清零。和月付、年付相反：月付是按时间买，每月给固定流量，当月没用完就作废。',
+  },
+  {
+    q: '哪家的不限时流量包最便宜？',
+    a: b0 ? '按每 GB 算，目前最低的是' + b0.item.aff.name + '的「' + b0.plan.name + '」，' + yuan(b0.plan.price) + ' 买 ' + gb(b0.plan.trafficGB) + '，约 ' + yuan(b0.perGB, 3) + '/GB。只想花最少的钱，入门价最低的是' + (cheapIn ? cheapIn.item.aff.name + '的「' + cheapIn.plan.name + '」，' + yuan(cheapIn.plan.price) + ' / ' + gb(cheapIn.plan.trafficGB) : '各家 100GB 小包') + '。' : '见上方表格。',
+  },
+  {
+    q: '流量包和月付哪个划算？',
+    a: '看每月用多少。用量很少、或者几个月才用一次，流量包更省，也不用记着续费；每个月都稳定用几十 GB 以上，买年付或半年付通常便宜得多。本页"流量包和按月买，哪个更省"一节按不同用量算了具体数字。',
+  },
+  {
+    q: '机场跑路了，没用完的流量包怎么办？',
+    a: '基本拿不回来。流量包不过期，反过来也意味着钱一直押在机场那里。建议不要一次买特别大的包，先买小包或中包，用完再续。',
+  },
+  {
+    q: '流量包能在几台设备上用？',
+    a: devAirports.length
+      ? '多数不限设备，但有些流量包限制同时在线的设备数，比如' + devAirports.join('、') + '的部分流量包，买之前看清楚套餐说明。'
+      : '大多数不限设备，具体以套餐说明为准。',
+  },
+];
+
+const jsonLd = [
+  breadcrumbSchema(crumbs),
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: '不限时流量机场 ' + month,
+    numberOfItems: Math.min(10, bestPerAirport.length),
+    itemListElement: bestPerAirport.slice(0, 10).map((p, k) => ({
+      '@type': 'ListItem',
+      position: k + 1,
+      name: p.item.aff.name,
+      url: absoluteUrl(p.item.path),
+    })),
+  },
+  faqSchema(faq),
+];
+
+const row = (p: Pack) => yuan(p.plan.price) + ' / ' + gb(p.plan.trafficGB);
+---
+
+<Base title={title} description={description} jsonLd={jsonLd} modified={updated}>
+  <div class="wrap">
+    <Breadcrumbs crumbs={crumbs} />
+    <header class="head">
+      <h1>不限时流量机场推荐 {month}</h1>
+      <p class="lead">
+        不限时流量包就是"按量付费"：一次买 100GB、300GB，没有期限，用完为止。适合几个月才翻一次墙、出差才用、或者用量忽多忽少的人。本站整理的 {nAll} 家机场里，有 {nPack} 家卖这种包，下面按每 GB 价格和包的大小比了一遍。
+      </p>
+      <p class="meta">
+        最后更新 <time class="num" datetime={updated.toISOString()}>{formatDate(updated)}</time> · 价格来自各机场官网，以官网为准 · 本站尚未测速，下面只比价格
+      </p>
+    </header>
+
+    <ul class="cards">
+      {b0 && (
+        <li>
+          <p class="q">每 GB 最便宜</p>
+          <p class="a"><a href={b0.item.path}>{b0.item.aff.name}</a></p>
+          <p class="v num">{yuan(b0.perGB, 3)}<small>/GB</small></p>
+          <p class="d">{b0.plan.name} · {row(b0)}</p>
+        </li>
+      )}
+      {cheapIn && (
+        <li>
+          <p class="q">入门花得最少</p>
+          <p class="a"><a href={cheapIn.item.path}>{cheapIn.item.aff.name}</a></p>
+          <p class="v num">{yuan(cheapIn.plan.price)}</p>
+          <p class="d">{cheapIn.plan.name} · {gb(cheapIn.plan.trafficGB)}，不过期</p>
+        </li>
+      )}
+      {typicalPack && (
+        <li>
+          <p class="q">最常见的 100GB 包</p>
+          <p class="a"><a href={typicalPack.item.path}>{typicalPack.item.aff.name}</a></p>
+          <p class="v num">{yuan(typicalPack.plan.price)}</p>
+          <p class="d">多数机场 100GB 卖 ¥100 左右，这家最低</p>
+        </li>
+      )}
+    </ul>
+
+    <div class="body">
+      <section>
+        <h2>每 GB 最便宜的流量包</h2>
+        <p>
+          每家只取单价最低的那个包。规律很明显：包越大越便宜，同一家 1TB 的包摊下来，常常只有 100GB 小包的六七成。但大包要一次掏几百块，下面"几个坑"里会说风险。
+        </p>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead><tr><th>#</th><th>机场</th><th>流量包</th><th>价格 / 流量</th><th>每 GB</th></tr></thead>
+            <tbody>
+              {bestPerAirport.slice(0, 12).map((p, k) => (
+                <tr class={p.item.rank === 1 ? 'is-main' : ''}>
+                  <td class="num">{k + 1}</td>
+                  <th scope="row"><a href={p.item.path}>{p.item.aff.name}</a></th>
+                  <td>{p.plan.name}</td>
+                  <td class="num nowrap">{row(p)}</td>
+                  <td class="num nowrap"><strong>{yuan(p.perGB, 3)}</strong></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>按包的大小挑</h2>
+        <p>单价不是唯一标准。用不完的流量等于白花钱，所以先按自己大概要多少挑档位，再在同一档里比价格。</p>
+        {bands.map((b) => (
+          <div class="band">
+            <h3>{b.label}<span>{b.who}</span></h3>
+            <ol>
+              {b.list.map((p) => (
+                <li class={p.item.rank === 1 ? 'is-main' : ''}>
+                  <a href={p.item.path}>{p.item.aff.name}</a>
+                  <span>「{p.plan.name}」{row(p)}{p.deviceNote ? '，' + p.deviceNote : ''}</span>
+                  <strong class="num">{yuan(p.perGB, 3)}/GB</strong>
+                </li>
+              ))}
+            </ol>
+          </div>
+        ))}
+      </section>
+
+      <section>
+        <h2>流量包和按月买，哪个更省</h2>
+        <p>
+          流量包不过期，听起来很划算，但每 GB 的价格其实比年付贵不少。下面按每月用量算了三种买法的月均花费：用最便宜的流量包、买最便宜的月付、买最便宜的长周期套餐。
+        </p>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead>
+              <tr><th>每月用量</th><th>最便宜的流量包</th><th>100GB 小包</th><th>月付最低</th><th>长周期最低</th></tr>
+            </thead>
+            <tbody>
+              {compare.map((c) => (
+                <tr>
+                  <th scope="row">{c.u}GB</th>
+                  <td class="num nowrap">{yuan(c.packCost)}/月</td>
+                  <td class="num nowrap">{yuan(c.typ)}/月</td>
+                  <td class="num nowrap">{c.m ? yuan(c.m.price) + '/月' : '—'}</td>
+                  <td class="num nowrap">{c.y ? yuan(c.y.perMonth) + '/月' : '—'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p>
+          看得出来：每月只用 10 到 20GB，流量包和月付差不多，但流量包不用每月续费、不会浪费；用量到 {breakEvenGB ?? 40}GB 左右，100GB 小包就比月付贵了；只看价格的话，长周期套餐一直是最便宜的，代价是要一次付几个月。
+        </p>
+        <p class="meta">"流量包"一列按每月用量 × 每 GB 单价折算；"长周期最低"是流量够用的季付、半年付或年付平均到每月的价格。</p>
+      </section>
+
+      {main && (
+        <section class="main-box">
+          <h2>站长主推的{main.aff.name}有流量包吗？</h2>
+          {mainPacks.length ? (
+            <div>
+              <p>
+                有 {mainPacks.length} 个：{mainPacks.map((p) => '「' + p.plan.name + '」' + row(p)).join('，')}。按每 GB 算，在 {nPack} 家里排第 {mainRank}，不算便宜。
+              </p>
+              <p>
+                如果你每个月都会用，其实更建议直接买{main.aff.name}的月付（{yuan(main.monthlyFrom ?? 0)} 起，每月 {main.monthlyFromGB ? gb(main.monthlyFromGB) : ''}），比它的流量包划算得多；流量包更适合偶尔才用、不想记续费的人。
+              </p>
+            </div>
+          ) : (
+            <p>{main.aff.name}目前没有流量包，只有周期套餐。</p>
+          )}
+          <p class="actions">
+            <a class="btn" href={main.aff.url} rel="sponsored nofollow noopener" target="_blank">访问 {main.aff.name} 官网</a>
+            <a class="btn btn--ghost" href={main.path}>看 {main.aff.name} 全部套餐</a>
+          </p>
+        </section>
+      )}
+
+      <section class="prose">
+        <h2>买流量包前要知道的几个坑</h2>
+        <h3>不过期，也意味着钱一直押在机场</h3>
+        <p>
+          机场停止运营，没用完的流量就没了。月付最多损失一个月，一个 1TB 的大包可能是几百块。第一次买，先买 100 到 300GB 的包。
+        </p>
+        <h3>有的包限制设备数</h3>
+        <p>
+          {devAirports.length ? (
+            <span>
+              {devAirports.join('、')}的流量包标注了设备限制：
+              {devLimited.map((p, k) => (
+                <span>{k ? '；' : ''}{p.plan.name}（{p.deviceNote}）</span>
+              ))}
+              。手机和电脑同时用的话要留意。
+            </span>
+          ) : (
+            '目前整理的流量包都没有标注设备限制，但下单前还是看一下套餐说明。'
+          )}
+        </p>
+        <h3>"重置"要另外付钱</h3>
+        <p>
+          有 {resetCount} 家写明用完后可以手动重置流量，价格是原价的九折。重置等于再买一次，不是免费续上。
+        </p>
+        {!!limitedOnes.length && (
+          <div>
+            <h3>有些便宜包是限量的</h3>
+            <p>
+              {limitedOnes.map((p) => p.item.aff.name + '的「' + p.plan.name + '」').join('、')}官网写着限量，卖完就没有了，本页"按包的大小挑"没有把它算进去。
+            </p>
+          </div>
+        )}
+        <h3>不是每家都有流量包</h3>
+        <p>
+          {noPack.length ? noPack.join('、') + '目前只有周期套餐。' : '本站整理的机场都有流量包。'}想按月买的话，可以看<a href="/pianyi-jichang/">便宜机场推荐</a>。
+        </p>
+      </section>
+
+      <TelegramCta />
+
+      <section class="prose">
+        <h2>相关页面</h2>
+        <ul>
+          <li><a href={PILLAR.path}>机场推荐 {month}：{nAll} 家机场完整对比</a></li>
+          <li><a href="/pianyi-jichang/">便宜机场推荐：平均每月最低、月付门槛、每 GB 单价</a></li>
+          <li><a href="/#calc">每月流量估算器</a>：先算清楚自己要多少 GB</li>
+          <li><a href="/jichang-daohang/">机场官网导航</a></li>
+        </ul>
+      </section>
+
+      <Faq items={faq} />
+      <p class="meta small">页面里的官网链接是推广链接，通过它注册价格不变，本站可能获得佣金。</p>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .head {
+    max-width: 48rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .lead {
+    color: var(--ink-soft);
+  }
+
+  .cards {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.9rem;
+  }
+
+  @media (max-width: 720px) {
+    .cards {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .cards li {
+    background: var(--surface);
+    border: 2px solid var(--ink);
+    border-radius: var(--radius-md);
+    padding: 0.9rem 1.1rem;
+    box-shadow: 4px 4px 0 var(--sign);
+  }
+
+  .cards p {
+    margin: 0;
+  }
+
+  .cards .q {
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+
+  .cards .a {
+    font-weight: 700;
+    font-size: 1.125rem;
+  }
+
+  .cards .v {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .cards .v small {
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  .cards .d {
+    font-size: 0.875rem;
+    color: var(--ink-soft);
+  }
+
+  .body {
+    max-width: 52rem;
+    margin-top: 2rem;
+  }
+
+  .body > section > h2,
+  .body .prose h2 {
+    border-top: 2px solid var(--ink);
+    padding-top: 0.25em;
+  }
+
+  .data-table tbody th {
+    background: var(--surface);
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  tr.is-main td,
+  tr.is-main th {
+    background: #fffbea !important;
+  }
+
+  .nowrap {
+    white-space: nowrap;
+  }
+
+  .band h3 span {
+    margin-left: 0.6rem;
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: var(--muted);
+  }
+
+  .band ol {
+    padding-left: 1.4em;
+  }
+
+  .band li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2rem 0.6rem;
+    align-items: baseline;
+    padding: 0.25rem 0;
+  }
+
+  .band li a {
+    font-weight: 700;
+  }
+
+  .band li span {
+    color: var(--ink-soft);
+    font-size: 0.9375rem;
+  }
+
+  .band li strong {
+    margin-left: auto;
+  }
+
+  .band li.is-main a::after {
+    content: '站长主推';
+    margin-left: 0.4rem;
+    font-size: 0.75rem;
+    background: var(--ink);
+    color: var(--sign);
+    padding: 0 0.35rem;
+    border-radius: 3px;
+    vertical-align: 0.1em;
+  }
+
+  .main-box {
+    margin-top: 2rem;
+    padding: 0.25rem 1.25rem 1rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--sign);
+    border-radius: var(--radius-sm);
+  }
+
+  .main-box h2 {
+    border-top: 0 !important;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+</style>

@@ -110,3 +110,21 @@ export function lowestPick(item: RankedItem): PlanPick | null {
   const r = cheapestForUsage([item], 0);
   return r[0] ?? null;
 }
+
+// ---------- 不限时流量包 ----------
+export type Pack = { item: RankedItem; plan: Plan; perGB: number; deviceNote: string; limited: boolean };
+
+export function onetimePacks(list: RankedItem[]): Pack[] {
+  const out: Pack[] = [];
+  for (const item of list) {
+    for (const plan of item.profile.plans) {
+      if (plan.custom || plan.type !== 'onetime' || !plan.trafficGB) continue;
+      const note = plan.note ?? '';
+      const dev = note.split('；').find((s) => s.includes('台设备')) ?? '';
+      out.push({ item, plan, perGB: plan.price / plan.trafficGB, deviceNote: dev, limited: note.includes('仅限前') });
+    }
+  }
+  return out;
+}
+
+export const mentionsResetDiscount = (p: Pack) => (p.plan.note ?? '').includes('9 折');
