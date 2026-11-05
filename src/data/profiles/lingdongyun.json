@@ -1,0 +1,161 @@
+{
+  "id": "lingdongyun",
+  "collectedAt": "2026-11-05",
+  "source": "灵动云官网套餐页，以及站长提供的节点列表",
+  "lineType": "IEPL / IPLC 专线",
+  "devices": "不限制设备数量",
+  "rate": "全节点 1.0 倍率计费，不限速",
+  "regions": [
+    "香港",
+    "台湾",
+    "日本",
+    "新加坡",
+    "美国"
+  ],
+  "nodeCount": "60 个",
+  "nodeNote": "香港 20 个，台湾、日本、新加坡、美国各 10 个",
+  "claims": [
+    "IEPL / IPLC 优化线路",
+    "不限速，全节点 1.0 倍率计费",
+    "支持 Netflix、Disney+、YouTube 等流媒体",
+    "适配 ChatGPT、Claude 等 AI 工具",
+    "不限制设备数量，多端同时连接",
+    "年付套餐每 30 天自动刷新流量"
+  ],
+  "unlock": [
+    "Netflix",
+    "Disney+",
+    "ChatGPT",
+    "Claude"
+  ],
+  "plans": [
+    {
+      "name": "灵动·穿云",
+      "type": "yearly",
+      "price": 99,
+      "trafficGB": 70,
+      "trafficPer": "month",
+      "note": "年度超值优选；每 30 天自动刷新流量"
+    },
+    {
+      "name": "灵动·拂风",
+      "type": "monthly",
+      "price": 20,
+      "trafficGB": 100,
+      "trafficPer": "month"
+    },
+    {
+      "name": "灵动·驭浪",
+      "type": "monthly",
+      "price": 50,
+      "trafficGB": 300,
+      "trafficPer": "month"
+    },
+    {
+      "name": "灵动·破晓",
+      "type": "monthly",
+      "price": 100,
+      "trafficGB": 700,
+      "trafficPer": "month"
+    },
+    {
+      "name": "灵动·凌霄",
+      "type": "monthly",
+      "price": 180,
+      "trafficGB": 1500,
+      "trafficPer": "month"
+    },
+    {
+      "name": "灵动·拂风",
+      "type": "quarterly",
+      "price": 57,
+      "trafficGB": 100,
+      "trafficPer": "month"
+    },
+    {
+      "name": "灵动·驭浪",
+      "type": "quarterly",
+      "price": 142.5,
+      "trafficGB": 300,
+      "trafficPer": "month"
+    },
+    {
+      "name": "灵动·破晓",
+      "type": "quarterly",
+      "price": 285,
+      "trafficGB": 700,
+      "trafficPer": "month"
+    },
+    {
+      "name": "灵动·凌霄",
+      "type": "quarterly",
+      "price": 513,
+      "trafficGB": 1500,
+      "trafficPer": "month"
+    },
+    {
+      "name": "灵动·拂风",
+      "type": "semiannual",
+      "price": 108,
+      "trafficGB": 100,
+      "trafficPer": "month"
+    },
+    {
+      "name": "灵动·驭浪",
+      "type": "semiannual",
+      "price": 270,
+      "trafficGB": 300,
+      "trafficPer": "month"
+    },
+    {
+      "name": "灵动·破晓",
+      "type": "semiannual",
+      "price": 540,
+      "trafficGB": 700,
+      "trafficPer": "month"
+    },
+    {
+      "name": "灵动·凌霄",
+      "type": "semiannual",
+      "price": 972,
+      "trafficGB": 1500,
+      "trafficPer": "month"
+    },
+    {
+      "name": "灵动·闲云（小流量包）",
+      "type": "onetime",
+      "price": 199,
+      "trafficGB": 150,
+      "trafficPer": "total",
+      "note": "一次购买，流量永久有效，用完为止"
+    },
+    {
+      "name": "灵动·惊云（标准流量包）",
+      "type": "onetime",
+      "price": 499,
+      "trafficGB": 400,
+      "trafficPer": "total",
+      "note": "一次购买，流量永久有效，用完为止"
+    },
+    {
+      "name": "灵动·飞云（精英流量包）",
+      "type": "onetime",
+      "price": 899,
+      "trafficGB": 800,
+      "trafficPer": "total",
+      "note": "一次购买，流量永久有效，用完为止"
+    },
+    {
+      "name": "灵动云·至尊私人定制",
+      "type": "monthly",
+      "custom": true,
+      "price": 680,
+      "trafficGB": 500,
+      "trafficPer": "month",
+      "note": "专线独享流量、独立带宽和专属公网 IP，面向跨境电商、独立站和 TikTok 直播；确认需求后 2–3 个工作日交付"
+    }
+  ],
+  "pending": [
+    "协议"
+  ]
+}
