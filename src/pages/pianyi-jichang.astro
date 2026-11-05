@@ -1,0 +1,455 @@
+---
+// 专题：便宜机场推荐（长尾词：机场推荐便宜稳定 / 便宜好用 / 机场年付 / 按流量）
+// 所有排名由 src/data/profiles 的官网价格实时计算，改价后自动更新
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Faq from '../components/Faq.astro';
+import TelegramCta from '../components/TelegramCta.astro';
+import { PILLAR } from '../site.config';
+import { absoluteUrl } from '../lib/content';
+import { formatDate } from '../lib/format';
+import { breadcrumbSchema, faqSchema } from '../lib/schema';
+import {
+  bestPerGBPlan,
+  cheapestForUsage,
+  getRanking,
+  isNoRefund,
+  lowestPick,
+  monthLabel,
+  rankingUpdated,
+  type PlanPick,
+} from '../lib/ranking';
+import { PLAN_TYPE_LABEL, gb, yuan } from '../lib/profiles';
+
+const all = getRanking();
+const updated = rankingUpdated(all);
+const month = monthLabel(updated);
+const year = updated.getFullYear();
+const n = all.length;
+
+// 算法一：折合每月最低（不限流量多少）
+const byLowest = cheapestForUsage(all, 0);
+// 算法二：月付门槛
+const byMonthly = all
+  .filter((i) => i.monthlyFrom !== null)
+  .slice()
+  .sort((a, b) => (a.monthlyFrom ?? 0) - (b.monthlyFrom ?? 0) || a.rank - b.rank);
+// 算法三：每 GB
+const byGB = bestPerGBPlan(all);
+// 按用量
+const usage = [
+  { need: 60, who: '查资料、刷社交、偶尔看视频' },
+  { need: 150, who: '每天看 YouTube、用 ChatGPT' },
+  { need: 300, who: '经常追剧、看 4K' },
+].map((u) => ({ ...u, list: cheapestForUsage(all, u.need) }));
+
+const main = all[0];
+const mainLow = main ? lowestPick(main) : null;
+const rankOf = (list: PlanPick[], id: string) => list.findIndex((p) => p.item.aff.id === id) + 1;
+const mainLowRank = main ? rankOf(byLowest, main.aff.id) : 0;
+const main150 = usage[1].list.find((p) => p.item.aff.id === main?.aff.id);
+const main150Rank = main ? rankOf(usage[1].list, main.aff.id) : 0;
+
+// 坑：最便宜的 10 档里有几档是年付、流量多少
+const top10 = byLowest.slice(0, 10);
+const top10Yearly = top10.filter((p) => p.plan.type === 'yearly').length;
+const top10MaxGB = Math.max(...top10.map((p) => p.plan.trafficGB));
+const top10MinGB = Math.min(...top10.map((p) => p.plan.trafficGB));
+const noRefund = all.filter(isNoRefund).map((i) => i.aff.name);
+const limitedPacks = all
+  .filter((i) => i.profile.plans.some((p) => p.type === 'onetime' && (p.note ?? '').includes('1 台设备')))
+  .map((i) => i.aff.name);
+const entry15 = byMonthly.filter((i) => i.monthlyFrom === byMonthly[0]?.monthlyFrom).map((i) => i.aff.name);
+
+const cycle = (p: PlanPick) => (p.months === 1 ? '月付' : PLAN_TYPE_LABEL[p.plan.type]);
+const payOnce = (p: PlanPick) => (p.months === 1 ? yuan(p.plan.price) + '/月' : yuan(p.plan.price) + '/' + PLAN_TYPE_LABEL[p.plan.type].replace('付', ''));
+
+const title = '便宜机场推荐 ' + month + '｜' + n + ' 家机场最低价、月付门槛与每 GB 单价对比';
+const description =
+  '按 ' + n + ' 家机场的官网价格算了三种"便宜"：折合每月最低、月付最低、每 GB 最便宜，再按每月 60GB、150GB、300GB 的用量找出最省的套餐，附便宜套餐常见的坑。';
+
+const crumbs = [
+  { name: '首页', path: '/' },
+  { name: PILLAR.label, path: PILLAR.path },
+  { name: '便宜机场推荐', path: '/pianyi-jichang/' },
+];
+
+const l0 = byLowest[0];
+const m0 = byMonthly[0];
+const g0 = byGB[0];
+const faq = [
+  {
+    q: '现在最便宜的机场是哪家？',
+    a: l0
+      ? '只看折合每月价格，是' + l0.item.aff.name + '的「' + l0.plan.name + '」，' + payOnce(l0) + '，平均每月 ' + yuan(l0.perMonth) + '，每月 ' + gb(l0.plan.trafficGB) + ' 流量。要一次付一年，流量也比较少，适合轻度使用。'
+      : '见上方表格。',
+  },
+  {
+    q: '只想花最少的钱先试一个月，选哪家？',
+    a: m0 ? '月付最低是 ' + yuan(m0.monthlyFrom ?? 0) + '，有 ' + entry15.join('、') + '。这一档基本是体验或小流量套餐，第一次买机场可以从这里开始。' : '见上方表格。',
+  },
+  {
+    q: '流量用得多，怎么买最便宜？',
+    a: g0 ? '看每 GB 单价。目前最低的是' + g0.item.aff.name + '的「' + g0.plan.name + '」，约 ' + yuan(g0.perGB, 3) + '/GB。大流量套餐月费高，但摊到每 GB 往往比小套餐便宜很多。' : '见上方表格。',
+  },
+  {
+    q: '便宜的机场稳定吗？',
+    a: '价格和稳定没有必然关系。本页列的机场大多标注了 IPLC 或 IEPL 专线，便宜的通常是流量少，不是线路差。但本站还没有完成测速，稳定性请先买月付自己用一两周确认。',
+  },
+  {
+    q: '年付小包这么便宜，值得买吗？',
+    a: '如果每月只用几十 GB，年付小包是最省的。缺点是一次付一年，中途不想用了多半退不了；机场也有跑路风险。建议先用同一家的月付套餐一两周，确认好用再买年付。',
+  },
+];
+
+const jsonLd = [
+  breadcrumbSchema(crumbs),
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: '便宜机场推荐 ' + month,
+    numberOfItems: Math.min(10, byLowest.length),
+    itemListElement: byLowest.slice(0, 10).map((p, k) => ({
+      '@type': 'ListItem',
+      position: k + 1,
+      name: p.item.aff.name,
+      url: absoluteUrl(p.item.path),
+    })),
+  },
+  faqSchema(faq),
+];
+---
+
+<Base title={title} description={description} jsonLd={jsonLd} modified={updated}>
+  <div class="wrap">
+    <Breadcrumbs crumbs={crumbs} />
+    <header class="head">
+      <h1>便宜机场推荐 {month}</h1>
+      <p class="lead">
+        "便宜"至少有三种算法：一年下来平均每月花多少、第一次要掏多少钱、每 GB 多少钱。三种算法排出来的名单并不一样。下面把 {n} 家机场的官网价格分别算了一遍，再按你每月大概用多少流量，找出最省的那一档。
+      </p>
+      <p class="meta">
+        最后更新 <time class="num" datetime={updated.toISOString()}>{formatDate(updated)}</time> · 价格来自各机场官网，以官网为准 · 本站尚未测速，下面只比价格
+      </p>
+    </header>
+
+    <section class="quick" aria-labelledby="quick-title">
+      <h2 id="quick-title" class="visually-hidden">先看结论</h2>
+      <ul class="cards">
+        {l0 && (
+          <li>
+            <p class="q">一年总共花得最少</p>
+            <p class="a"><a href={l0.item.path}>{l0.item.aff.name}</a></p>
+            <p class="v num">{yuan(l0.perMonth)}<small>/月</small></p>
+            <p class="d">{l0.plan.name} · {payOnce(l0)} · 每月 {gb(l0.plan.trafficGB)}</p>
+          </li>
+        )}
+        {m0 && (
+          <li>
+            <p class="q">第一次只想花最少</p>
+            <p class="a">{entry15.slice(0, 3).join(' / ')}</p>
+            <p class="v num">{yuan(m0.monthlyFrom ?? 0)}<small>/月</small></p>
+            <p class="d">月付门槛最低，共 {entry15.length} 家</p>
+          </li>
+        )}
+        {g0 && (
+          <li>
+            <p class="q">流量用得多</p>
+            <p class="a"><a href={g0.item.path}>{g0.item.aff.name}</a></p>
+            <p class="v num">{yuan(g0.perGB, 3)}<small>/GB</small></p>
+            <p class="d">{g0.plan.name} · 每月 {gb(g0.plan.trafficGB)}</p>
+          </li>
+        )}
+      </ul>
+    </section>
+
+    <div class="body">
+      <section>
+        <h2>算法一：平均每月最便宜</h2>
+        <p>
+          把季付、半年付、年付的价格摊到每个月，取每家最低的一档。前 10 名里有 {top10Yearly} 档是年付，每月流量只有 {top10MinGB} 到 {top10MaxGB}GB——便宜，主要是因为流量少、而且要一次付清。
+        </p>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead><tr><th>#</th><th>机场</th><th>套餐</th><th>付款</th><th>每月流量</th><th>平均每月</th></tr></thead>
+            <tbody>
+              {byLowest.slice(0, 10).map((p, k) => (
+                <tr class={p.item.rank === 1 ? 'is-main' : ''}>
+                  <td class="num">{k + 1}</td>
+                  <th scope="row"><a href={p.item.path}>{p.item.aff.name}</a></th>
+                  <td>{p.plan.name}</td>
+                  <td class="num nowrap">{payOnce(p)}</td>
+                  <td class="num">{gb(p.plan.trafficGB)}</td>
+                  <td class="num nowrap"><strong>{yuan(p.perMonth)}</strong></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>算法二：月付门槛最低</h2>
+        <p>
+          不想一次付一年，就看月付。月付最低 {yuan(m0?.monthlyFrom ?? 0)} 的有 {entry15.length} 家，多数是体验或小流量套餐。先买一个月，晚高峰和常用的网站都没问题，再换成长周期，是最不容易吃亏的买法。
+        </p>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead><tr><th>#</th><th>机场</th><th>月付起价</th><th>每月流量</th><th>线路</th></tr></thead>
+            <tbody>
+              {byMonthly.slice(0, 10).map((i, k) => (
+                <tr class={i.rank === 1 ? 'is-main' : ''}>
+                  <td class="num">{k + 1}</td>
+                  <th scope="row"><a href={i.path}>{i.aff.name}</a></th>
+                  <td class="num nowrap"><strong>{yuan(i.monthlyFrom ?? 0)}/月</strong></td>
+                  <td class="num">{i.monthlyFromGB ? gb(i.monthlyFromGB) : '—'}</td>
+                  <td>{i.profile.lineType ?? '—'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>算法三：每 GB 最便宜</h2>
+        <p>
+          流量用得多的人，月费不是重点，每 GB 的价格才是。大流量套餐月费高，但摊下来往往比小套餐便宜好几倍。下面是每家单价最低的那一档。
+        </p>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead><tr><th>#</th><th>机场</th><th>套餐</th><th>每月流量</th><th>平均每月</th><th>每 GB</th></tr></thead>
+            <tbody>
+              {byGB.slice(0, 8).map((p, k) => (
+                <tr class={p.item.rank === 1 ? 'is-main' : ''}>
+                  <td class="num">{k + 1}</td>
+                  <th scope="row"><a href={p.item.path}>{p.item.aff.name}</a></th>
+                  <td>{p.plan.name}（{cycle(p)}）</td>
+                  <td class="num">{gb(p.plan.trafficGB)}</td>
+                  <td class="num nowrap">{yuan(p.perMonth)}</td>
+                  <td class="num nowrap"><strong>{yuan(p.perGB, 3)}</strong></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>按你每月用多少流量来算</h2>
+        <p>
+          只比最低价意义不大：60GB 的套餐再便宜，每天追剧的人也不够用。下面按三种常见用量，只挑流量够用的套餐，算出每家最省的一档。
+        </p>
+        {usage.map((u) => (
+          <div class="usage">
+            <h3>每月 {u.need}GB 左右：{u.who}</h3>
+            <ol>
+              {u.list.slice(0, 5).map((p) => (
+                <li class={p.item.rank === 1 ? 'is-main' : ''}>
+                  <a href={p.item.path}>{p.item.aff.name}</a>
+                  <span>「{p.plan.name}」{payOnce(p)}，每月 {gb(p.plan.trafficGB)}</span>
+                  <strong class="num">{yuan(p.perMonth)}/月</strong>
+                </li>
+              ))}
+            </ol>
+          </div>
+        ))}
+        <p class="meta">"每月"是按季付、半年付、年付平均下来的价格；流量包不在这里比，见<a href={PILLAR.path + '#cmp-title'}>推荐页的不限时流量包</a>。</p>
+      </section>
+
+      {main && mainLow && (
+        <section class="main-box">
+          <h2>站长主推的{main.aff.name}，算便宜吗？</h2>
+          <p>
+            说实话，{main.aff.name}不是最便宜的。平均每月最低 {yuan(mainLow.perMonth)}（{mainLow.plan.name}），在 {n} 家里排第 {mainLowRank}；如果每月要 150GB，它最省的一档是 {main150 ? yuan(main150.perMonth) + '/月' : '—'}，排第 {main150Rank}。
+          </p>
+          <p>
+            推荐它的原因不在价格：官网标注{main.profile.lineType}，后台列出 {main.nodeTotal} 个节点，月付 {yuan(main.monthlyFrom ?? 0)} 起、不限设备。想要价格过得去、线路又是专线的，可以先买一个月试试。
+          </p>
+          <p class="actions">
+            <a class="btn" href={main.aff.url} rel="sponsored nofollow noopener" target="_blank">访问 {main.aff.name} 官网</a>
+            <a class="btn btn--ghost" href={main.path}>看 {main.aff.name} 全部套餐</a>
+          </p>
+        </section>
+      )}
+
+      <section class="prose">
+        <h2>便宜套餐常见的几个坑</h2>
+        <h3>流量少，一个月用不完才划算</h3>
+        <p>
+          最便宜的那几档，每月只有 {top10MinGB} 到 {top10MaxGB}GB。看一部 1080p 电影大约 2 到 4GB，每天看一集剧，一个月就要 60GB 以上。先估一下自己的用量，首页有个<a href="/#calc">流量估算器</a>可以算。
+        </p>
+        <h3>年付要一次付清，中途退不了</h3>
+        <p>
+          这些机场都没有免费试用，退款要发工单，能不能退看客服。{!!noRefund.length && <span>{noRefund.join('、')}在官网写明不提供退款。</span>}一次买一年，等于把一年的钱押在一家机场上。
+        </p>
+        <h3>流量包可能限制设备</h3>
+        <p>
+          有些一次性流量包虽然不过期，但限制同时在线的设备数{!!limitedPacks.length && <span>，比如{limitedPacks.join('、')}的小流量包只能 1 台设备用</span>}。手机、电脑都要用的话，买之前看清楚套餐说明。
+        </p>
+        <h3>价格会变</h3>
+        <p>本页的价格来自各机场官网，每月更新一次。机场改价、下架套餐都很常见，下单前以官网显示为准。</p>
+      </section>
+
+      <TelegramCta />
+
+      <section class="prose">
+        <h2>还想按别的条件挑？</h2>
+        <ul>
+          <li><a href={PILLAR.path}>机场推荐 {month}：{n} 家机场完整对比</a></li>
+          <li><a href="/#picker-title">30 秒帮你挑机场</a>：按用途和预算算出最合适的套餐</li>
+          <li><a href="/jichang-daohang/">机场官网导航</a></li>
+          <li>不会用？看<a href="/jiaocheng/clash-verge-rev-jiaocheng/">Clash Verge Rev 教程</a>、<a href="/jiaocheng/shadowrocket-jiaocheng/">小火箭教程</a></li>
+        </ul>
+      </section>
+
+      <Faq items={faq} />
+      <p class="meta small">页面里的官网链接是推广链接，通过它注册价格不变，本站可能获得佣金。</p>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .head {
+    max-width: 48rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .lead {
+    color: var(--ink-soft);
+  }
+
+  .cards {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.9rem;
+  }
+
+  @media (max-width: 720px) {
+    .cards {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .cards li {
+    background: var(--surface);
+    border: 2px solid var(--ink);
+    border-radius: var(--radius-md);
+    padding: 0.9rem 1.1rem;
+    box-shadow: 4px 4px 0 var(--sign);
+  }
+
+  .cards p {
+    margin: 0;
+  }
+
+  .cards .q {
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+
+  .cards .a {
+    font-weight: 700;
+    font-size: 1.125rem;
+  }
+
+  .cards .v {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .cards .v small {
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  .cards .d {
+    font-size: 0.875rem;
+    color: var(--ink-soft);
+  }
+
+  .body {
+    max-width: 52rem;
+    margin-top: 2rem;
+  }
+
+  .body > section > h2,
+  .body .prose h2 {
+    border-top: 2px solid var(--ink);
+    padding-top: 0.25em;
+  }
+
+  .data-table tbody th {
+    background: var(--surface);
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  tr.is-main td,
+  tr.is-main th {
+    background: #fffbea !important;
+  }
+
+  .nowrap {
+    white-space: nowrap;
+  }
+
+  .usage ol {
+    padding-left: 1.4em;
+  }
+
+  .usage li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2rem 0.6rem;
+    align-items: baseline;
+    padding: 0.25rem 0;
+  }
+
+  .usage li a {
+    font-weight: 700;
+  }
+
+  .usage li span {
+    color: var(--ink-soft);
+    font-size: 0.9375rem;
+  }
+
+  .usage li strong {
+    margin-left: auto;
+  }
+
+  .usage li.is-main a::after {
+    content: '站长主推';
+    margin-left: 0.4rem;
+    font-size: 0.75rem;
+    background: var(--ink);
+    color: var(--sign);
+    padding: 0 0.35rem;
+    border-radius: 3px;
+    vertical-align: 0.1em;
+  }
+
+  .main-box {
+    margin-top: 2rem;
+    padding: 0.25rem 1.25rem 1rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--sign);
+    border-radius: var(--radius-sm);
+  }
+
+  .main-box h2 {
+    border-top: 0 !important;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+</style>

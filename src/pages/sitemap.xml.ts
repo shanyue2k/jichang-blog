@@ -24,7 +24,10 @@ export const GET: APIRoute = async () => {
   urls.push({ loc: '/', lastmod: newest });
 
   const ranking = getRanking();
-  if (ranking.length >= 5) urls.push({ loc: PILLAR.path, lastmod: rankingUpdated(ranking) });
+  if (ranking.length >= 5) {
+    urls.push({ loc: PILLAR.path, lastmod: rankingUpdated(ranking) });
+    urls.push({ loc: '/pianyi-jichang/', lastmod: rankingUpdated(ranking) });
+  }
 
   for (const section of SECTION_KEYS) {
     const list = [];

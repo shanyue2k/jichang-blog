@@ -1,6 +1,6 @@
 // 机场推荐榜：按站长设定的推广顺序（affiliate-links.json 的 order）排序，只列已整理资料的机场
 import affiliate from '../data/affiliate-links.json';
-import { lowestMonthly, lowestMonthlyPlan, perGB, profilePath, profiles, type AffItem, type Profile } from './profiles';
+import { lowestMonthly, lowestMonthlyPlan, perGB, profilePath, profiles, type AffItem, type Plan, type Profile } from './profiles';
 
 /** 首页和推荐页主推的家数 */
 export const FEATURED_COUNT = 10;
@@ -67,3 +67,46 @@ export function monthLabel(d: Date): string {
 
 export const isDedicated = (i: RankedItem) => /IPLC|IEPL/.test(i.profile.lineType ?? '');
 export const isNoRefund = (i: RankedItem) => /不接受|不提供/.test(i.profile.refund ?? '');
+
+// ---------- 专题页用的价格计算 ----------
+
+const MONTHS_OF: Record<string, number> = { monthly: 1, quarterly: 3, semiannual: 6, yearly: 12, onetime: 0 };
+
+export type PlanPick = { item: RankedItem; plan: Plan; perMonth: number; months: number };
+
+/** 每家机场里，每月流量 ≥ need 的周期套餐中折合月价最低的一个；按价格排序 */
+export function cheapestForUsage(list: RankedItem[], need: number): PlanPick[] {
+  const out: PlanPick[] = [];
+  for (const item of list) {
+    let best: PlanPick | null = null;
+    for (const plan of item.profile.plans) {
+      const m = MONTHS_OF[plan.type];
+      if (plan.custom || !m || plan.trafficGB < need) continue;
+      const pm = plan.price / m;
+      if (!best || pm < best.perMonth) best = { item, plan, perMonth: pm, months: m };
+    }
+    if (best) out.push(best);
+  }
+  return out.sort((a, b) => a.perMonth - b.perMonth || a.item.rank - b.item.rank);
+}
+
+/** 每家机场每 GB 最便宜的周期套餐 */
+export function bestPerGBPlan(list: RankedItem[]): (PlanPick & { perGB: number })[] {
+  const out: (PlanPick & { perGB: number })[] = [];
+  for (const item of list) {
+    let best: (PlanPick & { perGB: number }) | null = null;
+    for (const plan of item.profile.plans) {
+      const m = MONTHS_OF[plan.type];
+      if (plan.custom || !m || !plan.trafficGB) continue;
+      const g = plan.price / (plan.trafficGB * m);
+      if (!best || g < best.perGB) best = { item, plan, perMonth: plan.price / m, months: m, perGB: g };
+    }
+    if (best) out.push(best);
+  }
+  return out.sort((a, b) => a.perGB - b.perGB);
+}
+
+export function lowestPick(item: RankedItem): PlanPick | null {
+  const r = cheapestForUsage([item], 0);
+  return r[0] ?? null;
+}
