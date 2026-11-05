@@ -65,6 +65,13 @@ const compare = [10, 20, 40, 80].map((u) => {
   return { u, packCost, typ, m, y };
 });
 const breakEvenGB = compare.find((c) => c.m && c.typ >= c.m.price)?.u;
+const c10 = compare[0];
+const cBE = compare.find((c) => c.u === breakEvenGB);
+const cmpText =
+  '算下来：每月 ' + c10.u + 'GB 左右，最便宜的流量包约 ' + yuan(c10.packCost) + '/月，' +
+  (c10.y && c10.packCost < c10.y.perMonth ? '比长周期套餐还省，是三种买法里最便宜的；' : '和长周期套餐差不多；') +
+  (cBE && cBE.m ? '到每月 ' + cBE.u + 'GB，常见的 100GB 小包折合 ' + yuan(cBE.typ) + '/月，已经比月付最低的 ' + yuan(cBE.m.price) + ' 贵了；' : '') +
+  '用量越大，长周期套餐越划算。所以流量包适合用得很少、或者不想每月续费的人，天天用的话还是按周期买。';
 
 const main = all[0];
 const mainPacks = main ? packs.filter((p) => p.item === main).sort((a, b) => a.perGB - b.perGB) : [];
@@ -77,6 +84,7 @@ const limitedOnes = packs.filter((p) => p.limited);
 const noPack = all.filter((i) => !withPacks.includes(i)).map((i) => i.aff.name);
 
 const b0 = bestPerAirport[0];
+const bigBest = bands[2].list[0];
 const cheapIn = packs.filter((p) => !p.limited).sort((a, b) => a.plan.price - b.plan.price || a.perGB - b.perGB)[0];
 
 const title = '不限时流量机场推荐 ' + month + '｜' + nPack + ' 家机场流量包价格、每 GB 单价与限制对比';
@@ -164,12 +172,12 @@ const row = (p: Pack) => yuan(p.plan.price) + ' / ' + gb(p.plan.trafficGB);
           <p class="d">{cheapIn.plan.name} · {gb(cheapIn.plan.trafficGB)}，不过期</p>
         </li>
       )}
-      {typicalPack && (
+      {bigBest && (
         <li>
-          <p class="q">最常见的 100GB 包</p>
-          <p class="a"><a href={typicalPack.item.path}>{typicalPack.item.aff.name}</a></p>
-          <p class="v num">{yuan(typicalPack.plan.price)}</p>
-          <p class="d">多数机场 100GB 卖 ¥100 左右，这家最低</p>
+          <p class="q">一次买够、用一两年</p>
+          <p class="a"><a href={bigBest.item.path}>{bigBest.item.aff.name}</a></p>
+          <p class="v num">{yuan(bigBest.plan.price)}</p>
+          <p class="d">{bigBest.plan.name} · {gb(bigBest.plan.trafficGB)}，约 {yuan(bigBest.perGB, 3)}/GB</p>
         </li>
       )}
     </ul>
@@ -240,9 +248,7 @@ const row = (p: Pack) => yuan(p.plan.price) + ' / ' + gb(p.plan.trafficGB);
             </tbody>
           </table>
         </div>
-        <p>
-          看得出来：每月只用 10 到 20GB，流量包和月付差不多，但流量包不用每月续费、不会浪费；用量到 {breakEvenGB ?? 40}GB 左右，100GB 小包就比月付贵了；只看价格的话，长周期套餐一直是最便宜的，代价是要一次付几个月。
-        </p>
+        <p>{cmpText}</p>
         <p class="meta">"流量包"一列按每月用量 × 每 GB 单价折算；"长周期最低"是流量够用的季付、半年付或年付平均到每月的价格。</p>
       </section>
 
@@ -252,7 +258,7 @@ const row = (p: Pack) => yuan(p.plan.price) + ' / ' + gb(p.plan.trafficGB);
           {mainPacks.length ? (
             <div>
               <p>
-                有 {mainPacks.length} 个：{mainPacks.map((p) => '「' + p.plan.name + '」' + row(p)).join('，')}。按每 GB 算，在 {nPack} 家里排第 {mainRank}，不算便宜。
+                有 {mainPacks.length} 个：{mainPacks.map((p) => '「' + p.plan.name + '」' + row(p)).join('，')}。按每 GB 算，在 {nPack} 家里排第 {mainRank}，并不便宜。
               </p>
               <p>
                 如果你每个月都会用，其实更建议直接买{main.aff.name}的月付（{yuan(main.monthlyFrom ?? 0)} 起，每月 {main.monthlyFromGB ? gb(main.monthlyFromGB) : ''}），比它的流量包划算得多；流量包更适合偶尔才用、不想记续费的人。
@@ -278,9 +284,9 @@ const row = (p: Pack) => yuan(p.plan.price) + ' / ' + gb(p.plan.trafficGB);
         <p>
           {devAirports.length ? (
             <span>
-              {devAirports.join('、')}的流量包标注了设备限制：
+              有 {devLimited.length} 个流量包标注了设备限制：
               {devLimited.map((p, k) => (
-                <span>{k ? '；' : ''}{p.plan.name}（{p.deviceNote}）</span>
+                <span>{k ? '；' : ''}{p.item.aff.name}「{p.plan.name}」（{p.deviceNote}）</span>
               ))}
               。手机和电脑同时用的话要留意。
             </span>
