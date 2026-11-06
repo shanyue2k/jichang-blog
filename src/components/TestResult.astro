@@ -15,223 +15,270 @@ const failed = test.regions.reduce((s, r) => s + r.failed, 0);
 ---
 
 <section class="test" aria-labelledby="test-title">
-  <h2 id="test-title">{name}实测结果</h2>
-  <ul class="test-meta">
-    <li><span>测试时间</span>{test.date}{test.time ? ' ' + test.time : ''}</li>
-    <li><span>测试环境</span>{test.env}</li>
-    <li><span>测试工具</span>{test.tool}</li>
-    <li><span>测试方式</span>{test.tester}</li>
-  </ul>
-  {stale && (
-    <p class="stale">这份测试距今已有一段时间，机场线路可能有调整，结果仅供参考，以你实际使用为准。</p>
-  )}
+  <div class="card-head">
+    <h2 id="test-title">{name}实测</h2>
+    <p class="date">{test.date}{test.time ? ' ' + test.time : ''} 实测</p>
+  </div>
+  <p class="env">{test.env} · {test.tool} · {test.tester}</p>
+  {stale && <p class="stale">这份测试距今已有一段时间，机场线路可能有调整，结果仅供参考。</p>}
 
-  <h3>各地区平均速度（{total} 个节点{failed ? '，' + failed + ' 个测试失败' : ''}）</h3>
-  <div class="bars" role="table" aria-label="各地区平均速度">
+  <ul class="rows" aria-label="各地区实测结果">
     {test.regions.map((r) => (
-      <div class="bar-row" role="row">
-        <span class="bar-name" role="cell">{r.name}<small>{r.nodes} 个</small></span>
-        <span class="bar-track" role="cell">
-          <span class="bar-fill" style={'width:' + Math.max(2, (r.avgMBps / max) * 100) + '%'}></span>
+      <li>
+        <span class="r-name">{r.name}<small>{r.nodes} 个节点{r.failed ? ' · ' + r.failed + ' 个失败' : ''}</small></span>
+        <span class="r-bar" aria-hidden="true"><span style={'width:' + Math.max(2, (r.avgMBps / max) * 100) + '%'}></span></span>
+        <span class="r-rtt">延迟 <b class="num">{r.medianRttMs}</b> ms</span>
+        <span class="r-speed">
+          <b class="num">{r.avgMBps}</b> MB/s
+          <small>≈ {Math.round(r.avgMBps * 8).toLocaleString('en-US')} Mbps</small>
         </span>
-        <span class="bar-val num" role="cell">{r.avgMBps} MB/s</span>
-      </div>
+      </li>
     ))}
-  </div>
-
-  <div class="table-scroll">
-    <table class="data-table">
-      <thead><tr><th>地区</th><th>节点</th><th>平均速度</th><th>最低 / 最高</th><th>延迟中位数</th></tr></thead>
-      <tbody>
-        {test.regions.map((r) => (
-          <tr>
-            <th scope="row">{r.name}</th>
-            <td>{r.nodes}{r.failed ? '（' + r.failed + ' 个失败）' : ''}</td>
-            <td class="num">{r.avgMBps} MB/s</td>
-            <td class="num nowrap">{r.minMBps} / {r.maxMBps}</td>
-            <td class="num">{r.medianRttMs} ms</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
+  </ul>
 
   {test.unlock && (
-    <div>
-      <h3>流媒体解锁</h3>
-      <ul class="unlock">
-        {Object.entries(test.unlock).map(([k, v]) => (
-          <li><strong>{k}</strong><span>{v} 个节点解锁</span></li>
-        ))}
-      </ul>
-      {test.unlockNote && <p class="meta">{test.unlockNote}。</p>}
-    </div>
+    <p class="unlock">
+      {Object.entries(test.unlock).map(([k, v]) => (
+        <span><strong>{k}</strong> {v}</span>
+      ))}
+      {test.unlockNote && <small>{test.unlockNote}</small>}
+    </p>
   )}
 
   {test.notes && (
-    <div>
-      <h3>怎么看这份结果</h3>
-      <ul>
-        {test.notes.map((n) => <li>{n}。</li>)}
-      </ul>
-    </div>
+    <ul class="notes">
+      {test.notes.map((n) => <li>{n}。</li>)}
+    </ul>
   )}
 
   {test.images && (
-    <div class="shots">
-      {test.images.map((img) => (
-        <figure>
-          <a href={img.src} target="_blank" rel="noopener"><img src={img.src} alt={img.alt} width="1200" loading="lazy" decoding="async" /></a>
-          {img.caption && <figcaption>{img.caption}（点击看大图）</figcaption>}
-        </figure>
-      ))}
-    </div>
+    <details class="shots">
+      <summary>查看原始测速截图（{test.images.length} 张，保留测速工具水印）</summary>
+      <div class="shot-grid">
+        {test.images.map((img) => (
+          <figure>
+            <a href={img.src} target="_blank" rel="noopener"><img src={img.src} alt={img.alt} width="1200" loading="lazy" decoding="async" /></a>
+            {img.caption && <figcaption>{img.caption}（点击看大图）</figcaption>}
+          </figure>
+        ))}
+      </div>
+    </details>
   )}
-  <p class="meta">测试结果只代表测试当时、测试服务器所在网络的情况，不同地区、不同运营商会有差别。测试方法见<a href="/ceping-fangfa/">测评方法</a>。</p>
+  <p class="foot">速度为测试服务器 {total} 个节点逐个测速的平均值（多线程，代表带宽上限），延迟为中位数。1 MB/s ≈ 8 Mbps。结果只代表测试当时、测试服务器所在网络的情况。<a href="/ceping-fangfa/">测评方法</a></p>
 </section>
 
 <style>
   .test {
     margin: 2rem 0;
-    padding: 0.25rem 1.25rem 1rem;
-    background: var(--surface);
-    border: 2px solid var(--ink);
+    padding: 1.1rem clamp(1rem, 3vw, 1.4rem) 0.9rem;
+    background: var(--slate);
+    color: #e6eaee;
     border-radius: var(--radius-md);
     box-shadow: 5px 5px 0 var(--sign);
   }
 
+  .card-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+  }
+
   .test h2 {
-    border-top: 0 !important;
+    margin: 0;
+    padding: 0 !important;
+    border: 0 !important;
+    color: #fff;
+    font-size: var(--step-1);
   }
 
-  .test-meta {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 0.75rem;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.35rem 1.25rem;
-    font-size: 0.9375rem;
+  .date {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--sign);
+    font-weight: 700;
   }
 
-  @media (max-width: 640px) {
-    .test-meta {
-      grid-template-columns: minmax(0, 1fr);
-    }
-  }
-
-  .test-meta span {
-    display: inline-block;
-    min-width: 4.5em;
-    color: var(--muted);
+  .env {
+    margin: 0.2rem 0 0.8rem;
+    font-size: 0.8125rem;
+    color: #aab4be;
   }
 
   .stale {
-    padding: 0.5rem 0.8rem;
-    background: #fff6cc;
-    border: 1px solid #f0d36b;
+    margin: 0 0 0.8rem;
+    padding: 0.4rem 0.7rem;
+    background: rgba(255, 204, 0, 0.12);
+    border: 1px solid rgba(255, 204, 0, 0.45);
     border-radius: var(--radius-sm);
-    font-size: 0.9rem;
+    font-size: 0.8125rem;
+    color: #ffe58a;
   }
 
-  .bars {
-    display: grid;
-    gap: 0.45rem;
-    margin-bottom: 1rem;
+  .rows {
+    list-style: none;
+    padding: 0;
+    margin: 0;
   }
 
-  .bar-row {
+  .rows li {
     display: grid;
-    grid-template-columns: 6.6rem minmax(0, 1fr) 6.2rem;
-    white-space: nowrap;
-    gap: 0.6rem;
+    grid-template-columns: 7.5rem minmax(0, 1fr) 6.2rem 8.5rem;
+    gap: 0.75rem;
     align-items: center;
+    padding: 0.6rem 0;
+    border-top: 1px solid #33404d;
   }
 
-  .bar-name small {
-    margin-left: 0.35rem;
-    color: var(--muted);
-    font-size: 0.8rem;
+  .r-name {
+    font-weight: 700;
+    color: #fff;
   }
 
-  .bar-track {
-    height: 0.9rem;
-    background: #eef1f4;
+  .r-name small {
+    display: block;
+    font-weight: 400;
+    font-size: 0.75rem;
+    color: #8f9aa5;
+  }
+
+  .r-bar {
+    height: 0.55rem;
+    background: #2c3846;
     border-radius: 3px;
     overflow: hidden;
   }
 
-  .bar-fill {
+  .r-bar span {
     display: block;
     height: 100%;
     background: linear-gradient(90deg, #ff8a00, #ffcc00);
-    border-radius: 3px;
   }
 
-  .bar-val {
+  .r-rtt {
+    font-size: 0.875rem;
+    color: #cfd6dd;
     text-align: right;
-    font-weight: 600;
-  }
-
-  .data-table tbody th {
-    background: var(--surface);
-    color: var(--ink);
-  }
-
-  .nowrap {
     white-space: nowrap;
   }
 
-  .unlock {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .unlock li {
-    display: flex;
-    gap: 0.4rem;
-    align-items: baseline;
-    padding: 0.25rem 0.7rem;
-    background: #e9f7ef;
-    border: 1px solid #b5e2c5;
-    border-radius: 3px;
-  }
-
-  .unlock span {
+  .r-speed {
+    text-align: right;
+    white-space: nowrap;
+    color: #cfd6dd;
     font-size: 0.875rem;
-    color: var(--ok);
   }
 
-  .shots {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem;
+  .r-speed b {
+    font-size: 1.15rem;
+    color: var(--sign);
+  }
+
+  .r-speed small {
+    display: block;
+    font-size: 0.75rem;
+    color: #8f9aa5;
   }
 
   @media (max-width: 640px) {
-    .shots {
+    .rows li {
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-areas: 'name speed' 'bar bar' 'rtt rtt';
+      gap: 0.3rem 0.75rem;
+    }
+    .r-name { grid-area: name; }
+    .r-speed { grid-area: speed; }
+    .r-bar { grid-area: bar; }
+    .r-rtt { grid-area: rtt; text-align: left; }
+  }
+
+  .unlock {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 0.6rem;
+    align-items: center;
+    margin: 0.4rem 0 0.6rem;
+    padding-top: 0.7rem;
+    border-top: 1px solid #33404d;
+  }
+
+  .unlock span {
+    padding: 0.1rem 0.55rem;
+    background: rgba(31, 157, 85, 0.18);
+    border: 1px solid rgba(31, 157, 85, 0.55);
+    border-radius: 3px;
+    font-size: 0.8125rem;
+    color: #b9f0cf;
+  }
+
+  .unlock small {
+    font-size: 0.75rem;
+    color: #8f9aa5;
+  }
+
+  .notes {
+    margin: 0.3rem 0 0.6rem;
+    padding-left: 1.1em;
+    font-size: 0.8125rem;
+    color: #b8c2cc;
+  }
+
+  .notes li + li {
+    margin-top: 0.15rem;
+  }
+
+  .shots {
+    margin: 0.4rem 0;
+    border: 1px solid #33404d;
+    border-radius: var(--radius-sm);
+    padding: 0.45rem 0.75rem;
+  }
+
+  .shots summary {
+    cursor: pointer;
+    font-size: 0.875rem;
+    color: var(--sign);
+    font-weight: 600;
+  }
+
+  .shot-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin-top: 0.7rem;
+  }
+
+  @media (max-width: 640px) {
+    .shot-grid {
       grid-template-columns: minmax(0, 1fr);
     }
   }
 
-  .shots figure {
+  .shot-grid figure {
     margin: 0;
   }
 
-  .shots img {
+  .shot-grid img {
     display: block;
     width: 100%;
     height: auto;
-    border: 1px solid var(--line);
     border-radius: var(--radius-sm);
   }
 
-  .shots figcaption {
-    font-size: 0.8125rem;
-    color: var(--muted);
-    margin-top: 0.3rem;
+  .shot-grid figcaption {
+    font-size: 0.75rem;
+    color: #8f9aa5;
+    margin-top: 0.25rem;
+  }
+
+  .foot {
+    margin: 0.5rem 0 0;
+    font-size: 0.75rem;
+    color: #8f9aa5;
+  }
+
+  .foot a {
+    color: #cfd6dd;
   }
 </style>
