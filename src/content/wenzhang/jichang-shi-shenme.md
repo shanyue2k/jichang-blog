@@ -62,3 +62,5 @@ faq:
 4. **确认解锁需求**：要看 Netflix 或用 ChatGPT，购买前确认对应节点可用。
 
 想直接挑一家，可以看我们按实测结果排序的 [机场推荐榜单](/jichang-tuijian/)；导入订阅的步骤见 [Clash Verge Rev 使用教程](/jiaocheng/clash-verge-rev-jiaocheng/)。
+
+想进一步了解直连、中转、BGP 中转和 IPLC/IEPL 专线的区别，可以看[机场线路怎么选](/wenzhang/jichang-xianlu-qubie/)。
