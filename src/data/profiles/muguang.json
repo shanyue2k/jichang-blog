@@ -136,5 +136,10 @@
       "trafficPer": "month"
     }
   ],
-  "pending": []
+  "pending": [],
+  "lineScope": "partial",
+  "lineKind": "IPLC",
+  "dedicatedPlans": [
+    "年付轻量版"
+  ]
 }

@@ -175,5 +175,7 @@
       "note": "一次性购买，长期有效不过期"
     }
   ],
-  "pending": []
+  "pending": [],
+  "lineScope": "all",
+  "lineKind": "IEPL"
 }

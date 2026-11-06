@@ -159,5 +159,7 @@
   "protocols": [
     "VLESS"
   ],
-  "lineNote": "套餐说明里写的是 SS 协议，站长确认节点协议为 VLESS。"
+  "lineNote": "套餐说明里写的是 SS 协议，站长确认节点协议为 VLESS。",
+  "lineScope": "all",
+  "lineKind": "both"
 }

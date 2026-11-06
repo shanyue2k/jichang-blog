@@ -1,0 +1,479 @@
+---
+// 专题：IPLC / IEPL 专线机场（长尾词：机场 iplc / 机场iplc和iepl / iepl 机场 / 机场推荐稳定 / 专线机场）
+// 线路分类写在各机场资料文件的 lineScope / lineKind / dedicatedPlans
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Faq from '../components/Faq.astro';
+import TelegramCta from '../components/TelegramCta.astro';
+import { PILLAR } from '../site.config';
+import { absoluteUrl } from '../lib/content';
+import { formatDate } from '../lib/format';
+import { breadcrumbSchema, faqSchema } from '../lib/schema';
+import { getRanking, monthLabel, rankingUpdated, type RankedItem } from '../lib/ranking';
+import { PLAN_TYPE_LABEL, gb, yuan } from '../lib/profiles';
+
+const all = getRanking();
+const updated = rankingUpdated(all);
+const month = monthLabel(updated);
+const n = all.length;
+
+const full = all.filter((i) => i.profile.lineScope === 'all');
+const partial = all.filter((i) => i.profile.lineScope === 'partial');
+const exitOnly = all.filter((i) => i.profile.lineScope === 'exit');
+const kindOf = (i: RankedItem) => i.profile.lineKind;
+const nIPLC = full.filter((i) => kindOf(i) === 'IPLC').length;
+const nIEPL = full.filter((i) => kindOf(i) === 'IEPL').length;
+const nBoth = full.filter((i) => kindOf(i) === 'both').length;
+const KIND: Record<string, string> = { IPLC: 'IPLC', IEPL: 'IEPL', both: 'IPLC + IEPL', unknown: '未写明' };
+
+const byMonthly = full
+  .filter((i) => i.monthlyFrom !== null)
+  .slice()
+  .sort((a, b) => (a.monthlyFrom ?? 0) - (b.monthlyFrom ?? 0) || a.rank - b.rank);
+const byLowest = full
+  .filter((i) => i.lowest !== null)
+  .slice()
+  .sort((a, b) => (a.lowest ?? 0) - (b.lowest ?? 0) || a.rank - b.rank);
+const byNodes = full
+  .filter((i) => i.nodeTotal !== null)
+  .slice()
+  .sort((a, b) => (b.nodeTotal ?? 0) - (a.nodeTotal ?? 0) || a.rank - b.rank);
+
+// 部分套餐专线：找出标注专线的那个套餐
+const MONTHS: Record<string, number> = { monthly: 1, quarterly: 3, semiannual: 6, yearly: 12, onetime: 0 };
+const partialRows = partial.map((i) => {
+  const keys = i.profile.dedicatedPlans ?? [];
+  const plans = i.profile.plans.filter((p) => !p.custom && keys.some((k) => p.name.includes(k)));
+  const cheapest = plans.slice().sort((a, b) => a.price / (MONTHS[a.type] || 1) - b.price / (MONTHS[b.type] || 1))[0];
+  return { i, plan: cheapest };
+});
+
+const main = all[0];
+const mainInFull = main && full.includes(main);
+const mainMonthlyRank = main ? byMonthly.indexOf(main) + 1 : 0;
+const feimao = all.find((i) => i.aff.id === 'feimaoyun');
+const xdm = all.find((i) => i.aff.id === 'xingdaomeng');
+
+const m0 = byMonthly[0];
+const l0 = byLowest[0];
+
+const title = 'IPLC / IEPL 专线机场推荐 ' + month + '｜' + full.length + ' 家全线标注专线的机场与价格对比';
+const description =
+  '整理 ' + n + ' 家机场的线路标注：哪些全部套餐都是 IPLC / IEPL 专线、哪些只有部分套餐是专线、哪些只是专线出口，附专线机场的价格对比，并讲清楚 IPLC 和 IEPL 的区别。';
+
+const crumbs = [
+  { name: '首页', path: '/' },
+  { name: PILLAR.label, path: PILLAR.path },
+  { name: 'IPLC / IEPL 专线机场', path: '/zhuanxian-jichang/' },
+];
+
+const faq = [
+  {
+    q: 'IPLC 和 IEPL 有什么区别？',
+    a: '两者都是租用的跨境专线，不走公网出口。IPLC 是传统的点对点专线，IEPL 是基于以太网的专线。对普通用户来说，看视频、用 ChatGPT 的体验几乎没有差别，不用纠结选哪一种。',
+  },
+  {
+    q: '专线机场一定比中转、直连好吗？',
+    a: '专线的优势是晚高峰稳定、延迟低、不容易被干扰；缺点是成本高，同样的价格流量通常更少。如果只是白天偶尔用，中转也够用；晚上经常看视频、打游戏、开会的人，专线更值得。',
+  },
+  {
+    q: '专线机场最便宜多少钱？',
+    a: m0 && l0
+      ? '本页统计的全线专线机场里，月付最低是' + m0.aff.name + '，' + yuan(m0.monthlyFrom ?? 0) + '/月；按长周期折算，最低是' + l0.aff.name + '，平均每月约 ' + yuan(l0.lowest ?? 0) + '。价格以官网为准。'
+      : '见上方表格。',
+  },
+  {
+    q: '机场写的"专线"都是真的吗？',
+    a: '本站只能记录机场官网和后台的标注，还没有逐家测速验证。判断方法可以看晚高峰的延迟和丢包是不是和白天差不多，以及价格是否明显低于专线成本。建议先买月付自己用一两周。',
+  },
+  {
+    q: '"BGP 调度 + 专线出口"算专线机场吗？',
+    a: '不完全算。这类线路国内入口走 BGP 多线或中转，只有出境那一段用专线，稳定性一般介于中转和全程专线之间。本页把它们单独列出来，没有算进全线专线的名单。',
+  },
+];
+
+const jsonLd = [
+  breadcrumbSchema(crumbs),
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'IPLC / IEPL 专线机场 ' + month,
+    numberOfItems: full.length,
+    itemListElement: full.map((i, k) => ({ '@type': 'ListItem', position: k + 1, name: i.aff.name, url: absoluteUrl(i.path) })),
+  },
+  faqSchema(faq),
+];
+---
+
+<Base title={title} description={description} jsonLd={jsonLd} modified={updated}>
+  <div class="wrap">
+    <Breadcrumbs crumbs={crumbs} />
+    <header class="head">
+      <h1>IPLC / IEPL 专线机场推荐 {month}</h1>
+      <p class="lead">
+        几乎每家机场都说自己是"专线"，但细看套餐说明，有的是全部套餐都走专线，有的只有某一个年付套餐是专线，有的只是出境那一段用专线。我们把 {n} 家机场的官网标注逐条核对，分成三类列出来，再比一比真正全线专线的那几家谁更便宜。
+      </p>
+      <p class="meta">
+        最后更新 <time class="num" datetime={updated.toISOString()}>{formatDate(updated)}</time> · 线路信息来自各机场官网和后台节点列表 · 本站尚未测速，"专线"是机场的标注，以官网为准
+      </p>
+    </header>
+
+    <ul class="split" aria-label="线路分类统计">
+      <li>
+        <strong class="num">{full.length}</strong>
+        <span>家全部套餐标注专线</span>
+        <small>IPLC {nIPLC} 家 · IEPL {nIEPL} 家 · 两种都有 {nBoth} 家</small>
+      </li>
+      <li>
+        <strong class="num">{partial.length}</strong>
+        <span>家只有部分套餐是专线</span>
+        <small>其余套餐是 BGP 调度或中转</small>
+      </li>
+      <li>
+        <strong class="num">{exitOnly.length}</strong>
+        <span>家是"BGP + 专线出口"</span>
+        <small>入口不是专线，只有出境段是</small>
+      </li>
+    </ul>
+
+    <div class="body">
+      <section class="prose">
+        <h2>先搞清楚：专线、中转、直连差在哪</h2>
+        <p>
+          翻墙的流量最终都要出境。问题出在"怎么出去"：走公网出口，晚上用的人一多就拥堵，还容易被干扰；走专线，是机场花钱租了一条跨境线路，流量不和公网挤。
+        </p>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead><tr><th>线路</th><th>流量怎么走</th><th>晚高峰</th><th>价格</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">直连</th><td>从国内直接连到海外服务器，走公网出口</td><td>最容易变慢、断流</td><td>最便宜</td></tr>
+              <tr><th scope="row">中转</th><td>先连到国内的中转服务器，再走优化过的公网出口</td><td>比直连稳，但仍受公网影响</td><td>中等</td></tr>
+              <tr><th scope="row">IPLC / IEPL 专线</th><td>中转服务器到海外这一段，走租用的跨境专线</td><td>基本不受影响</td><td>最贵</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>IPLC 和 IEPL，选哪个？</h3>
+        <p>
+          IPLC（国际私有专线）是传统的点对点电路，IEPL（国际以太网专线）是基于以太网的专线。从技术上说两者实现方式不同，但对用机场的人来说，延迟、稳定性和能不能看 Netflix 几乎没有区别。
+          挑机场时不用纠结是 IPLC 还是 IEPL，更该看的是：是不是<em>全部套餐</em>都走专线、节点够不够、价格合不合理。
+        </p>
+      </section>
+
+      {main && mainInFull && (
+        <section class="main-box">
+          <h2>站长主推：{main.aff.name}</h2>
+          <p>
+            {main.aff.name}官网标注{main.profile.lineType}，所有套餐都走专线，后台列出 {main.nodeTotal} 个节点。月付 {yuan(main.monthlyFrom ?? 0)} 起，在 {full.length} 家全线专线机场里月付价格排第 {mainMonthlyRank}；{main.aff.coupon ? '下单填优惠码 ' + main.aff.coupon + '，月付、季付、半年付还能立减 ' + main.aff.couponOff + '%。' : ''}
+          </p>
+          <p class="actions">
+            <a class="btn" href={main.aff.url} rel="sponsored nofollow noopener" target="_blank">访问 {main.aff.name} 官网</a>
+            <a class="btn btn--ghost" href={main.path}>看 {main.aff.name} 全部套餐</a>
+          </p>
+        </section>
+      )}
+
+      <section>
+        <h2>第一类：全部套餐标注 IPLC / IEPL 专线（{full.length} 家）</h2>
+        <p>这些机场的每个套餐都写明走专线，无论买哪一档线路都一样。按本站推荐顺序排列。</p>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead><tr><th>机场</th><th>专线类型</th><th>月付起价</th><th>折合最低</th><th>节点</th><th>优惠码</th></tr></thead>
+            <tbody>
+              {full.map((i) => (
+                <tr class={i.rank === 1 ? 'is-main' : ''}>
+                  <th scope="row"><a href={i.path}>{i.aff.name}</a></th>
+                  <td><span class={'kind kind--' + kindOf(i)}>{KIND[kindOf(i) ?? 'unknown']}</span></td>
+                  <td class="num nowrap">{i.monthlyFrom !== null ? yuan(i.monthlyFrom) + '/月' : '—'}</td>
+                  <td class="num nowrap">{i.lowest !== null ? yuan(i.lowest) + '/月' : '—'}</td>
+                  <td class="nowrap">{i.nodeTotal ? i.nodeTotal + ' 个' : '—'}</td>
+                  <td class="nowrap">{i.aff.couponOff ? '立减 ' + i.aff.couponOff + '%' : '—'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p class="meta">"IPLC + IEPL"表示同一家机场里，不同套餐分别标注了 IPLC 和 IEPL，两种都是专线。</p>
+      </section>
+
+      <section>
+        <h2>全线专线机场里，谁更划算</h2>
+        <div class="trio">
+          <div>
+            <h3>月付最便宜</h3>
+            <ol>
+              {byMonthly.slice(0, 5).map((i) => (
+                <li class={i.rank === 1 ? 'is-main' : ''}><a href={i.path}>{i.aff.name}</a><span class="num">{yuan(i.monthlyFrom ?? 0)}/月{i.monthlyFromGB ? ' · ' + gb(i.monthlyFromGB) : ''}</span></li>
+              ))}
+            </ol>
+          </div>
+          <div>
+            <h3>长期买最省</h3>
+            <ol>
+              {byLowest.slice(0, 5).map((i) => (
+                <li class={i.rank === 1 ? 'is-main' : ''}><a href={i.path}>{i.aff.name}</a><span class="num">平均 {yuan(i.lowest ?? 0)}/月</span></li>
+              ))}
+            </ol>
+          </div>
+          <div>
+            <h3>节点最多</h3>
+            <ol>
+              {byNodes.slice(0, 5).map((i) => (
+                <li class={i.rank === 1 ? 'is-main' : ''}><a href={i.path}>{i.aff.name}</a><span class="num">{i.nodeTotal} 个 · {i.regionCount} 地区</span></li>
+              ))}
+            </ol>
+          </div>
+        </div>
+        <p class="meta">"长期买最省"是把季付、半年付、年付摊到每月后的最低价，通常是小流量年付套餐。</p>
+      </section>
+
+      <section>
+        <h2>第二类：只有部分套餐是专线（{partial.length} 家）</h2>
+        <p>
+          这几家的官网首页也写"专线"，但只有下表这一档套餐标注专线，其余套餐是 BGP 调度或中转。想要专线的话，要买对套餐。
+        </p>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead><tr><th>机场</th><th>标注专线的套餐</th><th>价格</th><th>其余套餐</th></tr></thead>
+            <tbody>
+              {partialRows.map(({ i, plan }) => (
+                <tr>
+                  <th scope="row"><a href={i.path}>{i.aff.name}</a></th>
+                  <td>{plan ? plan.name + '（' + KIND[kindOf(i) ?? 'unknown'] + '）' : '—'}</td>
+                  <td class="num nowrap">{plan ? yuan(plan.price) + '/' + PLAN_TYPE_LABEL[plan.type].replace('付', '') + (plan.trafficGB ? ' · 每月 ' + gb(plan.trafficGB) : '') : '—'}</td>
+                  <td>BGP 调度 / 中转加专线出口</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>第三类："BGP 调度 + 专线出口"（{exitOnly.length} 家）</h2>
+        <p>
+          {exitOnly.map((i) => i.aff.name).join('、')}的官网写的是 BGP 多线调度，出境段用专线。国内入口不是专线，晚高峰的表现一般介于中转和全程专线之间，所以没有算进第一类。
+        </p>
+        <ul class="plain">
+          {exitOnly.map((i) => (
+            <li><a href={i.path}>{i.aff.name}</a>：{i.profile.lineType}，月付 {yuan(i.monthlyFrom ?? 0)} 起，{i.nodeTotal} 个节点</li>
+          ))}
+        </ul>
+      </section>
+
+      <section class="prose">
+        <h2>"专线"标注，我们发现的几个出入</h2>
+        <ul>
+          {feimao && <li><a href={feimao.path}>{feimao.aff.name}</a>：官网套餐页写 IPLC，后台节点名称标的却是 IEPL。两者都是专线，影响不大，但说明官网文案和实际配置不一定一致。</li>}
+          {xdm && <li><a href={xdm.path}>{xdm.aff.name}</a>：套餐标注全 IEPL / IPLC 专线，但后台香港节点里也有"BGP 三网""精品中转"分组。也就是说，标注专线不代表每个节点都是专线，用的时候可以优先选名称带"专线"的节点。</li>}
+          <li>不少机场官网写的节点地区比后台多（例如写了英国、法国、泰国，后台却没有），各家资料页都写明了以后台列表为准。</li>
+        </ul>
+      </section>
+
+      <section class="prose">
+        <h2>怎么自己判断是不是真专线</h2>
+        <h3>看晚高峰</h3>
+        <p>专线最大的特点是稳定。晚上 8 点到 11 点，和白天比一比同一个节点的延迟和速度。差别不大，基本就是专线；晚上明显变慢、断断续续，多半走的是公网。</p>
+        <h3>看价格</h3>
+        <p>跨境专线按带宽收费，成本不低。如果一家机场月付很便宜、流量又给得特别多，还说全线专线，就要多留个心。</p>
+        <h3>看节点名称和分组</h3>
+        <p>很多机场会在节点名称里写"专线""IEPL""中转""直连"。同一个套餐里混着几种，说明不是全部节点都走专线。</p>
+        <h3>先买月付</h3>
+        <p>这些机场都没有免费试用。先买一个月，在你自己的网络环境下用一两周，比看任何宣传都可靠。</p>
+      </section>
+
+      <TelegramCta />
+
+      <section class="prose">
+        <h2>相关页面</h2>
+        <ul>
+          <li><a href={PILLAR.path}>机场推荐 {month}：{n} 家机场完整对比</a></li>
+          <li><a href="/pianyi-jichang/">便宜机场推荐</a></li>
+          <li><a href="/buxianshi-jichang/">不限时流量机场推荐</a></li>
+          <li><a href="/jichang-youhuima/">机场优惠码汇总</a></li>
+        </ul>
+      </section>
+
+      <Faq items={faq} />
+      <p class="meta small">页面里的官网链接是推广链接，通过它注册价格不变，本站可能获得佣金。</p>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .head {
+    max-width: 48rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .lead {
+    color: var(--ink-soft);
+  }
+
+  .split {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.9rem;
+  }
+
+  @media (max-width: 720px) {
+    .split {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .split li {
+    display: grid;
+    background: var(--surface);
+    border: 2px solid var(--ink);
+    border-radius: var(--radius-md);
+    padding: 0.9rem 1.1rem;
+    box-shadow: 4px 4px 0 var(--sign);
+  }
+
+  .split strong {
+    font-size: 2.2rem;
+    line-height: 1.1;
+  }
+
+  .split span {
+    font-weight: 700;
+  }
+
+  .split small {
+    color: var(--muted);
+    font-size: 0.8125rem;
+  }
+
+  .body {
+    max-width: 52rem;
+    margin-top: 2rem;
+  }
+
+  .body > section > h2,
+  .body .prose h2 {
+    border-top: 2px solid var(--ink);
+    padding-top: 0.25em;
+  }
+
+  .data-table tbody th {
+    background: var(--surface);
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  tr.is-main td,
+  tr.is-main th {
+    background: #fffbea !important;
+  }
+
+  .nowrap {
+    white-space: nowrap;
+  }
+
+  .kind {
+    display: inline-block;
+    padding: 0 0.45rem;
+    border-radius: 3px;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .kind--IPLC {
+    background: #1d2833;
+    color: #ffcc00;
+  }
+
+  .kind--IEPL {
+    background: #dff6fb;
+    color: #0b5566;
+  }
+
+  .kind--both {
+    background: #efe9ff;
+    color: #4b2fa8;
+  }
+
+  .trio {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  @media (max-width: 720px) {
+    .trio {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .trio > div {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 0.25rem 1rem 0.75rem;
+  }
+
+  .trio h3 {
+    margin: 0.6rem 0 0.4rem;
+    font-size: 1.0625rem;
+  }
+
+  .trio ol {
+    margin: 0;
+    padding-left: 1.3em;
+  }
+
+  .trio li {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.15rem 0;
+  }
+
+  .trio li a {
+    font-weight: 700;
+  }
+
+  .trio li span {
+    color: var(--ink-soft);
+    font-size: 0.875rem;
+    white-space: nowrap;
+  }
+
+  li.is-main a::after {
+    content: '主推';
+    margin-left: 0.35rem;
+    font-size: 0.7rem;
+    background: var(--ink);
+    color: var(--sign);
+    padding: 0 0.3rem;
+    border-radius: 3px;
+    vertical-align: 0.1em;
+  }
+
+  .plain {
+    padding-left: 1.2em;
+  }
+
+  .main-box {
+    margin: 2rem 0 0;
+    padding: 0.25rem 1.25rem 1rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--sign);
+    border-radius: var(--radius-sm);
+  }
+
+  .main-box h2 {
+    border-top: 0 !important;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+</style>

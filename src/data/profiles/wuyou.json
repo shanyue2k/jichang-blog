@@ -134,5 +134,7 @@
   "protocols": [
     "VLESS"
   ],
-  "devices": "不限制"
+  "devices": "不限制",
+  "lineScope": "all",
+  "lineKind": "IPLC"
 }

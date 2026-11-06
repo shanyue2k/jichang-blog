@@ -158,5 +158,10 @@
       "note": "独享带宽的定制专线方案，面向企业和高并发业务"
     }
   ],
-  "pending": []
+  "pending": [],
+  "lineScope": "partial",
+  "lineKind": "IEPL",
+  "dedicatedPlans": [
+    "星耀风暴"
+  ]
 }

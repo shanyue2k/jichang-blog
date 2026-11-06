@@ -138,5 +138,7 @@
     }
   ],
   "discounts": "长期购买有折扣：1 年付 8 折、2 年付 7 折、3 年付 6 折，可叠加优惠码",
-  "pending": []
+  "pending": [],
+  "lineScope": "all",
+  "lineKind": "IPLC"
 }

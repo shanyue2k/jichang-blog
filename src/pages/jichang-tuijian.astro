@@ -237,6 +237,7 @@ const jsonLd = [breadcrumbSchema(crumbs), itemList, faqSchema(faq)];
         )}
 
         <h3>标注 IPLC / IEPL 专线的机场</h3>
+        <p>哪些是全部套餐专线、哪些只有部分套餐是专线，详细分类见<a href="/zhuanxian-jichang/">IPLC / IEPL 专线机场</a>。</p>
         <p>
           {iplc.map((i, k) => (
             <span>{k ? '、' : ''}<a href={i.path}>{i.aff.name}</a></span>

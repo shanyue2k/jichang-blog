@@ -167,5 +167,7 @@
       "trafficPer": "month"
     }
   ],
-  "pending": []
+  "pending": [],
+  "lineScope": "all",
+  "lineKind": "both"
 }

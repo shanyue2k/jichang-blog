@@ -34,6 +34,12 @@ export type Profile = {
   groups?: string[];
   protocols?: string[];
   pending?: string[];
+  /** 专线范围：all=全部套餐标注 IPLC/IEPL；partial=只有部分套餐；exit=BGP 调度 + 专线出口 */
+  lineScope?: 'all' | 'partial' | 'exit';
+  /** 标注的专线类型 */
+  lineKind?: 'IPLC' | 'IEPL' | 'both' | 'unknown';
+  /** lineScope=partial 时，标注专线的套餐名称关键词 */
+  dedicatedPlans?: string[];
 };
 
 export type AffItem = {

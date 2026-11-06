@@ -141,5 +141,7 @@
     }
   ],
   "discounts": "基础版到旗舰版长期购买有折扣：季付 95 折、半年付 9 折、年付 85 折、两年付 8 折、三年付 7 折",
-  "pending": []
+  "pending": [],
+  "lineScope": "all",
+  "lineKind": "IEPL"
 }

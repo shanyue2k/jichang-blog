@@ -158,5 +158,7 @@
       "note": "独立专属节点，面向跨境电商、TikTok 直播等；需要联系客服定制"
     }
   ],
-  "pending": []
+  "pending": [],
+  "lineScope": "exit",
+  "lineKind": "unknown"
 }

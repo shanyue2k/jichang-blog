@@ -99,5 +99,7 @@
   "nodeNote": "香港 15 个、台湾 5 个、新加坡 10 个、日本 10 个、美国 10 个",
   "protocols": [
     "VLESS"
-  ]
+  ],
+  "lineScope": "all",
+  "lineKind": "IPLC"
 }

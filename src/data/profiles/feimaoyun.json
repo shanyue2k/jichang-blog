@@ -115,5 +115,7 @@
   "protocols": [
     "VLESS"
   ],
-  "lineNote": "专线节点的名称标注为 IEPL（官网套餐页写的是 IPLC），节点按初级、中级、高级分档"
+  "lineNote": "专线节点的名称标注为 IEPL（官网套餐页写的是 IPLC），节点按初级、中级、高级分档",
+  "lineScope": "all",
+  "lineKind": "IPLC"
 }

@@ -159,5 +159,7 @@
     "美国"
   ],
   "nodeCount": "60 个",
-  "nodeNote": "香港 20 个，台湾、日本、新加坡、美国各 10 个"
+  "nodeNote": "香港 20 个，台湾、日本、新加坡、美国各 10 个",
+  "lineScope": "exit",
+  "lineKind": "both"
 }

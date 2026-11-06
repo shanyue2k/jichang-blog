@@ -158,5 +158,10 @@
       "note": "独享私人专线节点、独立公网 IP，面向直播与短视频上传；下单后 2–3 个工作日交付"
     }
   ],
-  "pending": []
+  "pending": [],
+  "lineScope": "partial",
+  "lineKind": "IPLC",
+  "dedicatedPlans": [
+    "年付标准"
+  ]
 }

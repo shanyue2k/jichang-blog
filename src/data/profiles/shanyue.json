@@ -126,5 +126,7 @@
   ],
   "protocols": [
     "VLESS"
-  ]
+  ],
+  "lineScope": "all",
+  "lineKind": "IPLC"
 }

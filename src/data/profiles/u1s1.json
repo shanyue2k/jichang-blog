@@ -137,5 +137,7 @@
       "trafficPer": "month"
     }
   ],
-  "pending": []
+  "pending": [],
+  "lineScope": "exit",
+  "lineKind": "IEPL"
 }

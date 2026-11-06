@@ -153,5 +153,7 @@
   "pending": [],
   "protocols": [
     "VLESS"
-  ]
+  ],
+  "lineScope": "all",
+  "lineKind": "IEPL"
 }
