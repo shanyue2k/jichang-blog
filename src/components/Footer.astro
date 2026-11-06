@@ -5,32 +5,39 @@ const year = new Date().getFullYear();
 
 <footer class="site-footer">
   <div class="wrap grid">
-    <div>
+    <div class="brand">
       <p class="name">{SITE.name}</p>
-      <p class="small">{SITE.description}</p>
+      <p class="small">整理主流机场的价格、节点和线路，站长自己买订阅实测，每月核对一次优惠码。只写查得到、测得出的东西。</p>
       <p class="tg">
         <a href={SITE.telegram.channel} rel="noopener" target="_blank">机场好 Telegram 频道</a>
         <span aria-hidden="true">·</span>
         <a href={SITE.telegram.group} rel="noopener" target="_blank">交流群</a>
       </p>
     </div>
-    <nav aria-label="栏目">
+    <nav aria-label="专题">
+      <p class="col-title">专题</p>
       <ul>
         <li><a href={PILLAR.path}>{PILLAR.label}</a></li>
         <li><a href="/tizi-tuijian/">梯子推荐</a></li>
         <li><a href="/pianyi-jichang/">便宜机场推荐</a></li>
         <li><a href="/buxianshi-jichang/">不限时流量机场</a></li>
-        <li><a href="/jichang-youhuima/">机场优惠码</a></li>
         <li><a href="/zhuanxian-jichang/">IPLC / IEPL 专线机场</a></li>
+        <li><a href="/chatgpt-jichang/">ChatGPT 机场推荐</a></li>
         <li><a href="/clash-jichang/">Clash 机场推荐</a></li>
         <li><a href="/xiaohuojian-jichang/">小火箭机场推荐</a></li>
         <li><a href="/vpn-jichang/">VPN 机场怎么选</a></li>
-        <li><a href="/chatgpt-jichang/">ChatGPT 机场推荐</a></li>
+      </ul>
+    </nav>
+    <nav aria-label="栏目">
+      <p class="col-title">栏目</p>
+      <ul>
+        <li><a href="/jichang-youhuima/">机场优惠码</a></li>
         <li><a href="/jichang-daohang/">机场官网导航</a></li>
         {SECTION_KEYS.map((k) => <li><a href={`/${k}/`}>{SECTIONS[k].label}</a></li>)}
       </ul>
     </nav>
     <nav aria-label="关于本站">
+      <p class="col-title">关于</p>
       <ul>
         <li><a href="/ceping-fangfa/">测评方法</a></li>
         <li><a href="/about/">关于与声明</a></li>
@@ -57,14 +64,14 @@ const year = new Date().getFullYear();
   .grid {
     display: grid;
     gap: 2rem;
-    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-columns: 1.6fr 1fr 1fr 1fr;
   }
 
   @media (max-width: 720px) {
     .grid {
       grid-template-columns: 1fr 1fr;
     }
-    .grid > div {
+    .grid > .brand {
       grid-column: 1 / -1;
     }
   }
@@ -79,6 +86,14 @@ const year = new Date().getFullYear();
   .tg a {
     color: var(--sign);
     font-weight: 600;
+  }
+
+  .col-title {
+    margin: 0 0 0.6em;
+    color: #8f9aa5;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
   }
 
   .name {

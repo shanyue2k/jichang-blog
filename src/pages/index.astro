@@ -22,8 +22,17 @@ const latest = (await getAllPosts()).slice(0, 8);
 const counts = Object.fromEntries(
   await Promise.all(SECTION_KEYS.map(async (k) => [k, (await getPosts(k)).length] as const)),
 );
-// 对比页不是 Markdown 文章，按配对数计
+// 对比页、实测不是 Markdown 文章：分别按配对数、实测家数计
 counts.duibi = getPairs().length;
+counts.pingce = ranking.filter((i) => i.test).length;
+const UNIT: Record<string, string> = { pingce: '家', duibi: '组' };
+// 首页栏目区用短介绍（栏目页的 description 为 SEO 写得较长）
+const SHORT: Record<string, string> = {
+  pingce: '站长自己买订阅测的速度、延迟和流媒体解锁，附原始截图。',
+  duibi: '两家机场的价格、节点、优惠码和实测速度逐项比较。',
+  jiaocheng: 'Clash、v2rayN、小火箭等客户端的导入订阅和排错教程。',
+  wenzhang: '机场、线路、协议这些概念，以及选购时要避开的坑。',
+};
 ---
 
 <Base fullTitle={`${SITE.homeTitle} - ${SITE.name}`} description={SITE.description} jsonLd={[websiteSchema()]}>
@@ -63,9 +72,9 @@ counts.duibi = getPairs().length;
             <li>
               <a href={sectionPath(k)}>
                 <span class="sec-name">{SECTIONS[k].label}</span>
-                <span class="sec-count num">{counts[k]} 篇</span>
+                <span class="sec-count num">{counts[k]} {UNIT[k] ?? '篇'}</span>
               </a>
-              <p>{SECTIONS[k].description}</p>
+              <p>{SHORT[k] ?? SECTIONS[k].description}</p>
             </li>
           ))
         }
