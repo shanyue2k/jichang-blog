@@ -44,6 +44,13 @@ export type Profile = {
   tests?: TestRun[];
   /** 资料核对发现的出入（官网宣传 vs 后台实际） */
   audit?: { nodeMismatch?: string; protocolMismatch?: boolean; labelMismatch?: string };
+  /** 节点出口拓扑分析（不是测速） */
+  topology?: {
+    date: string; time?: string; tool: string; env: string; nodes: number; entry: string;
+    exits: { region: string; org: string; asn: string; note?: string }[];
+    findings: string[];
+    image?: { src: string; alt: string };
+  };
 };
 
 export type TestRun = {

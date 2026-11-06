@@ -1,0 +1,108 @@
+---
+// 节点出口拓扑分析：只看入口和出口，不是测速，不计入「已实测」
+import type { Profile } from '../lib/profiles';
+
+interface Props {
+  name: string;
+  topo: NonNullable<Profile['topology']>;
+}
+const { name, topo } = Astro.props;
+---
+
+<section class="topo" aria-labelledby="topo-title">
+  <h2 id="topo-title">{name}节点出口分析（{topo.date}）</h2>
+  <p class="t-sub">
+    这是节点拓扑分析，只看流量从哪里进、从哪里出，<strong>没有测速度和流媒体解锁</strong>，所以不算实测。测试时共 {topo.nodes} 个节点，和现在的后台不同，仅供参考。
+  </p>
+  <p class="t-entry"><strong>入口</strong>：{topo.entry}</p>
+  <div class="table-scroll">
+    <table class="data-table">
+      <thead><tr><th>地区</th><th>出口服务商</th><th>AS 编号</th><th>备注</th></tr></thead>
+      <tbody>
+        {topo.exits.map((e) => (
+          <tr><th scope="row">{e.region}</th><td>{e.org}</td><td class="num">{e.asn}</td><td>{e.note ?? '—'}</td></tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <h3>看到的几点</h3>
+  <ul>
+    {topo.findings.map((f) => <li>{f}。</li>)}
+  </ul>
+  {topo.image && (
+    <details class="t-shot">
+      <summary>查看原始拓扑分析截图（保留测试工具水印）</summary>
+      <a href={topo.image.src} target="_blank" rel="noopener"><img src={topo.image.src} alt={topo.image.alt} loading="lazy" decoding="async" /></a>
+    </details>
+  )}
+  <p class="t-foot">测试时间 {topo.date}{topo.time ? ' ' + topo.time : ''} · {topo.env} · {topo.tool} · 站长用自己购买的订阅提交测试</p>
+</section>
+
+<style>
+  .topo {
+    margin: 2rem 0;
+    padding: 1rem 1.2rem 0.8rem;
+    background: var(--surface);
+    border: 1px dashed var(--muted);
+    border-radius: var(--radius-md);
+  }
+
+  .topo h2 {
+    margin: 0 0 0.3rem;
+    padding: 0 !important;
+    border: 0 !important;
+    font-size: var(--step-1);
+  }
+
+  .t-sub {
+    font-size: 0.875rem;
+    color: var(--ink-soft);
+  }
+
+  .t-entry {
+    margin: 0.4rem 0 0.6rem;
+  }
+
+  .data-table tbody th {
+    background: var(--surface);
+    color: var(--ink);
+  }
+
+  .topo h3 {
+    font-size: 1rem;
+    margin: 1rem 0 0.3rem;
+  }
+
+  .topo ul {
+    padding-left: 1.2em;
+    font-size: 0.9375rem;
+  }
+
+  .t-shot {
+    margin: 0.6rem 0;
+    padding: 0.45rem 0.75rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+  }
+
+  .t-shot summary {
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--link);
+  }
+
+  .t-shot img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin-top: 0.6rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .t-foot {
+    margin: 0.4rem 0 0;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+</style>

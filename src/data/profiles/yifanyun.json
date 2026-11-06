@@ -180,5 +180,51 @@
   "lineKind": "IEPL",
   "audit": {
     "nodeMismatch": "官网写 60+ 节点，后台 55 个"
+  },
+  "topology": {
+    "date": "2026-07-12",
+    "time": "22:41",
+    "tool": "Impart 测速机器人（节点拓扑分析）",
+    "env": "上海电信测试服务器",
+    "nodes": 70,
+    "entry": "只有 1 个入口：中国电信（AS4812），上海",
+    "exits": [
+      {
+        "region": "香港",
+        "org": "LSHIY LLC / Ipxo",
+        "asn": "AS32167"
+      },
+      {
+        "region": "台湾",
+        "org": "JSMSR Network",
+        "asn": "AS12198"
+      },
+      {
+        "region": "日本",
+        "org": "Dodo K.K.",
+        "asn": "AS45691"
+      },
+      {
+        "region": "新加坡",
+        "org": "Southeast Asia Telecom",
+        "asn": "AS9664",
+        "note": "支持 IPv6"
+      },
+      {
+        "region": "美国",
+        "org": "Komi LLC",
+        "asn": "AS401243",
+        "note": "支持 IPv6"
+      }
+    ],
+    "findings": [
+      "部分「台湾」节点的出口 IP 归属地显示为美国或英国，部分「香港」节点显示为美国；需要当地 IP 的服务（例如台湾区流媒体）可能受影响",
+      "7 个节点测试时没有出口（香港 11、15、18、20，电信-香港 01，电信-台湾 01、02），当时应为不可用",
+      "测试时共有 70 个节点（含 10 个「电信-」开头的节点、台湾 10 个），和本站 11 月整理的后台 55 个节点不同，说明机场之后调整过节点"
+    ],
+    "image": {
+      "src": "/images/ceshi/yifanyun-topology-2026-07-12.jpg",
+      "alt": "一翻云 70 个节点的入口与出口拓扑分析，2026-07-12 上海电信"
+    }
   }
 }
