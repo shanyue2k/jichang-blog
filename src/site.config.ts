@@ -35,9 +35,9 @@ export const IS_PLACEHOLDER_DOMAIN = SITE.url.includes('xxx.com');
 /** 四个内容栏目。key 同时是网址路径和 src/content 下的文件夹名 */
 export const SECTIONS = {
   pingce: {
-    label: '机场评测',
-    title: '机场评测：逐家实测速度、稳定性与解锁',
-    description: '单家机场的长期实测评测，包含测速数据、晚高峰表现、流媒体与 ChatGPT 解锁情况。',
+    label: '机场实测',
+    title: '机场实测：站长用自己的订阅测过的机场',
+    description: '站长用自己购买的订阅实际测过的机场：各地区速度、延迟和流媒体解锁结果，附测试日期、环境和原始截图。',
   },
   duibi: {
     label: '机场对比',
