@@ -110,5 +110,86 @@
   ],
   "lineScope": "all",
   "lineKind": "IPLC",
-  "audit": {}
+  "audit": {},
+  "tests": [
+    {
+      "date": "2026-07-19",
+      "time": "17:24",
+      "tester": "站长用自己购买的灵猫订阅提交测试",
+      "tool": "MiaoKo 测速机器人（主端 4.3.3）",
+      "env": "珠海联通测试服务器，32 线程",
+      "regions": [
+        {
+          "name": "香港",
+          "nodes": 15,
+          "avgMBps": 519.4,
+          "minMBps": 428.7,
+          "maxMBps": 545.8,
+          "medianRttMs": 105,
+          "failed": 0
+        },
+        {
+          "name": "新加坡",
+          "nodes": 10,
+          "avgMBps": 228.8,
+          "minMBps": 113.1,
+          "maxMBps": 322.6,
+          "medianRttMs": 95,
+          "failed": 0
+        },
+        {
+          "name": "日本",
+          "nodes": 10,
+          "avgMBps": 128.9,
+          "minMBps": 88.8,
+          "maxMBps": 172.2,
+          "medianRttMs": 137,
+          "failed": 0
+        },
+        {
+          "name": "台湾",
+          "nodes": 5,
+          "avgMBps": 68.6,
+          "minMBps": 18.7,
+          "maxMBps": 88.9,
+          "medianRttMs": 176,
+          "failed": 0
+        },
+        {
+          "name": "美国",
+          "nodes": 10,
+          "avgMBps": 11.3,
+          "minMBps": 7.7,
+          "maxMBps": 12.9,
+          "medianRttMs": 251,
+          "failed": 0
+        }
+      ],
+      "unlock": {
+        "YouTube": "50/50",
+        "Netflix": "50/50",
+        "Disney+": "50/50"
+      },
+      "unlockNote": "每个节点都按所在地区解锁（香港节点解锁香港区，以此类推）",
+      "images": [
+        {
+          "src": "/images/ceshi/lingmao-speed-2026-07-19.jpg",
+          "alt": "灵猫 50 个节点测速结果，2026-07-19 17:24 珠海联通",
+          "caption": "测速：平均速度、最高速度、TLS 延迟（按延迟排序）"
+        },
+        {
+          "src": "/images/ceshi/lingmao-unlock-2026-07-19.jpg",
+          "alt": "灵猫 50 个节点 YouTube、Netflix、Disney+ 解锁结果",
+          "caption": "流媒体解锁：YouTube、Netflix、Disney+"
+        }
+      ],
+      "notes": [
+        "本次测速在下午 17:24 进行，不是晚高峰，晚上的速度可能会低一些（解锁测试在 18:18）",
+        "速度是测速服务器 32 线程测得的吞吐量（工具显示单位 MB/s），代表节点的带宽上限，不等于单台设备在家里能跑到的速度",
+        "测试时共 50 个节点（香港 15 个），本站 11 月整理的后台是 48 个（香港 13 个），机场之后调整过节点",
+        "50 个节点全部测速成功；台湾 Cloud-04 明显偏慢（约 18.7MB/s）",
+        "美国节点速度明显低于其他地区，延迟约 250ms，适合登录美区服务、用 ChatGPT，不适合大流量下载"
+      ]
+    }
+  ]
 }
