@@ -137,5 +137,86 @@
   "devices": "不限制",
   "lineScope": "all",
   "lineKind": "IPLC",
-  "audit": {}
+  "audit": {},
+  "tests": [
+    {
+      "date": "2026-07-18",
+      "time": "21:40",
+      "tester": "站长用自己购买的无忧链接订阅提交测试",
+      "tool": "MiaoKo 测速机器人（主端 4.3.3）",
+      "env": "珠海联通测试服务器，32 线程",
+      "regions": [
+        {
+          "name": "香港",
+          "nodes": 15,
+          "avgMBps": 521.7,
+          "minMBps": 392.6,
+          "maxMBps": 554.6,
+          "medianRttMs": 105,
+          "failed": 0
+        },
+        {
+          "name": "新加坡",
+          "nodes": 10,
+          "avgMBps": 193.2,
+          "minMBps": 94.8,
+          "maxMBps": 352.7,
+          "medianRttMs": 127,
+          "failed": 1
+        },
+        {
+          "name": "日本",
+          "nodes": 10,
+          "avgMBps": 105.5,
+          "minMBps": 60.2,
+          "maxMBps": 198.3,
+          "medianRttMs": 139,
+          "failed": 0
+        },
+        {
+          "name": "台湾",
+          "nodes": 5,
+          "avgMBps": 78.5,
+          "minMBps": 65.7,
+          "maxMBps": 94.7,
+          "medianRttMs": 181,
+          "failed": 0
+        },
+        {
+          "name": "美国",
+          "nodes": 10,
+          "avgMBps": 14.0,
+          "minMBps": 12.1,
+          "maxMBps": 18.1,
+          "medianRttMs": 245,
+          "failed": 0
+        }
+      ],
+      "unlock": {
+        "YouTube": "49/50",
+        "Netflix": "50/50",
+        "Disney+": "50/50"
+      },
+      "unlockNote": "香港 HKG-01 的 YouTube 显示「送中（CN）」，即被 YouTube 判定为中国大陆 IP，其余节点都按所在地区解锁",
+      "images": [
+        {
+          "src": "/images/ceshi/wuyou-speed-2026-07-18.jpg",
+          "alt": "无忧链接 50 个节点测速结果，2026-07-18 21:40 珠海联通",
+          "caption": "测速：平均速度、最高速度、TLS 延迟（按延迟排序）"
+        },
+        {
+          "src": "/images/ceshi/wuyou-unlock-2026-07-18.jpg",
+          "alt": "无忧链接 50 个节点 YouTube、Netflix、Disney+ 解锁结果",
+          "caption": "流媒体解锁：YouTube、Netflix、Disney+"
+        }
+      ],
+      "notes": [
+        "测试时间 21:40，属于晚高峰时段",
+        "速度是测速服务器 32 线程测得的吞吐量（工具显示单位 MB/s），代表节点的带宽上限，不等于单台设备在家里能跑到的速度",
+        "原始截图底部有缩略图遮挡，香港 HKG-08、09、10 三个节点的速度看不清，未计入香港平均速度",
+        "新加坡 SIN-02 本次测速失败（约 17.6KB/s），未计入平均",
+        "美国节点速度明显低于其他地区，延迟约 245ms，适合登录美区服务、用 ChatGPT，不适合大流量下载"
+      ]
+    }
+  ]
 }
