@@ -40,6 +40,21 @@ export type Profile = {
   lineKind?: 'IPLC' | 'IEPL' | 'both' | 'unknown';
   /** lineScope=partial 时，标注专线的套餐名称关键词 */
   dedicatedPlans?: string[];
+  /** 站长实测记录（最新的放第一个） */
+  tests?: TestRun[];
+};
+
+export type TestRun = {
+  date: string;
+  time?: string;
+  tester: string;
+  tool: string;
+  env: string;
+  regions: { name: string; nodes: number; avgMBps: number; minMBps: number; maxMBps: number; medianRttMs: number; failed: number }[];
+  unlock?: Record<string, string>;
+  unlockNote?: string;
+  images?: { src: string; alt: string; caption?: string }[];
+  notes?: string[];
 };
 
 export type AffItem = {

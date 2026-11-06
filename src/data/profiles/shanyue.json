@@ -128,5 +128,84 @@
     "VLESS"
   ],
   "lineScope": "all",
-  "lineKind": "IPLC"
+  "lineKind": "IPLC",
+  "tests": [
+    {
+      "date": "2026-07-18",
+      "time": "21:18",
+      "tester": "站长用自己购买的闪跃订阅提交测试",
+      "tool": "MiaoKo 测速机器人（主端 4.3.3）",
+      "env": "珠海联通测试服务器，32 线程",
+      "regions": [
+        {
+          "name": "香港",
+          "nodes": 15,
+          "avgMBps": 532.6,
+          "minMBps": 505.0,
+          "maxMBps": 550.9,
+          "medianRttMs": 108,
+          "failed": 0
+        },
+        {
+          "name": "新加坡",
+          "nodes": 10,
+          "avgMBps": 304.1,
+          "minMBps": 145.9,
+          "maxMBps": 419.6,
+          "medianRttMs": 109,
+          "failed": 1
+        },
+        {
+          "name": "日本",
+          "nodes": 10,
+          "avgMBps": 132.0,
+          "minMBps": 106.7,
+          "maxMBps": 189.7,
+          "medianRttMs": 135,
+          "failed": 0
+        },
+        {
+          "name": "台湾",
+          "nodes": 5,
+          "avgMBps": 74.4,
+          "minMBps": 47.5,
+          "maxMBps": 90.4,
+          "medianRttMs": 193,
+          "failed": 0
+        },
+        {
+          "name": "美国",
+          "nodes": 10,
+          "avgMBps": 11.1,
+          "minMBps": 8.6,
+          "maxMBps": 13.9,
+          "medianRttMs": 245,
+          "failed": 0
+        }
+      ],
+      "unlock": {
+        "YouTube": "50/50",
+        "Netflix": "50/50",
+        "Disney+": "50/50"
+      },
+      "unlockNote": "每个节点都按所在地区解锁（香港节点解锁香港区，以此类推）",
+      "images": [
+        {
+          "src": "/images/ceshi/shanyue-speed-2026-07-18.jpg",
+          "alt": "闪跃 50 个节点测速结果，2026-07-18 21:18 珠海联通",
+          "caption": "测速：平均速度、最高速度、TLS 延迟（按平均速度排序）"
+        },
+        {
+          "src": "/images/ceshi/shanyue-unlock-2026-07-18.jpg",
+          "alt": "闪跃 50 个节点 YouTube、Netflix、Disney+ 解锁结果",
+          "caption": "流媒体解锁：YouTube、Netflix、Disney+"
+        }
+      ],
+      "notes": [
+        "速度是测速服务器 32 线程测得的吞吐量（工具显示单位 MB/s），代表节点的带宽上限，不等于单台设备在家里能跑到的速度",
+        "新加坡 08 节点本次测试几乎不通（约 9.6KB/s），未计入新加坡平均速度",
+        "美国节点速度明显低于其他地区，延迟约 245ms，适合登录美区服务、用 ChatGPT，不适合大流量下载"
+      ]
+    }
+  ]
 }

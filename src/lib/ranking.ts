@@ -21,6 +21,8 @@ export type RankedItem = {
   nodeTotal: number | null;
   regionCount: number;
   hasOnetime: boolean;
+  /** 最新一次站长实测 */
+  test?: NonNullable<Profile['tests']>[number];
 };
 
 export function getRanking(): RankedItem[] {
@@ -49,6 +51,7 @@ export function getRanking(): RankedItem[] {
       nodeTotal: n ? Number(n[0]) : null,
       regionCount: profile.regions?.length ?? 0,
       hasOnetime: profile.plans.some((p) => p.type === 'onetime' && !p.custom),
+      test: profile.tests?.[0],
     });
   }
   return list;

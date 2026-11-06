@@ -2,6 +2,7 @@
 // 单家机场资料页：全部内容来自官网资料整理，不含任何未经实测的速度或评分
 import Base from '../../layouts/Base.astro';
 import TelegramCta from '../../components/TelegramCta.astro';
+import TestResult from '../../components/TestResult.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import Faq from '../../components/Faq.astro';
 import { formatDate } from '../../lib/format';
@@ -252,6 +253,8 @@ const jsonLd = [breadcrumbSchema(crumbs), faqSchema(faq)];
             </>
           )
         }
+
+        {pr.tests && pr.tests[0] && <TestResult name={name} test={pr.tests[0]} />}
 
         {
           pr.regions && (

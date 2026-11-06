@@ -35,6 +35,13 @@ const picks = [
         .filter(Boolean)
         .join(' · ')}
     </p>
+    {item.test && (
+      <p class="spot-test">
+        <a href={item.path + '#test-title'}>站长实测（{item.test.date}，{item.test.env.split('，')[0]}）</a>：
+        {item.test.regions.slice(0, 2).map((r) => r.name + '平均 ' + Math.round(r.avgMBps) + ' MB/s').join('，')}
+        {item.test.unlock ? '；' + Object.keys(item.test.unlock).join(' / ') + ' 全部解锁' : ''}
+      </p>
+    )}
     <ul class="spot-claims">
       {p.claims.slice(0, 4).map((c) => <li>{c}</li>)}
     </ul>
@@ -183,6 +190,21 @@ const picks = [
     margin: 0 0 0.6rem;
     color: #cfd6dd;
     font-size: 0.9375rem;
+  }
+
+  .spot-test {
+    margin: 0 0 0.6rem;
+    padding: 0.35rem 0.6rem;
+    background: rgba(31, 157, 85, 0.15);
+    border: 1px solid rgba(31, 157, 85, 0.5);
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    color: #d7f5e3;
+  }
+
+  .spot-test a {
+    color: #8ff0b6;
+    font-weight: 700;
   }
 
   .spot-claims {

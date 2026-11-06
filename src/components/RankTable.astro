@@ -37,6 +37,7 @@ const { items, compact = false, caption } = Astro.props;
             <th scope="row" class="nm">
               <a href={i.path}>{i.aff.name}</a>
               {i.rank === 1 && <span class="tier tier--main">主推</span>}
+              {i.test && <a class="tier tier--test" href={i.path + '#test-title'} title={'站长实测于 ' + i.test.date}>已实测</a>}
             </th>
             <td class="num nowrap">{i.monthlyFrom !== null ? `${yuan(i.monthlyFrom)}/月` : '—'}</td>
             <td class="num nowrap">{i.lowest !== null ? `${yuan(i.lowest)}/月` : '—'}</td>
@@ -105,6 +106,13 @@ const { items, compact = false, caption } = Astro.props;
     font-size: 0.75rem;
     border-radius: 3px;
     vertical-align: 0.1em;
+  }
+
+  .tier--test {
+    background: #e9f7ef;
+    color: #1f7a45;
+    border: 1px solid #b5e2c5;
+    text-decoration: none;
   }
 
   .tier--main {

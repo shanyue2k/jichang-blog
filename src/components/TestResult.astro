@@ -1,0 +1,236 @@
+---
+// 资料页的「站长实测」区块：数据来自资料文件 tests[0]
+import type { TestRun } from '../lib/profiles';
+
+interface Props {
+  name: string;
+  test: TestRun;
+}
+const { name, test } = Astro.props;
+const max = Math.max(...test.regions.map((r) => r.avgMBps));
+const ageDays = Math.round((Date.now() - new Date(test.date + 'T12:00:00+08:00').getTime()) / 86400000);
+const stale = ageDays > 60;
+const total = test.regions.reduce((s, r) => s + r.nodes, 0);
+const failed = test.regions.reduce((s, r) => s + r.failed, 0);
+---
+
+<section class="test" aria-labelledby="test-title">
+  <h2 id="test-title">{name}实测结果</h2>
+  <ul class="test-meta">
+    <li><span>测试时间</span>{test.date}{test.time ? ' ' + test.time : ''}</li>
+    <li><span>测试环境</span>{test.env}</li>
+    <li><span>测试工具</span>{test.tool}</li>
+    <li><span>测试方式</span>{test.tester}</li>
+  </ul>
+  {stale && (
+    <p class="stale">这份测试距今已有一段时间，机场线路可能有调整，结果仅供参考，以你实际使用为准。</p>
+  )}
+
+  <h3>各地区平均速度（{total} 个节点{failed ? '，' + failed + ' 个测试失败' : ''}）</h3>
+  <div class="bars" role="table" aria-label="各地区平均速度">
+    {test.regions.map((r) => (
+      <div class="bar-row" role="row">
+        <span class="bar-name" role="cell">{r.name}<small>{r.nodes} 个</small></span>
+        <span class="bar-track" role="cell">
+          <span class="bar-fill" style={'width:' + Math.max(2, (r.avgMBps / max) * 100) + '%'}></span>
+        </span>
+        <span class="bar-val num" role="cell">{r.avgMBps} MB/s</span>
+      </div>
+    ))}
+  </div>
+
+  <div class="table-scroll">
+    <table class="data-table">
+      <thead><tr><th>地区</th><th>节点</th><th>平均速度</th><th>最低 / 最高</th><th>延迟中位数</th></tr></thead>
+      <tbody>
+        {test.regions.map((r) => (
+          <tr>
+            <th scope="row">{r.name}</th>
+            <td>{r.nodes}{r.failed ? '（' + r.failed + ' 个失败）' : ''}</td>
+            <td class="num">{r.avgMBps} MB/s</td>
+            <td class="num nowrap">{r.minMBps} / {r.maxMBps}</td>
+            <td class="num">{r.medianRttMs} ms</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  {test.unlock && (
+    <div>
+      <h3>流媒体解锁</h3>
+      <ul class="unlock">
+        {Object.entries(test.unlock).map(([k, v]) => (
+          <li><strong>{k}</strong><span>{v} 个节点解锁</span></li>
+        ))}
+      </ul>
+      {test.unlockNote && <p class="meta">{test.unlockNote}。</p>}
+    </div>
+  )}
+
+  {test.notes && (
+    <div>
+      <h3>怎么看这份结果</h3>
+      <ul>
+        {test.notes.map((n) => <li>{n}。</li>)}
+      </ul>
+    </div>
+  )}
+
+  {test.images && (
+    <div class="shots">
+      {test.images.map((img) => (
+        <figure>
+          <a href={img.src} target="_blank" rel="noopener"><img src={img.src} alt={img.alt} width="1200" loading="lazy" decoding="async" /></a>
+          {img.caption && <figcaption>{img.caption}（点击看大图）</figcaption>}
+        </figure>
+      ))}
+    </div>
+  )}
+  <p class="meta">测试结果只代表测试当时、测试服务器所在网络的情况，不同地区、不同运营商会有差别。测试方法见<a href="/ceping-fangfa/">测评方法</a>。</p>
+</section>
+
+<style>
+  .test {
+    margin: 2rem 0;
+    padding: 0.25rem 1.25rem 1rem;
+    background: var(--surface);
+    border: 2px solid var(--ink);
+    border-radius: var(--radius-md);
+    box-shadow: 5px 5px 0 var(--sign);
+  }
+
+  .test h2 {
+    border-top: 0 !important;
+  }
+
+  .test-meta {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 0.75rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.35rem 1.25rem;
+    font-size: 0.9375rem;
+  }
+
+  @media (max-width: 640px) {
+    .test-meta {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .test-meta span {
+    display: inline-block;
+    min-width: 4.5em;
+    color: var(--muted);
+  }
+
+  .stale {
+    padding: 0.5rem 0.8rem;
+    background: #fff6cc;
+    border: 1px solid #f0d36b;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+  }
+
+  .bars {
+    display: grid;
+    gap: 0.45rem;
+    margin-bottom: 1rem;
+  }
+
+  .bar-row {
+    display: grid;
+    grid-template-columns: 5.5rem minmax(0, 1fr) 6.5rem;
+    gap: 0.6rem;
+    align-items: center;
+  }
+
+  .bar-name small {
+    margin-left: 0.35rem;
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+
+  .bar-track {
+    height: 0.9rem;
+    background: #eef1f4;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, #ff8a00, #ffcc00);
+    border-radius: 3px;
+  }
+
+  .bar-val {
+    text-align: right;
+    font-weight: 600;
+  }
+
+  .data-table tbody th {
+    background: var(--surface);
+    color: var(--ink);
+  }
+
+  .nowrap {
+    white-space: nowrap;
+  }
+
+  .unlock {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .unlock li {
+    display: flex;
+    gap: 0.4rem;
+    align-items: baseline;
+    padding: 0.25rem 0.7rem;
+    background: #e9f7ef;
+    border: 1px solid #b5e2c5;
+    border-radius: 3px;
+  }
+
+  .unlock span {
+    font-size: 0.875rem;
+    color: var(--ok);
+  }
+
+  .shots {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  @media (max-width: 640px) {
+    .shots {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .shots figure {
+    margin: 0;
+  }
+
+  .shots img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+  }
+
+  .shots figcaption {
+    font-size: 0.8125rem;
+    color: var(--muted);
+    margin-top: 0.3rem;
+  }
+</style>

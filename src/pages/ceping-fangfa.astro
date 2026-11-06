@@ -2,57 +2,62 @@
 import Base from '../layouts/Base.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import { breadcrumbSchema } from '../lib/schema';
+import { getRanking } from '../lib/ranking';
 
-// 这是测评方法模板：请按你真实的测试流程修改，写清楚是可信度的来源
 const crumbs = [
   { name: '首页', path: '/' },
   { name: '测评方法', path: '/ceping-fangfa/' },
 ];
+const all = getRanking();
+const tested = all.filter((i) => i.test);
 ---
 
 <Base
-  title="测评方法：我们怎么测试和给机场排名"
-  description="本站机场测评的测试环境、测速时段、评分维度和更新频率说明。"
+  title="资料来源与测评方法：本站怎么整理和测试机场"
+  description="本站机场资料的来源、实测的工具和环境、排名方式和更新频率说明。"
   jsonLd={[breadcrumbSchema(crumbs)]}
 >
   <div class="wrap">
     <Breadcrumbs crumbs={crumbs} />
     <article class="prose">
-      <h1>测评方法</h1>
-      <p>每一家上榜的机场，都由我们自己付费购买、实际使用，不接受机场方提供的免费账号来做测评。</p>
+      <h1>资料来源与测评方法</h1>
+      <p>这一页说明本站的数据从哪里来、实测是怎么做的、排名怎么定。我们尽量把能说清楚的都说清楚，也把做不到的写明。</p>
 
-      <h2>测试环境</h2>
+      <h2>机场资料从哪里来</h2>
       <ul>
-        <li>宽带：国内家庭宽带（请填写运营商和带宽）</li>
-        <li>客户端：Windows 上的 Clash Verge Rev，iPhone 上的 Shadowrocket</li>
-        <li>测速工具：Speedtest、YouTube 统计信息、流媒体解锁检测脚本</li>
+        <li><strong>套餐和价格</strong>：截取各机场官网的套餐页面，包括月付、季付、半年付、年付和不限时流量包。</li>
+        <li><strong>节点数量和地区</strong>：以机场后台的节点列表为准。官网宣传和后台不一致时，资料页会写明。</li>
+        <li><strong>协议和线路</strong>：协议以节点列表为准；线路（IPLC、IEPL、BGP 等）是机场官网的标注，本站无法逐条验证。</li>
+        <li><strong>优惠码</strong>：由站长逐个核对，每月复查一次，失效的码不会显示为可用。</li>
       </ul>
 
-      <h2>测试流程</h2>
-      <ol>
-        <li>购买最短周期套餐，连续使用至少 30 天。</li>
-        <li>每天早上、下午、晚上 20:00–23:00 各测一次常用节点的下载速度和延迟。</li>
-        <li>记录断流、掉速和节点失效的次数。</li>
-        <li>逐一检查 Netflix、Disney+、ChatGPT 能否正常访问。</li>
-      </ol>
+      <h2>实测怎么做</h2>
+      <p>
+        目前已实测 {tested.length} 家：{tested.map((i) => i.aff.name).join('、') || '暂无'}。实测由站长用自己付费购买的订阅进行，不使用机场提供的免费测试账号。
+      </p>
+      <ul>
+        <li><strong>工具</strong>：MiaoKo 测速机器人。把订阅提交给机器人，由它在国内的测试服务器上逐个节点测速和检测流媒体解锁。</li>
+        <li><strong>测试时间</strong>：优先选晚上 20:00–23:00 的晚高峰。</li>
+        <li><strong>测试内容</strong>：每个节点的平均速度、最高速度、TLS 延迟，以及 YouTube、Netflix、Disney+ 解锁情况。</li>
+        <li><strong>原图公开</strong>：资料页会放出测速原图，图上保留测速工具的水印，方便核对没有经过修改。</li>
+      </ul>
+      <h3>测试结果的局限</h3>
+      <ul>
+        <li>速度是测试服务器多线程测出来的带宽上限，不等于你家里单台设备能跑到的速度。</li>
+        <li>结果只代表测试当时、测试服务器所在网络（例如珠海联通）的情况，其他地区和运营商会不一样。</li>
+        <li>每份测试都标明日期。时间较久的测试会提示"仅供参考"。</li>
+      </ul>
 
-      <h2>评分维度</h2>
-      <table>
-        <thead><tr><th>维度</th><th>占比</th><th>看什么</th></tr></thead>
-        <tbody>
-          <tr><td>晚高峰稳定性</td><td>35%</td><td>20:00–23:00 的速度和断流次数</td></tr>
-          <tr><td>速度与延迟</td><td>25%</td><td>常用地区节点的平均下载速度和延迟</td></tr>
-          <tr><td>解锁能力</td><td>20%</td><td>流媒体和 ChatGPT 的可用情况</td></tr>
-          <tr><td>价格</td><td>15%</td><td>同等质量下的每月花费</td></tr>
-          <tr><td>售后与运营</td><td>5%</td><td>工单响应、运营时长、公告透明度</td></tr>
-        </tbody>
-      </table>
+      <h2>排名怎么定</h2>
+      <p>
+        推荐榜的顺序是本站的推荐顺序：第 1 名为站长主推，第 2 到第 10 名为次推。专题页里的"最便宜""每 GB 最低"等排名，则完全由官网价格自动计算，与推荐顺序无关。
+      </p>
 
       <h2>更新频率</h2>
-      <p>榜单每月复测一次。机场出现大面积故障、涨价或跑路时，会在发现后尽快更新对应页面，并在文章顶部标注更新日期。</p>
+      <p>价格、节点和优惠码每月核对一次。机场涨价、换线路或停止运营时，会尽快更新对应页面，并标注更新日期。</p>
 
       <h2>关于推广链接</h2>
-      <p>部分购买链接是推广链接。通过它购买价格不变，本站可能获得佣金。佣金不影响排名：排名只由上面的实测结果决定。</p>
+      <p>页面里的机场官网链接是推广链接。通过它注册，价格和直接注册一样，本站可能获得佣金。这是本站的主要收入来源，我们会在页面上注明。</p>
     </article>
   </div>
 </Base>
