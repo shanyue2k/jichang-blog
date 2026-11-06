@@ -1,0 +1,466 @@
+---
+// 专题：ChatGPT 机场推荐（长尾词：chatgpt 机场 / 能用 chatgpt 的机场 / chatgpt 梯子 / claude 机场）
+// 不写任何未经测试的 ChatGPT 可用性：只列官网说明、节点地区和站长实测的速度
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Faq from '../components/Faq.astro';
+import TelegramCta from '../components/TelegramCta.astro';
+import { PILLAR } from '../site.config';
+import { absoluteUrl } from '../lib/content';
+import { formatDate } from '../lib/format';
+import { breadcrumbSchema, faqSchema } from '../lib/schema';
+import { getRanking, monthLabel, rankingUpdated, cheapestForUsage, type RankedItem } from '../lib/ranking';
+import { gb, yuan } from '../lib/profiles';
+
+const all = getRanking();
+const updated = rankingUpdated(all);
+const month = monthLabel(updated);
+
+// 香港以外的节点数：总数减去资料里写的香港节点数
+const hkCount = (i: RankedItem) => {
+  const m = (i.profile.nodeNote ?? '').match(/香港\s*(\d+)/);
+  return m ? Number(m[1]) : null;
+};
+const nonHK = (i: RankedItem) => {
+  const h = hkCount(i);
+  return i.nodeTotal !== null && h !== null ? i.nodeTotal - h : null;
+};
+const AI_KEYS = ['ChatGPT', 'Claude', 'Gemini'];
+const aiClaims = (i: RankedItem) => {
+  const text = [...i.profile.claims, ...(i.profile.unlock ?? [])].join(' ');
+  return AI_KEYS.filter((k) => text.includes(k));
+};
+const otherRegions = (i: RankedItem) => (i.profile.regions ?? []).filter((r) => r !== '香港');
+
+const main = all[0];
+const featured = all.slice(0, 10);
+const tested = all.filter((i) => i.test);
+const AI_REGIONS = ['台湾', '新加坡', '日本', '美国'];
+const testedRows = tested.map((i) => ({
+  i,
+  cells: AI_REGIONS.map((name) => i.test!.regions.find((r) => r.name === name) ?? null),
+}));
+
+// 只用 AI 聊天、流量很小：每家机场满足每月 50GB 的最低折合月价
+const light = cheapestForUsage(featured, 50).slice(0, 5);
+const byNonHK = all
+  .filter((i) => nonHK(i) !== null)
+  .slice()
+  .sort((a, b) => (nonHK(b) ?? 0) - (nonHK(a) ?? 0) || a.rank - b.rank)
+  .slice(0, 5);
+const noClaim = all.filter((i) => !aiClaims(i).length);
+
+const title = 'ChatGPT 机场推荐 ' + month + '｜能用 ChatGPT、Claude 的机场怎么选';
+const description =
+  'ChatGPT 和 Claude 都不支持香港，用机场时要选台湾、日本、新加坡、美国节点。本页整理 ' + all.length +
+  ' 家机场香港以外的节点数和官网 AI 支持说明，附站长实测的台日新美节点速度，以及只用 AI 时怎么买最省。';
+
+const crumbs = [
+  { name: '首页', path: '/' },
+  { name: PILLAR.label, path: PILLAR.path },
+  { name: 'ChatGPT 机场推荐', path: '/chatgpt-jichang/' },
+];
+
+const faq = [
+  {
+    q: '为什么用香港节点打不开 ChatGPT？',
+    a: 'OpenAI 不向中国大陆、香港和澳门提供服务，Anthropic 的 Claude 也一样。节点出口在香港时，ChatGPT 会提示地区不支持。换成台湾、日本、新加坡或美国的节点就可以。',
+  },
+  {
+    q: '用 ChatGPT 要买多少流量？',
+    a: '只是文字聊天的话，流量很小，买各家最小的套餐就够了。真正占流量的是看视频和下载；如果同一个机场还要用来看 YouTube、Netflix，再按看视频的时间选流量。',
+  },
+  {
+    q: '本站测过这些机场能不能用 ChatGPT 吗？',
+    a: '没有逐个节点测试 ChatGPT 登录。本站实测的是各地区节点的速度、延迟和流媒体解锁；ChatGPT 支持情况来自机场官网的说明。买之前可以先买月付，用 chatgpt.com/cdn-cgi/trace 检查节点出口地区。',
+  },
+  {
+    q: '用 ChatGPT 选哪个地区的节点最好？',
+    a: '日本、新加坡离国内近、延迟低，日常用最顺手；美国节点延迟高一些，但 ChatGPT 的新功能通常最先在美国开放。建议固定一个常用地区，不要来回切换，也不要用自动选择分组。',
+  },
+  {
+    q: '机场写"解锁 ChatGPT"一定能用吗？',
+    a: '不一定。这只是机场的宣传，ChatGPT 能不能用取决于你连的那个节点的出口 IP。个别节点 IP 被 OpenAI 判定为可疑时，会出现 Access denied 或反复人机验证，换一个同地区的节点通常就好。',
+  },
+];
+
+const jsonLd = [
+  breadcrumbSchema(crumbs),
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'ChatGPT 机场推荐 ' + month,
+    numberOfItems: featured.length,
+    itemListElement: featured.map((i, k) => ({ '@type': 'ListItem', position: k + 1, name: i.aff.name, url: absoluteUrl(i.path) })),
+  },
+  faqSchema(faq),
+];
+const mt = main?.test;
+const mtSG = mt?.regions.find((r) => r.name === '新加坡');
+const mtJP = mt?.regions.find((r) => r.name === '日本');
+---
+
+<Base title={title} description={description} jsonLd={jsonLd} modified={updated}>
+  <div class="wrap">
+    <Breadcrumbs crumbs={crumbs} />
+    <header class="head">
+      <h1>ChatGPT 机场推荐 {month}</h1>
+      <p class="lead">
+        想用机场上 ChatGPT，最容易踩的坑不是速度，而是节点地区：ChatGPT 和 Claude 都不支持香港，而香港偏偏是大多数机场节点最多、最快的地区。所以挑机场时，要看的是<strong>香港以外</strong>的台湾、日本、新加坡、美国节点有多少、快不快。我们把 {all.length} 家机场按这个角度重新整理了一遍。
+      </p>
+      <p class="meta">
+        最后更新 <time class="num" datetime={updated.toISOString()}>{formatDate(updated)}</time> · 节点数据来自各机场后台 · AI 支持情况来自机场官网说明，本站没有逐个节点测试 ChatGPT 登录 · 实测数据见各家资料页
+      </p>
+    </header>
+
+    <ul class="split" aria-label="要点">
+      <li>
+        <strong>不能用</strong>
+        <span>香港、中国大陆、澳门</span>
+        <small>ChatGPT、Claude 都不支持，节点出口在这里会提示地区不支持</small>
+      </li>
+      <li>
+        <strong>可以用</strong>
+        <span>台湾、日本、新加坡、美国</span>
+        <small>日本、新加坡延迟低；美国延迟高，但新功能最先开放</small>
+      </li>
+      <li>
+        <strong>流量很小</strong>
+        <span>只聊天买最小套餐就够</span>
+        <small>占流量的是视频和下载，不是 AI 对话</small>
+      </li>
+    </ul>
+
+    <div class="body">
+      {main && (
+        <section class="main-box">
+          <h2>站长主推：{main.aff.name}</h2>
+          <p>
+            {main.aff.name}后台 {main.nodeTotal} 个节点里，香港以外有 {nonHK(main)} 个（{otherRegions(main).join('、')}），官网写明{aiClaims(main).length ? '支持 ' + aiClaims(main).join('、') : '解锁 AI 工具'}。
+            {mt && mtSG && mtJP ? '站长在晚高峰（' + mt.date + ' ' + (mt.time ?? '') + '）实测，新加坡节点平均 ' + mtSG.avgMBps + ' MB/s、日本 ' + mtJP.avgMBps + ' MB/s，延迟分别约 ' + mtSG.medianRttMs + 'ms 和 ' + mtJP.medianRttMs + 'ms，用 ChatGPT 绰绰有余。' : ''}
+            只聊天的话，年付版 {main.lowest !== null ? '折合约 ' + yuan(main.lowest) + '/月' : ''}就够用；{main.aff.coupon ? '买月付、半年付填优惠码 ' + main.aff.coupon + ' 立减 ' + main.aff.couponOff + '%。' : ''}
+          </p>
+          <p class="actions">
+            <a class="btn" href={main.aff.url} rel="sponsored nofollow noopener" target="_blank">访问 {main.aff.name} 官网</a>
+            <a class="btn btn--ghost" href={main.path}>看 {main.aff.name} 全部套餐和实测</a>
+          </p>
+        </section>
+      )}
+
+      <section class="prose">
+        <h2>为什么香港节点用不了 ChatGPT</h2>
+        <p>
+          ChatGPT 判断你在哪里，看的是节点的出口 IP，而不是你本人在哪。OpenAI 和 Anthropic 的服务地区名单里都没有中国大陆、香港和澳门，所以节点出口在香港时，ChatGPT 会提示"所在国家或地区不支持"，Claude 也同样会被拒绝。
+        </p>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead><tr><th>节点地区</th><th>ChatGPT</th><th>Claude</th><th>说明</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">香港</th><td class="no">不支持</td><td class="no">不支持</td><td>机场节点最多的地区，但不能用来上 AI</td></tr>
+              <tr><th scope="row">台湾</th><td class="ok">支持</td><td class="ok">支持</td><td>多数机场只有 5 个左右</td></tr>
+              <tr><th scope="row">日本</th><td class="ok">支持</td><td class="ok">支持</td><td>延迟低，日常首选</td></tr>
+              <tr><th scope="row">新加坡</th><td class="ok">支持</td><td class="ok">支持</td><td>延迟低，速度通常仅次于香港</td></tr>
+              <tr><th scope="row">美国</th><td class="ok">支持</td><td class="ok">支持</td><td>延迟较高，ChatGPT 新功能通常最先开放</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          服务地区以 OpenAI、Anthropic 官方公布的名单为准，名单会调整。想确认当前节点能不能用，在浏览器打开 <code>chatgpt.com/cdn-cgi/trace</code>，看 <code>loc=</code> 后面是不是 HK 或 CN。具体排查步骤见 <a href="/jiaocheng/chatgpt-da-bu-kai/">ChatGPT 打不开怎么办</a>。
+        </p>
+
+        <h2>用 ChatGPT 选机场，看这四点</h2>
+        <ol>
+          <li><strong>香港以外的节点数量</strong>：台日新美节点越多，某个节点 IP 被 OpenAI 拦下时，越容易换到同地区的另一个。</li>
+          <li><strong>日本、新加坡节点的延迟和稳定性</strong>：AI 对话不吃带宽，几 MB/s 就够；更影响体验的是延迟高不高、会不会断线。</li>
+          <li><strong>能不能固定节点</strong>：短时间在多个国家之间切换，容易触发安全验证。选节点固定、名字清楚的机场，别用"自动选择"。</li>
+          <li><strong>流量不用买多</strong>：文字对话流量很小，只为 ChatGPT 买机场，选最小的套餐就行；省下的钱比多买的流量实在。</li>
+        </ol>
+      </section>
+
+      {!!tested.length && (
+        <section>
+          <h2>实测：台湾、新加坡、日本、美国节点速度</h2>
+          <p>
+            下表只列能用 ChatGPT 的四个地区。数据来自站长用自己购买的订阅测速（MiaoKo 测速机器人，珠海联通测试服务器），是各地区节点的平均速度和延迟中位数。<strong>这是速度测试，不是 ChatGPT 登录测试</strong>；测试时段各不相同，日期见表格。
+          </p>
+          <div class="table-scroll">
+            <table class="data-table speed">
+              <thead>
+                <tr><th scope="col">机场</th>{AI_REGIONS.map((r) => <th scope="col">{r}</th>)}<th scope="col">测试时间</th></tr>
+              </thead>
+              <tbody>
+                {testedRows.map(({ i, cells }) => (
+                  <tr class={i.rank === 1 ? 'is-main' : ''}>
+                    <th scope="row"><a href={i.path + '#test-title'}>{i.aff.name}</a></th>
+                    {cells.map((c) => (
+                      <td class="num nowrap">{c ? <span><span class="v"><b>{c.avgMBps}</b> MB/s</span><small>{c.nodes} 个 · {c.medianRttMs}ms</small></span> : '—'}</td>
+                    ))}
+                    <td class="nowrap"><small>{i.test?.date} {i.test?.time ?? ''}</small></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p class="meta">1 MB/s ≈ 8 Mbps。速度是测试服务器多线程能跑到的带宽上限，不等于你家里单台设备的速度。美国节点普遍只有十几 MB/s，用 ChatGPT 足够，但不适合大流量下载。</p>
+        </section>
+      )}
+
+      <section>
+        <h2>{all.length} 家机场：香港以外的节点和官网 AI 说明</h2>
+        <p>按本站推荐顺序排列。"官网写明"是机场官网或套餐说明里明确提到支持的 AI 服务，本站没有逐一验证。</p>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead>
+              <tr><th scope="col">机场</th><th scope="col">香港以外节点</th><th scope="col">可用地区</th><th scope="col">官网写明</th><th scope="col">月付起价</th><th scope="col">实测</th></tr>
+            </thead>
+            <tbody>
+              {all.map((i) => (
+                <tr class={i.rank === 1 ? 'is-main' : ''}>
+                  <th scope="row"><a href={i.path}>{i.aff.name}</a></th>
+                  <td class="num nowrap">{nonHK(i) !== null ? nonHK(i) + ' / ' + i.nodeTotal + ' 个' : '—'}</td>
+                  <td>{otherRegions(i).join('、') || '—'}</td>
+                  <td>{aiClaims(i).length ? aiClaims(i).join('、') : <span class="muted">未写明</span>}</td>
+                  <td class="num nowrap">{i.monthlyFrom !== null ? yuan(i.monthlyFrom) + '/月' : '—'}</td>
+                  <td class="nowrap">{i.test ? <a href={i.path + '#test-title'}>已实测</a> : <span class="muted">—</span>}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p class="meta">
+          "香港以外节点"是后台节点总数减去香港节点，其中可能包括俄罗斯等同样不受 ChatGPT 支持的地区，以及标注"直连"的节点。
+          {noClaim.length ? noClaim.map((i) => i.aff.name).join('、') + ' 的官网没有专门提到 AI 服务，不代表不能用。' : ''}
+        </p>
+      </section>
+
+      <section>
+        <h2>按需求挑</h2>
+        <div class="trio">
+          <div>
+            <h3>只用 AI，越便宜越好</h3>
+            <p class="meta">推荐榜前 10 名里，每月 50GB 以上最低折合价</p>
+            <ol>
+              {light.map((p) => (
+                <li class={p.item.rank === 1 ? 'is-main' : ''}><a href={p.item.path}>{p.item.aff.name}</a><span class="num">{yuan(p.perMonth)}/月 · {gb(p.plan.trafficGB)}</span></li>
+              ))}
+            </ol>
+          </div>
+          <div>
+            <h3>香港以外节点最多</h3>
+            <p class="meta">某个节点被拦时，更容易换同地区的</p>
+            <ol>
+              {byNonHK.map((i) => (
+                <li class={i.rank === 1 ? 'is-main' : ''}><a href={i.path}>{i.aff.name}</a><span class="num">{nonHK(i)} 个</span></li>
+              ))}
+            </ol>
+          </div>
+          <div>
+            <h3>台日新美有实测</h3>
+            <p class="meta">站长测过速度，可以对照上面的表</p>
+            <ol>
+              {tested.slice(0, 5).map((i) => (
+                <li class={i.rank === 1 ? 'is-main' : ''}><a href={i.path + '#test-title'}>{i.aff.name}</a><span class="num">{i.test?.date.slice(5)}</span></li>
+              ))}
+            </ol>
+          </div>
+        </div>
+        <p class="meta">"最低折合价"多为年付小流量套餐，年付一般不能用优惠码。价格以官网为准。两家之间怎么选，可以看<a href="/duibi/">机场对比</a>。</p>
+      </section>
+
+      <section class="prose">
+        <h2>买好之后：让 ChatGPT 固定走一个节点</h2>
+        <ol>
+          <li><strong>保持规则模式</strong>，不用开全局。国内网站直连，ChatGPT 走代理。</li>
+          <li><strong>手动选一个日本、新加坡或美国节点</strong>，用久了就别换。不要用"自动选择""故障转移"这类会自动切换的分组，也不要选香港。</li>
+          <li><strong>打开 chatgpt.com/cdn-cgi/trace 确认</strong> <code>loc=</code> 是 JP、SG、US 或 TW。</li>
+          <li><strong>出现 Access denied 或反复人机验证</strong>，换一个同地区的节点再试。</li>
+        </ol>
+        <p>
+          客户端设置方法：电脑用 <a href="/jiaocheng/clash-verge-rev-jiaocheng/">Clash Verge Rev</a> 或 <a href="/jiaocheng/v2rayn-jiaocheng/">v2rayN</a>，iPhone 用 <a href="/jiaocheng/shadowrocket-jiaocheng/">Shadowrocket</a>，安卓用 <a href="/jiaocheng/clash-meta-for-android-jiaocheng/">Clash Meta for Android</a>。手机上装 ChatGPT App 需要外区账号，见<a href="/jiaocheng/waiqu-apple-id-zhuce/">外区 Apple ID 注册</a>。
+        </p>
+        <p class="meta">提醒：OpenAI、Anthropic 的使用条款对服务地区有规定，账号能否长期使用以其政策为准。</p>
+      </section>
+
+      <TelegramCta />
+      <Faq items={faq} />
+
+      <p class="more">
+        相关专题：<a href={PILLAR.path}>机场推荐榜</a> · <a href="/zhuanxian-jichang/">IPLC / IEPL 专线机场</a> · <a href="/pianyi-jichang/">便宜机场推荐</a> · <a href="/jichang-youhuima/">机场优惠码</a> · <a href="/pingce/">机场实测</a>
+      </p>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .head {
+    max-width: 48rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .lead {
+    color: var(--ink-soft);
+  }
+
+  .split {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.9rem;
+    max-width: 60rem;
+  }
+
+  @media (max-width: 720px) {
+    .split {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .split li {
+    display: grid;
+    background: var(--surface);
+    border: 2px solid var(--ink);
+    border-radius: var(--radius-md);
+    padding: 0.9rem 1.1rem;
+    box-shadow: 4px 4px 0 var(--sign);
+  }
+
+  .split strong {
+    font-size: 1.6rem;
+    line-height: 1.2;
+  }
+
+  .split span {
+    font-weight: 700;
+  }
+
+  .split small {
+    color: var(--muted);
+    font-size: 0.8125rem;
+  }
+
+  .body {
+    max-width: 52rem;
+    margin-top: 2rem;
+  }
+
+  .body > section > h2,
+  .body .prose h2 {
+    border-top: 2px solid var(--ink);
+    padding-top: 0.25em;
+  }
+
+  .main-box {
+    margin: 0 0 1rem;
+    padding: 0.25rem 1.25rem 1rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--sign);
+    border-radius: var(--radius-sm);
+  }
+
+  .main-box h2 {
+    border-top: 0 !important;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .data-table tbody th {
+    background: var(--surface);
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  tr.is-main td,
+  tr.is-main th {
+    background: #fffbea !important;
+  }
+
+  td.no {
+    color: #b42318;
+    font-weight: 700;
+  }
+
+  td.ok {
+    color: #1f7a45;
+    font-weight: 700;
+  }
+
+  .speed td > span {
+    display: grid;
+  }
+
+  .speed .v {
+    white-space: nowrap;
+  }
+
+  .speed td small,
+  .speed td > small {
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .nowrap {
+    white-space: nowrap;
+  }
+
+  .muted {
+    color: var(--muted);
+  }
+
+  .trio {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  @media (max-width: 720px) {
+    .trio {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .trio > div {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 0.25rem 1rem 0.75rem;
+  }
+
+  .trio h3 {
+    margin: 0.6rem 0 0.2rem;
+    font-size: 1.0625rem;
+  }
+
+  .trio .meta {
+    margin: 0 0 0.4rem;
+  }
+
+  .trio ol {
+    margin: 0;
+    padding-left: 1.2em;
+  }
+
+  .trio li {
+    padding: 0.2rem 0;
+  }
+
+  .trio li span {
+    float: right;
+    color: var(--muted);
+    font-size: 0.875rem;
+  }
+
+  .trio li.is-main a {
+    font-weight: 700;
+  }
+
+  .more {
+    margin-top: 2rem;
+  }
+</style>

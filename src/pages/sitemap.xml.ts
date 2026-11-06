@@ -34,6 +34,7 @@ export const GET: APIRoute = async () => {
     urls.push({ loc: '/clash-jichang/', lastmod: rankingUpdated(ranking) });
     urls.push({ loc: '/xiaohuojian-jichang/', lastmod: rankingUpdated(ranking) });
     urls.push({ loc: '/vpn-jichang/', lastmod: rankingUpdated(ranking) });
+    urls.push({ loc: '/chatgpt-jichang/', lastmod: rankingUpdated(ranking) });
     if (ranking.some((i) => i.test)) urls.push({ loc: '/pingce/', lastmod: rankingUpdated(ranking) });
     const pairs = getPairs();
     if (pairs.length) {
