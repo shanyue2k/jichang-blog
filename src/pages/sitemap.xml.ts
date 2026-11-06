@@ -30,6 +30,7 @@ export const GET: APIRoute = async () => {
     urls.push({ loc: '/buxianshi-jichang/', lastmod: rankingUpdated(ranking) });
     urls.push({ loc: '/jichang-youhuima/', lastmod: rankingUpdated(ranking) });
     urls.push({ loc: '/zhuanxian-jichang/', lastmod: rankingUpdated(ranking) });
+    urls.push({ loc: '/clash-jichang/', lastmod: rankingUpdated(ranking) });
   }
 
   for (const section of SECTION_KEYS) {

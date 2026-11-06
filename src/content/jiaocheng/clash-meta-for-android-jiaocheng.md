@@ -166,3 +166,5 @@ Releases 页面里每个版本会列出好几个 APK 文件，区别在于适配
 记住三件事就能用好 Clash Meta for Android：**订阅导入后要点选中、首页点卡片启动、代理模式保持"规则"**。再把电池优化关掉，基本就能做到一直在线。
 
 iPhone 用户请看 [Shadowrocket 小火箭使用教程](/jiaocheng/shadowrocket-jiaocheng/)，电脑用户请看 [Clash Verge Rev 使用教程](/jiaocheng/clash-verge-rev-jiaocheng/) 或 [v2rayN 使用教程](/jiaocheng/v2rayn-jiaocheng/)。
+
+还没有机场？可以看 [Clash 机场推荐](/clash-jichang/)：本站整理的机场都提供 Clash 订阅，并说明了哪些 Clash 客户端支持 VLESS 协议。
