@@ -144,5 +144,75 @@
   ],
   "audit": {
     "protocolMismatch": true
-  }
+  },
+  "tests": [
+    {
+      "date": "2026-07-20",
+      "time": "20:54",
+      "tester": "站长用自己购买的暮光加速订阅提交测试",
+      "tool": "MiaoKo 测速机器人（主端 4.3.3）",
+      "env": "珠海联通测试服务器，32 线程",
+      "regions": [
+        {
+          "name": "香港",
+          "nodes": 20,
+          "avgMBps": 49.7,
+          "minMBps": 21.0,
+          "maxMBps": 75.0,
+          "medianRttMs": 160,
+          "failed": 0
+        },
+        {
+          "name": "台湾",
+          "nodes": 10,
+          "avgMBps": 41.7,
+          "minMBps": 33.3,
+          "maxMBps": 45.6,
+          "medianRttMs": 176,
+          "failed": 0
+        },
+        {
+          "name": "新加坡",
+          "nodes": 10,
+          "avgMBps": 29.8,
+          "minMBps": 9.8,
+          "maxMBps": 46.8,
+          "medianRttMs": 210,
+          "failed": 0
+        },
+        {
+          "name": "日本",
+          "nodes": 10,
+          "avgMBps": 54.6,
+          "minMBps": 42.8,
+          "maxMBps": 76.2,
+          "medianRttMs": 253,
+          "failed": 0
+        },
+        {
+          "name": "美国",
+          "nodes": 10,
+          "avgMBps": 66.1,
+          "minMBps": 49.3,
+          "maxMBps": 83.3,
+          "medianRttMs": 319,
+          "failed": 1
+        }
+      ],
+      "images": [
+        {
+          "src": "/images/ceshi/muguang-speed-2026-07-20.jpg",
+          "alt": "暮光加速 60 个节点测速结果，2026-07-20 20:54 珠海联通",
+          "caption": "测速：平均速度、最高速度、TLS 延迟（两张截图拼接）"
+        }
+      ],
+      "notes": [
+        "测试时间 20:54，属于晚高峰时段；本次只测了速度，没有测流媒体解锁",
+        "速度是测速服务器 32 线程测得的吞吐量（工具显示单位 MB/s），代表节点的带宽上限，不等于单台设备在家里能跑到的速度",
+        "原始截图分辨率较低，数字由人工读取；台湾 05 的速度被截图图标遮挡，未计入台湾平均",
+        "美国 01 本次测速失败（0），未计入美国平均",
+        "和本站其他已实测的机场相比，这次香港节点的平均速度明显偏低（约 50MB/s），各地区延迟也普遍较高"
+      ]
+    }
+  ]
 }
