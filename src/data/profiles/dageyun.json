@@ -169,5 +169,6 @@
   ],
   "pending": [],
   "lineScope": "all",
-  "lineKind": "both"
+  "lineKind": "both",
+  "audit": {}
 }

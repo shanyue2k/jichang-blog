@@ -24,6 +24,7 @@ const { items, compact = false, caption } = Astro.props;
         <th scope="col">节点</th>
         <th scope="col">优惠码</th>
         {!compact && <th scope="col">协议</th>}
+        {!compact && <th scope="col" title="资料核对分：官网宣传与后台实际是否一致，不代表速度">资料分</th>}
         <th scope="col"><span class="visually-hidden">操作</span></th>
       </tr>
     </thead>
@@ -45,6 +46,7 @@ const { items, compact = false, caption } = Astro.props;
             <td class="nowrap">{i.nodeTotal !== null ? `${i.nodeTotal} 个` : '整理中'}</td>
             <td class="nowrap">{i.aff.coupon && i.aff.couponOff ? <a class="cp" href="/jichang-youhuima/" title={'优惠码 ' + i.aff.coupon}>立减 {i.aff.couponOff}%</a> : <span class="muted">—</span>}</td>
             {!compact && <td>{i.profile.protocols?.join(' / ') ?? '—'}</td>}
+            {!compact && <td class="num nowrap"><a class="as" href={i.path + '#audit-title'}>{i.audit.total}</a></td>}
             <td class="go nowrap">
               <a href={i.aff.url} rel="sponsored nofollow noopener" target="_blank">官网</a>
               <span aria-hidden="true"> · </span>
@@ -130,6 +132,11 @@ const { items, compact = false, caption } = Astro.props;
     font-size: 0.875rem;
     font-weight: 600;
     text-decoration: none;
+  }
+
+  .as {
+    font-weight: 700;
+    color: var(--ink);
   }
 
   .muted {

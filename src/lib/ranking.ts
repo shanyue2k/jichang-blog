@@ -1,5 +1,6 @@
 // 机场推荐榜：按站长设定的推广顺序（affiliate-links.json 的 order）排序，只列已整理资料的机场
 import affiliate from '../data/affiliate-links.json';
+import { auditOf, type Audit } from './audit';
 import { lowestMonthly, lowestMonthlyPlan, perGB, profilePath, profiles, type AffItem, type Plan, type Profile } from './profiles';
 
 /** 首页和推荐页主推的家数 */
@@ -23,6 +24,7 @@ export type RankedItem = {
   hasOnetime: boolean;
   /** 最新一次站长实测 */
   test?: NonNullable<Profile['tests']>[number];
+  audit: Audit;
 };
 
 export function getRanking(): RankedItem[] {
@@ -52,6 +54,7 @@ export function getRanking(): RankedItem[] {
       regionCount: profile.regions?.length ?? 0,
       hasOnetime: profile.plans.some((p) => p.type === 'onetime' && !p.custom),
       test: profile.tests?.[0],
+      audit: auditOf(profile, aff),
     });
   }
   return list;

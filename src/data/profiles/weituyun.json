@@ -163,5 +163,8 @@
   "discounts": "月付套餐长期购买有折扣：1 年付 8 折、2 年付 7 折、3 年付 6 折，节日活动可在此基础上再打折",
   "pending": [],
   "lineScope": "all",
-  "lineKind": "both"
+  "lineKind": "both",
+  "audit": {
+    "nodeMismatch": "官网写 12 个地区约 76 个节点，后台 7 个地区 67 个"
+  }
 }

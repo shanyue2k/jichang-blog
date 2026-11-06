@@ -3,6 +3,8 @@
 import Base from '../../layouts/Base.astro';
 import TelegramCta from '../../components/TelegramCta.astro';
 import TestResult from '../../components/TestResult.astro';
+import AuditCard from '../../components/AuditCard.astro';
+import { auditOf } from '../../lib/audit';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import Faq from '../../components/Faq.astro';
 import { formatDate } from '../../lib/format';
@@ -255,6 +257,7 @@ const jsonLd = [breadcrumbSchema(crumbs), faqSchema(faq)];
         }
 
         {pr.tests && pr.tests[0] && <TestResult name={name} test={pr.tests[0]} />}
+        {aff && <AuditCard name={name} audit={auditOf(pr, aff)} tested={!!pr.tests?.length} />}
 
         {
           pr.regions && (

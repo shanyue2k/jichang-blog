@@ -141,5 +141,8 @@
   "lineKind": "IPLC",
   "dedicatedPlans": [
     "年付轻量版"
-  ]
+  ],
+  "audit": {
+    "protocolMismatch": true
+  }
 }

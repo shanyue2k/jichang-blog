@@ -155,5 +155,6 @@
     "VLESS"
   ],
   "lineScope": "all",
-  "lineKind": "IEPL"
+  "lineKind": "IEPL",
+  "audit": {}
 }

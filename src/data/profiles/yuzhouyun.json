@@ -160,5 +160,8 @@
   "discounts": "月付套餐长期购买有折扣：年付 8 折、两年付 7 折、三年付 6 折",
   "pending": [],
   "lineScope": "all",
-  "lineKind": "IEPL"
+  "lineKind": "IEPL",
+  "audit": {
+    "nodeMismatch": "官网写 70+ 节点，后台 60 个"
+  }
 }

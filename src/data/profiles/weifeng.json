@@ -101,5 +101,6 @@
     "VLESS"
   ],
   "lineScope": "all",
-  "lineKind": "IPLC"
+  "lineKind": "IPLC",
+  "audit": {}
 }

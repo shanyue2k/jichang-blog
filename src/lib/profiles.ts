@@ -42,6 +42,8 @@ export type Profile = {
   dedicatedPlans?: string[];
   /** 站长实测记录（最新的放第一个） */
   tests?: TestRun[];
+  /** 资料核对发现的出入（官网宣传 vs 后台实际） */
+  audit?: { nodeMismatch?: string; protocolMismatch?: boolean; labelMismatch?: string };
 };
 
 export type TestRun = {

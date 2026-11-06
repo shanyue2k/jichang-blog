@@ -174,5 +174,8 @@
     "VLESS"
   ],
   "lineScope": "all",
-  "lineKind": "IPLC"
+  "lineKind": "IPLC",
+  "audit": {
+    "nodeMismatch": "官网列出十几个地区，后台只有 5 个"
+  }
 }

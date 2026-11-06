@@ -117,5 +117,9 @@
   ],
   "lineNote": "专线节点的名称标注为 IEPL（官网套餐页写的是 IPLC），节点按初级、中级、高级分档",
   "lineScope": "all",
-  "lineKind": "IPLC"
+  "lineKind": "IPLC",
+  "audit": {
+    "nodeMismatch": "官网写 15 个地区，后台只有 4 个地区 41 个节点",
+    "labelMismatch": "官网写 IPLC，节点名称标 IEPL"
+  }
 }

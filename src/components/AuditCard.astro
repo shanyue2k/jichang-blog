@@ -1,0 +1,186 @@
+---
+// 资料页的「资料核对分」：说明扣分原因，和实测分开显示
+import type { Audit } from '../lib/audit';
+
+interface Props {
+  name: string;
+  audit: Audit;
+  tested: boolean;
+}
+const { name, audit, tested } = Astro.props;
+---
+
+<section class="audit" aria-labelledby="audit-title">
+  <div class="a-head">
+    <div>
+      <h2 id="audit-title">{name}资料核对分</h2>
+      <p class="a-sub">比对官网宣传和后台实际资料打分，看的是资料透明度，<strong>不代表速度和稳定性</strong>。{tested ? '速度请看上面的实测结果。' : '本站尚未实测这家机场。'}</p>
+    </div>
+    <p class={'a-score grade-' + audit.grade}>
+      <span class="num">{audit.total}</span><small>/100</small>
+      <b>{audit.grade}</b>
+    </p>
+  </div>
+  <ul class="a-items">
+    {audit.items.map((it) => (
+      <li>
+        <div class="a-row">
+          <span class="a-label">{it.label}</span>
+          <span class="a-bar" aria-hidden="true"><span style={'width:' + (it.score / it.max) * 100 + '%'}></span></span>
+          <span class="a-val num">{it.score}/{it.max}</span>
+        </div>
+        <ul class="a-why">
+          {it.reasons.map((r) => <li class={r.includes('（-') ? 'minus' : 'ok'}>{r}</li>)}
+        </ul>
+      </li>
+    ))}
+  </ul>
+  <p class="a-foot">评分标准见<a href="/ceping-fangfa/#score">测评方法</a>。资料以本站整理时的官网和后台为准，机场更新后会重新核对。</p>
+</section>
+
+<style>
+  .audit {
+    margin: 2rem 0;
+    padding: 1rem 1.2rem 0.8rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+  }
+
+  .a-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .audit h2 {
+    margin: 0 0 0.25rem;
+    padding: 0 !important;
+    border: 0 !important;
+    font-size: var(--step-1);
+  }
+
+  .a-sub {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--ink-soft);
+  }
+
+  .a-score {
+    flex: none;
+    margin: 0;
+    display: grid;
+    justify-items: center;
+    min-width: 5.2rem;
+    padding: 0.35rem 0.6rem;
+    border-radius: var(--radius-sm);
+    background: var(--slate);
+    color: #fff;
+    line-height: 1.1;
+  }
+
+  .a-score span {
+    font-size: 1.9rem;
+    font-weight: 700;
+  }
+
+  .a-score small {
+    font-size: 0.75rem;
+    color: #aab4be;
+  }
+
+  .a-score b {
+    margin-top: 0.15rem;
+    padding: 0 0.5rem;
+    border-radius: 3px;
+    font-size: 0.8125rem;
+  }
+
+  .grade-A b { background: #1f9d55; }
+  .grade-B b { background: #ffcc00; color: #1d2833; }
+  .grade-C b { background: #d97a00; }
+  .grade-D b { background: #cf3b3b; }
+
+  .a-items {
+    list-style: none;
+    padding: 0;
+    margin: 0.8rem 0 0;
+  }
+
+  .a-items > li {
+    padding: 0.5rem 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .a-row {
+    display: grid;
+    grid-template-columns: 7rem minmax(0, 1fr) 3.4rem;
+    gap: 0.6rem;
+    align-items: center;
+  }
+
+  .a-label {
+    font-weight: 600;
+    font-size: 0.9375rem;
+  }
+
+  .a-bar {
+    height: 0.5rem;
+    background: #eef1f4;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .a-bar span {
+    display: block;
+    height: 100%;
+    background: var(--ink);
+  }
+
+  .a-val {
+    text-align: right;
+    font-weight: 700;
+  }
+
+  .a-why {
+    margin: 0.25rem 0 0;
+    padding-left: 7.6rem;
+    list-style: none;
+    font-size: 0.8125rem;
+  }
+
+  @media (max-width: 640px) {
+    .a-why {
+      padding-left: 0;
+    }
+  }
+
+  .a-why li::before {
+    margin-right: 0.35rem;
+  }
+
+  .a-why .ok {
+    color: var(--ink-soft);
+  }
+
+  .a-why .ok::before {
+    content: '✓';
+    color: var(--ok);
+  }
+
+  .a-why .minus {
+    color: #a3361b;
+  }
+
+  .a-why .minus::before {
+    content: '−';
+    font-weight: 700;
+  }
+
+  .a-foot {
+    margin: 0.4rem 0 0;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+</style>

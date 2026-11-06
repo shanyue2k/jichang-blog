@@ -168,5 +168,9 @@
     "VLESS"
   ],
   "lineScope": "all",
-  "lineKind": "both"
+  "lineKind": "both",
+  "audit": {
+    "nodeMismatch": "官网提到英国、法国、泰国，后台没有",
+    "labelMismatch": "标注全线专线，但部分香港节点分组为 BGP 三网、中转"
+  }
 }
