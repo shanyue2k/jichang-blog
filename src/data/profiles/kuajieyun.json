@@ -134,5 +134,85 @@
     "VLESS"
   ],
   "lineScope": "all",
-  "lineKind": "IPLC"
+  "lineKind": "IPLC",
+  "tests": [
+    {
+      "date": "2026-07-19",
+      "time": "16:18",
+      "tester": "站长用自己购买的跨界云订阅提交测试",
+      "tool": "MiaoKo 测速机器人（主端 4.3.3）",
+      "env": "珠海联通测试服务器，32 线程",
+      "regions": [
+        {
+          "name": "香港",
+          "nodes": 15,
+          "avgMBps": 511.2,
+          "minMBps": 424.2,
+          "maxMBps": 547.7,
+          "medianRttMs": 107,
+          "failed": 0
+        },
+        {
+          "name": "新加坡",
+          "nodes": 10,
+          "avgMBps": 215.8,
+          "minMBps": 67.9,
+          "maxMBps": 339.0,
+          "medianRttMs": 93,
+          "failed": 0
+        },
+        {
+          "name": "日本",
+          "nodes": 10,
+          "avgMBps": 136.3,
+          "minMBps": 87.7,
+          "maxMBps": 172.9,
+          "medianRttMs": 137,
+          "failed": 0
+        },
+        {
+          "name": "台湾",
+          "nodes": 5,
+          "avgMBps": 60.4,
+          "minMBps": 20.7,
+          "maxMBps": 84.8,
+          "medianRttMs": 173,
+          "failed": 1
+        },
+        {
+          "name": "美国",
+          "nodes": 10,
+          "avgMBps": 12.4,
+          "minMBps": 10.4,
+          "maxMBps": 15.9,
+          "medianRttMs": 245,
+          "failed": 0
+        }
+      ],
+      "unlock": {
+        "YouTube": "50/50",
+        "Netflix": "50/50",
+        "Disney+": "50/50"
+      },
+      "unlockNote": "每个节点都按所在地区解锁（香港节点解锁香港区，以此类推）",
+      "images": [
+        {
+          "src": "/images/ceshi/kuajieyun-speed-2026-07-19.jpg",
+          "alt": "跨界云 50 个节点测速结果，2026-07-19 16:18 珠海联通",
+          "caption": "测速：平均速度、最高速度、TLS 延迟（按节点名排序）"
+        },
+        {
+          "src": "/images/ceshi/kuajieyun-unlock-2026-07-19.jpg",
+          "alt": "跨界云 50 个节点 YouTube、Netflix、Disney+ 解锁结果",
+          "caption": "流媒体解锁：YouTube、Netflix、Disney+"
+        }
+      ],
+      "notes": [
+        "本次测试在下午 16:18 进行，不是晚高峰，晚上的速度可能会低一些",
+        "速度是测速服务器 32 线程测得的吞吐量（工具显示单位 MB/s），代表节点的带宽上限，不等于单台设备在家里能跑到的速度",
+        "台湾 TWN03 节点本次测速为 0，未计入台湾平均速度；台湾 TWN01 速度也明显偏低",
+        "美国节点速度明显低于其他地区，延迟约 245ms，适合登录美区服务、用 ChatGPT，不适合大流量下载"
+      ]
+    }
+  ]
 }
