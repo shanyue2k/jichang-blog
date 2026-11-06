@@ -163,7 +163,7 @@ const jsonLd = [
         <section class="main-box">
           <h2>站长主推：{main.aff.name}</h2>
           <p>
-            {main.aff.name}官网标注{main.profile.lineType}，所有套餐都走专线，后台列出 {main.nodeTotal} 个节点。月付 {yuan(main.monthlyFrom ?? 0)} 起，在 {full.length} 家全线专线机场里月付价格排第 {mainMonthlyRank}；{main.aff.coupon ? '下单填优惠码 ' + main.aff.coupon + '，月付、季付、半年付还能立减 ' + main.aff.couponOff + '%。' : ''}
+            {main.aff.name}官网标注{main.profile.lineType}，所有套餐都走专线，后台列出 {main.nodeTotal} 个节点。月付 {yuan(main.monthlyFrom ?? 0)} 起，单看月费在 {full.length} 家里排第 {mainMonthlyRank}，但这一档每月给 {main.monthlyFromGB ? gb(main.monthlyFromGB) : ''}，是不少 ¥15、50GB 入门套餐的三倍流量；{main.aff.coupon ? '下单填优惠码 ' + main.aff.coupon + '，月付、季付、半年付还能立减 ' + main.aff.couponOff + '%。' : ''}
           </p>
           <p class="actions">
             <a class="btn" href={main.aff.url} rel="sponsored nofollow noopener" target="_blank">访问 {main.aff.name} 官网</a>
