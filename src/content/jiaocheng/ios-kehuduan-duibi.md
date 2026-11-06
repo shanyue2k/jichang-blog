@@ -219,3 +219,5 @@ faq:
 - **看机场后台的"一键导入"按钮**，有对应客户端的按钮就最省事。
 
 还没有外区账号？先看[外区 Apple ID 注册教程](/jiaocheng/waiqu-apple-id-zhuce/)。已经有了客户端但还没有机场，可以看看[机场推荐榜单](/jichang-tuijian/)。
+
+还没有机场？可以看 [小火箭机场推荐](/xiaohuojian-jichang/)：按 iPhone 的用量整理了该买多大的套餐，订阅都能直接导入小火箭。

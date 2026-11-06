@@ -172,3 +172,5 @@ faq:
 - 外区账号**只登录在"媒体与购买项目"**，不要碰 iCloud。
 
 注册好之后，下一步就是安装小火箭：[Shadowrocket 小火箭使用教程](/jiaocheng/shadowrocket-jiaocheng/)。想在手机上用 ChatGPT，可以再看 [ChatGPT 打不开怎么办](/jiaocheng/chatgpt-da-bu-kai/)。
+
+还没有机场？可以看 [小火箭机场推荐](/xiaohuojian-jichang/)：按 iPhone 的用量整理了该买多大的套餐，订阅都能直接导入小火箭。
