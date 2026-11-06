@@ -111,5 +111,86 @@
     "VLESS"
   ],
   "lineScope": "all",
-  "lineKind": "IPLC"
+  "lineKind": "IPLC",
+  "tests": [
+    {
+      "date": "2026-07-18",
+      "time": "20:35",
+      "tester": "站长用自己购买的 Firefly 订阅提交测试",
+      "tool": "MiaoKo 测速机器人（主端 4.3.3）",
+      "env": "珠海联通测试服务器，32 线程",
+      "regions": [
+        {
+          "name": "香港",
+          "nodes": 15,
+          "avgMBps": 529.7,
+          "minMBps": 470.3,
+          "maxMBps": 550.0,
+          "medianRttMs": 109,
+          "failed": 1
+        },
+        {
+          "name": "新加坡",
+          "nodes": 10,
+          "avgMBps": 384.1,
+          "minMBps": 331.4,
+          "maxMBps": 523.1,
+          "medianRttMs": 95,
+          "failed": 1
+        },
+        {
+          "name": "日本",
+          "nodes": 10,
+          "avgMBps": 99.9,
+          "minMBps": 22.4,
+          "maxMBps": 169.9,
+          "medianRttMs": 140,
+          "failed": 0
+        },
+        {
+          "name": "台湾",
+          "nodes": 5,
+          "avgMBps": 53.5,
+          "minMBps": 29.2,
+          "maxMBps": 77.5,
+          "medianRttMs": 160,
+          "failed": 0
+        },
+        {
+          "name": "美国",
+          "nodes": 10,
+          "avgMBps": 10.7,
+          "minMBps": 8.3,
+          "maxMBps": 12.4,
+          "medianRttMs": 243,
+          "failed": 0
+        }
+      ],
+      "unlock": {
+        "YouTube": "50/50",
+        "Netflix": "50/50",
+        "Disney+": "50/50"
+      },
+      "unlockNote": "每个节点都按所在地区解锁（香港节点解锁香港区，以此类推）",
+      "images": [
+        {
+          "src": "/images/ceshi/firefly-speed-2026-07-18.jpg",
+          "alt": "Firefly 50 个节点测速结果，2026-07-18 20:35 珠海联通",
+          "caption": "测速：平均速度、最高速度、TLS 延迟（按订阅原序）"
+        },
+        {
+          "src": "/images/ceshi/firefly-unlock-2026-07-18.jpg",
+          "alt": "Firefly 50 个节点 YouTube、Netflix、Disney+ 解锁结果",
+          "caption": "流媒体解锁：YouTube、Netflix、Disney+"
+        }
+      ],
+      "notes": [
+        "测试时间 20:35，属于晚高峰时段",
+        "速度是测速服务器 32 线程测得的吞吐量（工具显示单位 MB/s），代表节点的带宽上限，不等于单台设备在家里能跑到的速度",
+        "香港 01、新加坡 07 两个节点本次测速失败（0 或约 9.6KB/s），未计入平均速度；香港 01 的流媒体解锁检测仍然通过",
+        "日本 01 速度明显偏低（约 22MB/s），其余日本节点在 70～170MB/s",
+        "美国节点速度明显低于其他地区，延迟约 243ms，适合登录美区服务、用 ChatGPT，不适合大流量下载"
+      ]
+    }
+  ]
 }
