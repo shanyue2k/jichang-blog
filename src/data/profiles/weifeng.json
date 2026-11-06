@@ -102,5 +102,86 @@
   ],
   "lineScope": "all",
   "lineKind": "IPLC",
-  "audit": {}
+  "audit": {},
+  "tests": [
+    {
+      "date": "2026-07-19",
+      "time": "18:38",
+      "tester": "站长用自己购买的微风网络订阅提交测试",
+      "tool": "MiaoKo 测速机器人（主端 4.3.3）",
+      "env": "珠海联通测试服务器，32 线程",
+      "regions": [
+        {
+          "name": "香港",
+          "nodes": 15,
+          "avgMBps": 530.2,
+          "minMBps": 468.91,
+          "maxMBps": 546.2,
+          "medianRttMs": 108,
+          "failed": 0
+        },
+        {
+          "name": "新加坡",
+          "nodes": 10,
+          "avgMBps": 277.4,
+          "minMBps": 135.34,
+          "maxMBps": 401.25,
+          "medianRttMs": 87,
+          "failed": 0
+        },
+        {
+          "name": "日本",
+          "nodes": 10,
+          "avgMBps": 155.9,
+          "minMBps": 79.73,
+          "maxMBps": 257.97,
+          "medianRttMs": 137,
+          "failed": 1
+        },
+        {
+          "name": "台湾",
+          "nodes": 5,
+          "avgMBps": 90.0,
+          "minMBps": 73.28,
+          "maxMBps": 103.0,
+          "medianRttMs": 176,
+          "failed": 1
+        },
+        {
+          "name": "美国",
+          "nodes": 10,
+          "avgMBps": 14.3,
+          "minMBps": 9.9,
+          "maxMBps": 21.03,
+          "medianRttMs": 246,
+          "failed": 0
+        }
+      ],
+      "unlock": {
+        "YouTube": "50/50",
+        "Netflix": "50/50",
+        "Disney+": "50/50"
+      },
+      "unlockNote": "每个节点都按所在地区解锁（香港节点解锁香港区，以此类推）；解锁测试于 18:29 进行",
+      "images": [
+        {
+          "src": "/images/ceshi/weifeng-speed-2026-07-19.jpg",
+          "alt": "微风网络 50 个节点测速结果，2026-07-19 18:38 珠海联通",
+          "caption": "测速：平均速度、最高速度、TLS 延迟（按订阅原序）"
+        },
+        {
+          "src": "/images/ceshi/weifeng-unlock-2026-07-19.jpg",
+          "alt": "微风网络 50 个节点 YouTube、Netflix、Disney+ 解锁结果，2026-07-19 18:29",
+          "caption": "流媒体解锁：YouTube、Netflix、Disney+"
+        }
+      ],
+      "notes": [
+        "本次测试在傍晚 18:38 进行，接近但还不是晚高峰，晚上的速度可能会低一些",
+        "速度是测速服务器 32 线程测得的吞吐量（工具显示单位 MB/s），代表节点的带宽上限，不等于单台设备在家里能跑到的速度",
+        "香港 15 个节点速度都在 469–546 MB/s 之间，表现很平均",
+        "台湾 02 节点本次测速为 0，日本 05 节点只跑到 8 KB/s，两者都未计入平均速度",
+        "美国节点速度明显低于其他地区，延迟约 247ms，适合登录美区服务、用 ChatGPT，不适合大流量下载"
+      ]
+    }
+  ]
 }
