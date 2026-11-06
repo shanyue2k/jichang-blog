@@ -15,6 +15,7 @@ import { escapeXml } from '../lib/format';
 import affiliate from '../data/affiliate-links.json';
 import { profilePath, profiles } from '../lib/profiles';
 import { getRanking, rankingUpdated } from '../lib/ranking';
+import { getPairs } from '../lib/duibi';
 
 export const GET: APIRoute = async () => {
   const urls: { loc: string; lastmod?: Date }[] = [];
@@ -34,9 +35,14 @@ export const GET: APIRoute = async () => {
     urls.push({ loc: '/xiaohuojian-jichang/', lastmod: rankingUpdated(ranking) });
     urls.push({ loc: '/vpn-jichang/', lastmod: rankingUpdated(ranking) });
     if (ranking.some((i) => i.test)) urls.push({ loc: '/pingce/', lastmod: rankingUpdated(ranking) });
+    const pairs = getPairs();
+    if (pairs.length) {
+      urls.push({ loc: '/duibi/', lastmod: new Date(Math.max(...pairs.map((p) => new Date(p.updated + 'T12:00:00+08:00').getTime()))) });
+      for (const p of pairs) urls.push({ loc: '/duibi/' + p.slug + '/', lastmod: new Date(p.updated + 'T12:00:00+08:00') });
+    }
   }
 
-  for (const section of SECTION_KEYS) {
+  for (const section of SECTION_KEYS.filter((s) => s !== 'duibi')) {
     const list = [];
     for (const p of await getPosts(section)) if (!hasSample(await getPostAirports(p))) list.push(p);
     if (list.length) urls.push({ loc: `/${section}/`, lastmod: lastModified(list[0]) });

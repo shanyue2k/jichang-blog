@@ -23,7 +23,8 @@ import { articleSchema, breadcrumbSchema, faqSchema, reviewSchema } from '../../
 
 export async function getStaticPaths() {
   const paths = [];
-  for (const section of SECTION_KEYS) {
+  // duibi 对比页由 src/pages/duibi/[pair].astro 生成
+  for (const section of SECTION_KEYS.filter((s) => s !== 'duibi')) {
     const posts = await getPosts(section);
     for (const post of posts) {
       paths.push({ params: { section, slug: post.id }, props: { post, siblings: posts } });

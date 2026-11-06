@@ -6,6 +6,7 @@ import TestResult from '../../components/TestResult.astro';
 import AuditCard from '../../components/AuditCard.astro';
 import TopologyNote from '../../components/TopologyNote.astro';
 import { auditOf } from '../../lib/audit';
+import { pairsOf } from '../../lib/duibi';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import Faq from '../../components/Faq.astro';
 import { formatDate } from '../../lib/format';
@@ -37,6 +38,7 @@ interface Props {
 const { profile: pr } = Astro.props;
 const aff = getAff(pr.id)!;
 const name = aff.name;
+const vs = pairsOf(pr.id);
 const collected = new Date(pr.collectedAt);
 const year = collected.getFullYear();
 
@@ -382,6 +384,15 @@ const jsonLd = [breadcrumbSchema(crumbs), faqSchema(faq)];
         {aff.coupon && <span>下单时填写优惠码 <code>{aff.coupon}</code>{aff.couponOff ? '，立减 ' + aff.couponOff + '%' : ''} · <a href="/jichang-youhuima/">全部优惠码</a></span>}
       </p>
 
+      {!!vs.length && (
+        <section class="vs-links">
+          <h2>{name}和其他机场对比</h2>
+          <ul>
+            {vs.map((p) => <li><a href={'/duibi/' + p.slug + '/'}>{p.A.aff.name} vs {p.B.aff.name}</a></li>)}
+          </ul>
+        </section>
+      )}
+
       <TelegramCta />
         <Faq items={faq} />
 
@@ -391,6 +402,14 @@ const jsonLd = [breadcrumbSchema(crumbs), faqSchema(faq)];
 </Base>
 
 <style>
+  .vs-links ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.2rem;
+    padding: 0;
+    list-style: none;
+  }
+
   .article {
     max-width: var(--measure);
   }

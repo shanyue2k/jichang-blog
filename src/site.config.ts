@@ -41,8 +41,8 @@ export const SECTIONS = {
   },
   duibi: {
     label: '机场对比',
-    title: '机场对比：同价位机场横向比较',
-    description: '把价格、节点、协议和实测速度放在一张表里，帮你在几家机场之间做决定。',
+    title: '机场对比：两家机场哪个好',
+    description: '两家机场的价格、按用量的最省方案、节点、优惠码和实测速度逐项比较。',
   },
   jiaocheng: {
     label: '客户端教程',

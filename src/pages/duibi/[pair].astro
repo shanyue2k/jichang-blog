@@ -1,0 +1,562 @@
+---
+// 机场对比页：/duibi/<a>-vs-<b>/。站长结论在 src/data/duibi.json，其余从资料文件自动计算
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Faq from '../../components/Faq.astro';
+import TelegramCta from '../../components/TelegramCta.astro';
+import { formatDate } from '../../lib/format';
+import { breadcrumbSchema, faqSchema } from '../../lib/schema';
+import { monthLabel } from '../../lib/ranking';
+import { gb, yuan } from '../../lib/profiles';
+import { TIERS, getPairs, onetimeOf, pairPath, tierCell, type Pair } from '../../lib/duibi';
+
+export function getStaticPaths() {
+  return getPairs().map((p) => ({ params: { pair: p.slug }, props: { pair: p } }));
+}
+
+interface Props {
+  pair: Pair;
+}
+const { pair } = Astro.props;
+const { A, B } = pair;
+const nA = A.aff.name;
+const nB = B.aff.name;
+const path = pairPath(pair.a, pair.b);
+
+const updated = new Date(
+  Math.max(new Date(pair.updated + 'T12:00:00+08:00').getTime(), new Date(A.profile.collectedAt).getTime(), new Date(B.profile.collectedAt).getTime()),
+);
+const month = monthLabel(updated);
+
+// ---------- 基本资料 ----------
+const testLabel = (i: typeof A) =>
+  i.test ? '已实测（' + i.test.date + (i.test.time ? ' ' + i.test.time : '') + '）' : i.profile.topology ? '尚未测速（有节点出口分析）' : '尚未实测';
+const couponLabel = (i: typeof A) => (i.aff.coupon && i.aff.couponOff ? i.aff.coupon + '（立减 ' + i.aff.couponOff + '%）' : '暂无');
+const nodeLabel = (i: typeof A) => (i.nodeTotal ? i.nodeTotal + ' 个' : '整理中') + (i.regionCount ? ' · ' + i.regionCount + ' 个地区' : '');
+const monthlyLabel = (i: typeof A) => (i.monthlyFrom !== null ? yuan(i.monthlyFrom) + ' / 月' + (i.monthlyFromGB ? '（' + gb(i.monthlyFromGB) + '）' : '') : '—');
+const lowestLabel = (i: typeof A) => (i.lowest !== null ? '约 ' + yuan(i.lowest) + ' / 月' + (i.lowestPlanName ? '（' + i.lowestPlanName + '）' : '') : '—');
+const perGBLabel = (i: typeof A) => (i.bestPerGB !== null ? yuan(i.bestPerGB, 3) + ' / GB' : '—');
+const otA = onetimeOf(A);
+const otB = onetimeOf(B);
+const otLabel = (list: typeof otA) => (list.length ? list.map((p) => gb(p.trafficGB) + ' ' + yuan(p.price)).join('、') : '没有');
+
+type Row = { label: string; a: string; b: string; win?: 'a' | 'b' };
+const lower = (x: number | null, y: number | null): 'a' | 'b' | undefined =>
+  x === null || y === null || x === y ? undefined : x < y ? 'a' : 'b';
+const higher = (x: number | null, y: number | null): 'a' | 'b' | undefined =>
+  x === null || y === null || x === y ? undefined : x > y ? 'a' : 'b';
+const rows: Row[] = [
+  { label: '线路标注', a: A.profile.lineType ?? '—', b: B.profile.lineType ?? '—' },
+  { label: '节点', a: nodeLabel(A), b: nodeLabel(B), win: higher(A.nodeTotal, B.nodeTotal) },
+  { label: '地区', a: (A.profile.regions ?? []).join('、') || '—', b: (B.profile.regions ?? []).join('、') || '—' },
+  { label: '协议', a: (A.profile.protocols ?? []).join(' / ') || '—', b: (B.profile.protocols ?? []).join(' / ') || '—' },
+  { label: '设备数', a: A.profile.devices ?? '—', b: B.profile.devices ?? '—' },
+  { label: '月付起价', a: monthlyLabel(A), b: monthlyLabel(B), win: lower(A.monthlyFrom, B.monthlyFrom) },
+  { label: '长周期折合最低', a: lowestLabel(A), b: lowestLabel(B), win: lower(A.lowest, B.lowest) },
+  { label: '每 GB 最低（周期套餐）', a: perGBLabel(A), b: perGBLabel(B), win: lower(A.bestPerGB, B.bestPerGB) },
+  { label: '不限时流量包', a: otLabel(otA), b: otLabel(otB) },
+  { label: '优惠码', a: couponLabel(A), b: couponLabel(B), win: higher(A.aff.couponOff ?? 0, B.aff.couponOff ?? 0) },
+  { label: '资料核对分', a: A.audit.total + ' 分（' + A.audit.grade + '）', b: B.audit.total + ' 分（' + B.audit.grade + '）', win: higher(A.audit.total, B.audit.total) },
+  { label: '站长实测', a: testLabel(A), b: testLabel(B) },
+];
+
+// ---------- 按用量比价格 ----------
+const tierRows = TIERS.map((need) => {
+  const ca = tierCell(A, need);
+  const cb = tierCell(B, need);
+  const ma = ca.monthly ? ca.monthly.price : null;
+  const mb = cb.monthly ? cb.monthly.price : null;
+  const ba = ca.best ? ca.best.perMonth : null;
+  const bb = cb.best ? cb.best.perMonth : null;
+  return { need, ca, cb, mWin: lower(ma, mb), bWin: lower(ba, bb) };
+}).filter((r) => r.ca.best || r.cb.best);
+
+// ---------- 实测 ----------
+const tA = A.test;
+const tB = B.test;
+const bothTested = !!tA && !!tB;
+const speedRows = bothTested
+  ? tA!.regions
+      .map((ra) => {
+        const rb = tB!.regions.find((r) => r.name === ra.name);
+        if (!rb) return null;
+        const max = Math.max(ra.avgMBps, rb.avgMBps) || 1;
+        return {
+          name: ra.name,
+          a: ra,
+          b: rb,
+          wa: Math.max(2, (ra.avgMBps / max) * 100),
+          wb: Math.max(2, (rb.avgMBps / max) * 100),
+          win: higher(ra.avgMBps, rb.avgMBps),
+        };
+      })
+      .filter((x): x is NonNullable<typeof x> => x !== null)
+  : [];
+const fasterA = speedRows.filter((r) => r.win === 'a').map((r) => r.name);
+const fasterB = speedRows.filter((r) => r.win === 'b').map((r) => r.name);
+const when = (t: typeof tA) => (t ? t.date + (t.time ? ' ' + t.time : '') : '');
+const unlockLine = (t: typeof tA) =>
+  t && t.unlock ? Object.entries(t.unlock).map(([k, v]) => k + ' ' + v).join('，') : '本次没有测流媒体解锁';
+const mb = (n: number) => n + ' MB/s';
+
+// ---------- FAQ ----------
+const cheaperEntry = lower(A.monthlyFrom, B.monthlyFrom);
+const faq = [
+  {
+    q: nA + '和' + nB + '哪个便宜？',
+    a:
+      '月付起价：' + nA + ' ' + monthlyLabel(A) + '，' + nB + ' ' + monthlyLabel(B) + '。按年付、半年付摊到每月，' + nA + '最低' + lowestLabel(A) + '，' + nB + '最低' + lowestLabel(B) + '。' +
+      (cheaperEntry ? '只看入门价是' + (cheaperEntry === 'a' ? nA : nB) + '便宜，' : '') +
+      '但两家每档给的流量不同，按自己每月的用量对照本页的价格表更准确。价格以官网为准。',
+  },
+  {
+    q: nA + '和' + nB + '哪个速度快？',
+    a: bothTested
+      ? '本站实测（珠海联通测试服务器）：' + (fasterA.length ? nA + '在' + fasterA.join('、') + '更快' : '') + (fasterA.length && fasterB.length ? '，' : '') + (fasterB.length ? nB + '在' + fasterB.join('、') + '更快' : '') +
+        '。' + nA + '测于 ' + when(tA) + '，' + nB + '测于 ' + when(tB) + '，测试时段不同，结果只代表当时的情况。'
+      : (tA ? nA + '有站长实测（' + when(tA) + '）' : nA + '还没有实测') + '，' + (tB ? nB + '有站长实测（' + when(tB) + '）' : nB + '还没有实测') + '，所以本页没有直接比较两家的速度。没实测的那家，建议先买月付自己试。',
+  },
+  {
+    q: nA + '和' + nB + '的优惠码是多少？',
+    a: nA + '：' + couponLabel(A) + '；' + nB + '：' + couponLabel(B) + '。优惠码一般可用于月付、季付和半年付，年付通常不能用，个别活动套餐也不能用，一切以官网结算页为准。',
+  },
+  {
+    q: '两家可以同时用几台设备？',
+    a: nA + '：' + (A.profile.devices ?? '官网没有写明') + '；' + nB + '：' + (B.profile.devices ?? '官网没有写明') + '。',
+  },
+];
+
+const title = nA + '和' + nB + '哪个好？价格、节点、实测速度对比（' + month + '）';
+const description =
+  nA + '和' + nB + '逐项对比：月付起价 ' + monthlyLabel(A) + ' 对 ' + monthlyLabel(B) + '，节点 ' + nodeLabel(A) + ' 对 ' + nodeLabel(B) + '，' +
+  (bothTested ? '附两家的站长实测速度，' : '') + '以及优惠码和选购建议。';
+
+const crumbs = [
+  { name: '首页', path: '/' },
+  { name: '机场对比', path: '/duibi/' },
+  { name: nA + ' vs ' + nB, path },
+];
+const others = getPairs().filter((p) => p.slug !== pair.slug && (p.a === pair.a || p.b === pair.b || p.a === pair.b || p.b === pair.a));
+const jsonLd = [breadcrumbSchema(crumbs), faqSchema(faq)];
+---
+
+<Base title={title} description={description} jsonLd={jsonLd} modified={updated}>
+  <div class="wrap">
+    <Breadcrumbs crumbs={crumbs} />
+    <header class="head">
+      <h1>{nA}和{nB}哪个好？</h1>
+      <p class="lead">{pair.intro}</p>
+      <p class="meta">
+        最后更新 <time class="num" datetime={updated.toISOString()}>{formatDate(updated)}</time> · 价格和节点来自两家官网与后台 · 实测由站长用自己购买的订阅进行 · 一切以官网为准
+      </p>
+    </header>
+
+    <section class="picks" aria-label="怎么选">
+      <div class="pick">
+        <h2>选 {nA}，如果你……</h2>
+        <ul>{pair.pickA.map((t) => <li>{t}</li>)}</ul>
+        <p class="go">
+          <a class="btn" href={A.aff.url} rel="sponsored nofollow noopener" target="_blank">访问 {nA} 官网</a>
+          {A.aff.coupon && <span class="code">优惠码 <code>{A.aff.coupon}</code></span>}
+        </p>
+      </div>
+      <div class="pick">
+        <h2>选 {nB}，如果你……</h2>
+        <ul>{pair.pickB.map((t) => <li>{t}</li>)}</ul>
+        <p class="go">
+          <a class="btn" href={B.aff.url} rel="sponsored nofollow noopener" target="_blank">访问 {nB} 官网</a>
+          {B.aff.coupon && <span class="code">优惠码 <code>{B.aff.coupon}</code></span>}
+        </p>
+      </div>
+    </section>
+    {pair.note && <p class="note">{pair.note}</p>}
+
+    <div class="body">
+      <section>
+        <h2>一张表看差别</h2>
+        <div class="table-scroll">
+          <table class="data-table vs">
+            <thead><tr><th scope="col">项目</th><th scope="col">{nA}</th><th scope="col">{nB}</th></tr></thead>
+            <tbody>
+              {rows.map((r) => (
+                <tr>
+                  <th scope="row">{r.label}</th>
+                  <td class={r.win === 'a' ? 'win' : ''}>{r.a}</td>
+                  <td class={r.win === 'b' ? 'win' : ''}>{r.b}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p class="meta">黄色底色表示这一项更占优（更便宜、节点更多、优惠更大）。资料核对分只看官网资料是否透明、宣传和后台是否一致，<a href="/ceping-fangfa/#score">不代表速度</a>。</p>
+      </section>
+
+      <section>
+        <h2>按每月用量比价格</h2>
+        <p>两家的流量档位不一样，只比"起价"容易看走眼。下表按你每月大概要用多少流量，分别找出两家能满足的最便宜月付，以及摊到每月最便宜的方案（可能是季付、半年付或年付）。</p>
+        <div class="table-scroll">
+          <table class="data-table tiers">
+            <thead>
+              <tr><th scope="col">每月用量</th><th scope="col">{nA} 月付</th><th scope="col">{nB} 月付</th><th scope="col">{nA} 最省</th><th scope="col">{nB} 最省</th></tr>
+            </thead>
+            <tbody>
+              {tierRows.map((r) => (
+                <tr>
+                  <th scope="row">{r.need} GB 以上</th>
+                  <td class={r.mWin === 'a' ? 'win' : ''}>
+                    {r.ca.monthly ? <Fragment><b class="num">{yuan(r.ca.monthly.price)}</b><small>{r.ca.monthly.name} · {gb(r.ca.monthly.trafficGB)}{r.ca.monthlyCoupon ? ' · 用码 ' + yuan(r.ca.monthlyCoupon) : ''}</small></Fragment> : <span class="muted">没有</span>}
+                  </td>
+                  <td class={r.mWin === 'b' ? 'win' : ''}>
+                    {r.cb.monthly ? <Fragment><b class="num">{yuan(r.cb.monthly.price)}</b><small>{r.cb.monthly.name} · {gb(r.cb.monthly.trafficGB)}{r.cb.monthlyCoupon ? ' · 用码 ' + yuan(r.cb.monthlyCoupon) : ''}</small></Fragment> : <span class="muted">没有</span>}
+                  </td>
+                  <td class={r.bWin === 'a' ? 'win' : ''}>
+                    {r.ca.best ? <Fragment><b class="num">{yuan(r.ca.best.perMonth)}/月</b><small>{r.ca.best.period} · {r.ca.best.plan.name}</small></Fragment> : <span class="muted">没有</span>}
+                  </td>
+                  <td class={r.bWin === 'b' ? 'win' : ''}>
+                    {r.cb.best ? <Fragment><b class="num">{yuan(r.cb.best.perMonth)}/月</b><small>{r.cb.best.period} · {r.cb.best.plan.name}</small></Fragment> : <span class="muted">没有</span>}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p class="meta">"用码"是填优惠码后的月付价格；优惠码一般不能用于年付和个别活动套餐。"最省"是把季付、半年付、年付的总价摊到每个月，不含优惠码。价格以官网为准。</p>
+
+        {!!(otA.length || otB.length) && (
+          <Fragment>
+            <h3>不限时流量包</h3>
+            <p>不限时包一次性付费、流量用完为止，适合偶尔用、不想每月续费的人。</p>
+            <ul class="ot">
+              <li><strong>{nA}</strong>：{otA.length ? otA.map((p) => gb(p.trafficGB) + ' ' + yuan(p.price) + '（每 GB ' + yuan(p.price / p.trafficGB) + '）').join('；') : '没有不限时包'}</li>
+              <li><strong>{nB}</strong>：{otB.length ? otB.map((p) => gb(p.trafficGB) + ' ' + yuan(p.price) + '（每 GB ' + yuan(p.price / p.trafficGB) + '）').join('；') : '没有不限时包'}</li>
+            </ul>
+          </Fragment>
+        )}
+      </section>
+
+      <section>
+        <h2>实测速度对比</h2>
+        {bothTested ? (
+          <Fragment>
+            <p>
+              两家都由站长用自己购买的订阅、在同一台珠海联通测试服务器上测速（MiaoKo 测速机器人，32 线程）。{nA}测于 <b>{when(tA)}</b>，{nB}测于 <b>{when(tB)}</b>。
+            </p>
+            <div class="speed" role="table" aria-label={nA + '和' + nB + '各地区平均速度'}>
+              <div class="sp-head" role="row">
+                <span role="columnheader">地区</span>
+                <span role="columnheader">{nA}</span>
+                <span role="columnheader">{nB}</span>
+              </div>
+              {speedRows.map((r) => (
+                <div class="sp-row" role="row">
+                  <span class="sp-name" role="rowheader">{r.name}</span>
+                  <span class={'sp-cell' + (r.win === 'a' ? ' is-win' : '')} role="cell">
+                    <span class="bar"><span style={'width:' + r.wa + '%'}></span></span>
+                    <b class="num">{mb(r.a.avgMBps)}</b>
+                    <small>延迟 {r.a.medianRttMs} ms{r.a.failed ? ' · ' + r.a.failed + ' 个失败' : ''}</small>
+                  </span>
+                  <span class={'sp-cell sp-b' + (r.win === 'b' ? ' is-win' : '')} role="cell">
+                    <span class="bar"><span style={'width:' + r.wb + '%'}></span></span>
+                    <b class="num">{mb(r.b.avgMBps)}</b>
+                    <small>延迟 {r.b.medianRttMs} ms{r.b.failed ? ' · ' + r.b.failed + ' 个失败' : ''}</small>
+                  </span>
+                </div>
+              ))}
+            </div>
+            <p class="meta">速度是各地区节点的平均值（测速失败的节点不计入），1 MB/s ≈ 8 Mbps，代表测试服务器多线程能跑到的带宽上限，不等于你家里单台设备的速度。延迟是中位数。</p>
+            <h3>流媒体解锁</h3>
+            <ul class="ot">
+              <li><strong>{nA}</strong>：{unlockLine(tA)}</li>
+              <li><strong>{nB}</strong>：{unlockLine(tB)}</li>
+            </ul>
+            <p>两家的完整测速结果和原始截图：<a href={A.path + '#test-title'}>{nA}实测</a> · <a href={B.path + '#test-title'}>{nB}实测</a></p>
+          </Fragment>
+        ) : (
+          <Fragment>
+            <p>
+              {tA ? nA + '有站长实测（' + when(tA) + '）' : nA + '本站还没有实测'}；{tB ? nB + '有站长实测（' + when(tB) + '）' : nB + '本站还没有实测'}。一家没有实测，我们不拿另一家的数据和它硬比。
+            </p>
+            <ul class="ot">
+              {tA && <li><a href={A.path + '#test-title'}>{nA}实测结果</a>：香港 {mb(tA.regions.find((r) => r.name === '香港')?.avgMBps ?? 0)}，{unlockLine(tA)}</li>}
+              {tB && <li><a href={B.path + '#test-title'}>{nB}实测结果</a>：香港 {mb(tB.regions.find((r) => r.name === '香港')?.avgMBps ?? 0)}，{unlockLine(tB)}</li>}
+              {!tA && A.profile.topology && <li><a href={A.path + '#topo-title'}>{nA}节点出口分析</a>（{A.profile.topology.date}，不是测速）</li>}
+              {!tB && B.profile.topology && <li><a href={B.path + '#topo-title'}>{nB}节点出口分析</a>（{B.profile.topology.date}，不是测速）</li>}
+            </ul>
+            <p>想买没实测的那家，建议先买月付用一两周，晚上 8 点到 11 点多试几次常用的节点。</p>
+          </Fragment>
+        )}
+      </section>
+
+      <section class="cta">
+        <h2>下单前</h2>
+        <p>两家都没有免费试用，退款需要提交工单申请。不确定的话先买月付，用得满意再换长周期。</p>
+        <div class="cta-grid">
+          <div>
+            <strong>{nA}</strong>
+            <a class="btn" href={A.aff.url} rel="sponsored nofollow noopener" target="_blank">访问官网</a>
+            <a href={A.path}>{nA}全部套餐和资料</a>
+            {A.aff.coupon && <span>优惠码 <code>{A.aff.coupon}</code>{A.aff.couponOff ? '，立减 ' + A.aff.couponOff + '%' : ''}</span>}
+          </div>
+          <div>
+            <strong>{nB}</strong>
+            <a class="btn" href={B.aff.url} rel="sponsored nofollow noopener" target="_blank">访问官网</a>
+            <a href={B.path}>{nB}全部套餐和资料</a>
+            {B.aff.coupon && <span>优惠码 <code>{B.aff.coupon}</code>{B.aff.couponOff ? '，立减 ' + B.aff.couponOff + '%' : ''}</span>}
+          </div>
+        </div>
+        <p class="meta">页面里的官网链接是推广链接，通过它注册价格不变，本站可能获得佣金。</p>
+      </section>
+
+      <TelegramCta />
+      <Faq items={faq} />
+
+      {!!others.length && (
+        <section class="more">
+          <h2>相关对比</h2>
+          <ul>
+            {others.map((p) => <li><a href={'/duibi/' + p.slug + '/'}>{p.A.aff.name} vs {p.B.aff.name}</a></li>)}
+          </ul>
+          <p><a href="/duibi/">全部机场对比</a> · <a href="/jichang-tuijian/">机场推荐榜</a></p>
+        </section>
+      )}
+    </div>
+  </div>
+</Base>
+
+<style>
+  .head {
+    max-width: 48rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .lead {
+    color: var(--ink-soft);
+  }
+
+  .picks {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    max-width: 60rem;
+  }
+
+  @media (max-width: 720px) {
+    .picks {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .pick {
+    background: var(--surface);
+    border: 2px solid var(--ink);
+    border-radius: var(--radius-md);
+    padding: 0.4rem 1.1rem 0.9rem;
+    box-shadow: 4px 4px 0 var(--sign);
+  }
+
+  .pick h2 {
+    font-size: var(--step-1);
+    margin: 0.6rem 0 0.4rem;
+  }
+
+  .pick ul {
+    padding-left: 1.1em;
+    margin: 0 0 0.8rem;
+  }
+
+  .pick li + li {
+    margin-top: 0.35rem;
+  }
+
+  .go {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.9rem;
+    margin: 0;
+  }
+
+  .code {
+    font-size: 0.875rem;
+    color: var(--ink-soft);
+  }
+
+  .note {
+    max-width: 60rem;
+    margin: 1.2rem 0 0;
+    padding: 0.6rem 0.9rem;
+    background: #fffbea;
+    border-left: 4px solid var(--sign);
+    border-radius: var(--radius-sm);
+    font-size: 0.9375rem;
+    color: var(--ink-soft);
+  }
+
+  .body {
+    max-width: 52rem;
+    margin-top: 2rem;
+  }
+
+  .body > section > h2 {
+    border-top: 2px solid var(--ink);
+    padding-top: 0.25em;
+  }
+
+  .data-table tbody th {
+    background: var(--surface);
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  .vs td {
+    width: 40%;
+  }
+
+  td.win {
+    background: #fff3b0 !important;
+    font-weight: 600;
+  }
+
+  .tiers td b {
+    display: block;
+  }
+
+  .tiers td small {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .muted {
+    color: var(--muted);
+  }
+
+  .ot {
+    padding-left: 1.1em;
+  }
+
+  .ot li + li {
+    margin-top: 0.3rem;
+  }
+
+  .speed {
+    margin: 1rem 0 0.6rem;
+    background: var(--slate);
+    color: #e6eaee;
+    border-radius: var(--radius-md);
+    padding: 0.4rem 1rem 0.6rem;
+    box-shadow: 5px 5px 0 var(--sign);
+  }
+
+  .sp-head,
+  .sp-row {
+    display: grid;
+    grid-template-columns: 4.5rem minmax(0, 1fr) minmax(0, 1fr);
+    gap: 0.9rem;
+    align-items: center;
+    padding: 0.55rem 0;
+  }
+
+  .sp-head {
+    font-size: 0.8125rem;
+    color: #aab4be;
+    font-weight: 700;
+  }
+
+  .sp-row {
+    border-top: 1px solid #33404d;
+  }
+
+  .sp-name {
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .sp-cell {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: 'bar bar' 'v r';
+    gap: 0.25rem 0.5rem;
+    align-items: baseline;
+  }
+
+  .bar {
+    grid-area: bar;
+    height: 0.5rem;
+    background: #2c3846;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .bar span {
+    display: block;
+    height: 100%;
+    background: #6f7f8f;
+  }
+
+  .is-win .bar span {
+    background: linear-gradient(90deg, #ff8a00, #ffcc00);
+  }
+
+  .sp-cell b {
+    grid-area: v;
+    color: #cfd6dd;
+  }
+
+  .is-win b {
+    color: var(--sign);
+  }
+
+  .sp-cell small {
+    grid-area: r;
+    font-size: 0.75rem;
+    color: #8f9aa5;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 520px) {
+    .sp-head,
+    .sp-row {
+      grid-template-columns: 3.2rem minmax(0, 1fr) minmax(0, 1fr);
+      gap: 0.6rem;
+    }
+    .sp-cell {
+      grid-template-areas: 'bar bar' 'v v' 'r r';
+    }
+  }
+
+  .cta-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  @media (max-width: 600px) {
+    .cta-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .cta-grid > div {
+    display: grid;
+    gap: 0.45rem;
+    justify-items: start;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--sign);
+    border-radius: var(--radius-sm);
+    padding: 0.8rem 1rem;
+  }
+
+  .cta-grid strong {
+    font-size: 1.125rem;
+  }
+
+  .more ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.2rem;
+    padding: 0;
+    list-style: none;
+  }
+</style>

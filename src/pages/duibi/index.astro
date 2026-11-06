@@ -1,0 +1,245 @@
+---
+// 机场对比栏目首页：选两家机场跳到对比页
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { breadcrumbSchema } from '../../lib/schema';
+import { formatDate } from '../../lib/format';
+import { getPairs } from '../../lib/duibi';
+import { getRanking } from '../../lib/ranking';
+import { yuan } from '../../lib/profiles';
+
+const pairs = getPairs();
+const ids: string[] = [];
+for (const p of pairs) for (const id of [p.a, p.b]) if (!ids.includes(id)) ids.push(id);
+const items = getRanking().filter((i) => ids.includes(i.aff.id));
+const map: Record<string, string> = {};
+for (const p of pairs) {
+  map[p.a + '|' + p.b] = '/duibi/' + p.slug + '/';
+  map[p.b + '|' + p.a] = '/duibi/' + p.slug + '/';
+}
+const names: Record<string, { name: string; path: string }> = {};
+for (const i of items) names[i.aff.id] = { name: i.aff.name, path: i.path };
+const updated = new Date(Math.max(...pairs.map((p) => new Date(p.updated + 'T12:00:00+08:00').getTime())));
+const main = pairs.filter((p) => p.A.rank === 1);
+const rest = pairs.filter((p) => p.A.rank !== 1);
+
+const crumbs = [
+  { name: '首页', path: '/' },
+  { name: '机场对比', path: '/duibi/' },
+];
+const card = (p: (typeof pairs)[number]) => {
+  const both = !!p.A.test && !!p.B.test;
+  return {
+    href: '/duibi/' + p.slug + '/',
+    title: p.A.aff.name + ' vs ' + p.B.aff.name,
+    sub:
+      '月付 ' + (p.A.monthlyFrom !== null ? yuan(p.A.monthlyFrom) : '—') + ' 对 ' + (p.B.monthlyFrom !== null ? yuan(p.B.monthlyFrom) : '—') +
+      ' · ' + (both ? '两家都有实测' : p.A.test || p.B.test ? '一家有实测' : '都未实测'),
+  };
+};
+---
+
+<Base
+  title="机场对比：两家机场哪个好？价格、节点、实测速度逐项比较"
+  description={'把两家机场的月付价格、按用量的最省方案、节点、优惠码和站长实测速度放在一起比，目前有 ' + pairs.length + ' 组对比，选两家机场就能看。'}
+  jsonLd={[breadcrumbSchema(crumbs)]}
+  modified={updated}
+>
+  <div class="wrap">
+    <Breadcrumbs crumbs={crumbs} />
+    <header class="head">
+      <h1>机场对比</h1>
+      <p class="lead">
+        纠结两家机场选哪个？选好两家，直接看价格、节点、优惠码和实测速度的逐项对比。价格和节点从资料页自动读取，改价后对比页会一起更新；结论由站长按数据写，哪家占优就写哪家。
+      </p>
+      <p class="meta">最后更新 <time class="num" datetime={updated.toISOString()}>{formatDate(updated)}</time> · 共 {pairs.length} 组对比</p>
+    </header>
+
+    <form class="picker" id="vs-form">
+      <label>
+        <span>机场 A</span>
+        <select id="vs-a">
+          {items.map((i, k) => <option value={i.aff.id} selected={k === 0}>{i.aff.name}</option>)}
+        </select>
+      </label>
+      <span class="vs" aria-hidden="true">VS</span>
+      <label>
+        <span>机场 B</span>
+        <select id="vs-b">
+          {items.map((i, k) => <option value={i.aff.id} selected={k === 1}>{i.aff.name}</option>)}
+        </select>
+      </label>
+      <button class="btn" type="submit">开始对比</button>
+      <p class="msg" id="vs-msg" role="status" aria-live="polite"></p>
+    </form>
+
+    <section class="group">
+      <h2>闪跃和次推机场对比</h2>
+      <ul class="cards">
+        {main.map((p) => {
+          const c = card(p);
+          return (
+            <li><a href={c.href}><strong>{c.title}</strong><small>{c.sub}</small></a></li>
+          );
+        })}
+      </ul>
+    </section>
+
+    {!!rest.length && (
+      <section class="group">
+        <h2>次推机场之间对比</h2>
+        <ul class="cards">
+          {rest.map((p) => {
+            const c = card(p);
+            return (
+              <li><a href={c.href}><strong>{c.title}</strong><small>{c.sub}</small></a></li>
+            );
+          })}
+        </ul>
+      </section>
+    )}
+
+    <p class="meta foot">
+      没有你想比的组合？可以在<a href="/jichang-tuijian/">机场推荐榜</a>里横向看全部机场，或者分别打开两家的资料页。实测怎么做的，见<a href="/ceping-fangfa/">测评方法</a>。
+    </p>
+  </div>
+</Base>
+
+<script is:inline define:vars={{ map, names }}>
+  (function () {
+    var f = document.getElementById('vs-form');
+    var a = document.getElementById('vs-a');
+    var b = document.getElementById('vs-b');
+    var msg = document.getElementById('vs-msg');
+    f.addEventListener('submit', function (e) {
+      e.preventDefault();
+      msg.innerHTML = '';
+      if (a.value === b.value) {
+        msg.textContent = '请选两家不同的机场。';
+        return;
+      }
+      var url = map[a.value + '|' + b.value];
+      if (url) {
+        location.href = url;
+        return;
+      }
+      var na = names[a.value], nb = names[b.value];
+      msg.innerHTML =
+        '这一组还没有对比页。可以先分别看两家的资料：<a href="' + na.path + '">' + na.name + '</a> · <a href="' + nb.path + '">' + nb.name + '</a>';
+    });
+  })();
+</script>
+
+<style>
+  .head {
+    max-width: 48rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .lead {
+    color: var(--ink-soft);
+  }
+
+  .picker {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: 0.8rem 1rem;
+    max-width: 52rem;
+    padding: 1rem 1.2rem;
+    background: var(--slate);
+    color: #fff;
+    border-radius: var(--radius-md);
+    box-shadow: 5px 5px 0 var(--sign);
+  }
+
+  .picker label {
+    display: grid;
+    gap: 0.25rem;
+    flex: 1 1 10rem;
+  }
+
+  .picker label span {
+    font-size: 0.8125rem;
+    color: #aab4be;
+    font-weight: 700;
+  }
+
+  .picker select {
+    font: inherit;
+    padding: 0.5rem 0.6rem;
+    border-radius: var(--radius-sm);
+    border: 0;
+    background: #fff;
+    color: var(--ink);
+  }
+
+  .vs {
+    font-weight: 800;
+    color: var(--sign);
+    padding-bottom: 0.5rem;
+  }
+
+  .msg {
+    flex-basis: 100%;
+    margin: 0;
+    font-size: 0.9rem;
+    color: #ffe58a;
+  }
+
+  .msg:empty {
+    display: none;
+  }
+
+  .msg :global(a) {
+    color: #fff;
+  }
+
+  .group {
+    max-width: 60rem;
+    margin-top: 2rem;
+  }
+
+  .group h2 {
+    border-top: 2px solid var(--ink);
+    padding-top: 0.25em;
+  }
+
+  .cards {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: 0.8rem;
+  }
+
+  .cards a {
+    display: grid;
+    gap: 0.2rem;
+    height: 100%;
+    padding: 0.8rem 1rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--sign);
+    border-radius: var(--radius-sm);
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .cards a:hover {
+    border-color: var(--ink);
+  }
+
+  .cards strong {
+    font-size: 1.0625rem;
+  }
+
+  .cards small {
+    color: var(--muted);
+    font-size: 0.8125rem;
+  }
+
+  .foot {
+    margin-top: 2rem;
+  }
+</style>
