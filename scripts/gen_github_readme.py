@@ -41,6 +41,7 @@ for a in aff:
                      nodes=int(n.group()) if n else None, regions=len(p.get('regions') or []),
                      pergb=min(pg) if pg else None,
                      onetime=any(x['type'] == 'onetime' for x in std),
+                     test=(p.get('tests') or [None])[0],
                      url=f"{SITE}/jichang/{a['id']}/"))
 
 collected = max(r['p']['collectedAt'] for r in rows)
@@ -53,7 +54,7 @@ w(f'# 机场推荐 {yy}年{mm}月：{len(rows)} 家机场价格、节点与线�
 w(f'> 整理主流机场的官网套餐价格、后台节点数量、线路类型和协议，每月更新。完整资料、互动选机场和流量估算器见 **[机场好 jichanghao.com]({SITE}/)**。\n')
 w(f'最后更新：{collected} · 资料来源：各机场官网套餐页与后台节点列表 · 价格以官网为准\n')
 w('📢 **Telegram 频道：** [t.me/jichanghao](https://t.me/jichanghao)（每月榜单、涨价与优惠通知） · **交流群：** [t.me/jichanghaoqun](https://t.me/jichanghaoqun)\n')
-w('**目录：** [站长主推](#站长主推) · [主推与次推 10 家](#主推与次推-10-家) · [全部机场对比表](#全部机场对比表) · [按需求挑机场](#按需求挑机场) · [客户端教程](#客户端教程) · [常见问题](#常见问题)\n')
+w('**目录：** [站长主推](#站长主推) · [主推与次推 10 家](#主推与次推-10-家) · [站长实测](#站长实测) · [两家机场对比](#两家机场对比) · [全部机场对比表](#全部机场对比表) · [按需求挑机场](#按需求挑机场) · [客户端教程](#客户端教程) · [常见问题](#常见问题)\n')
 
 # 主推
 mp = main['p']
@@ -78,10 +79,12 @@ for tag, x in picks:
     extra = '' if x['type'] == 'monthly' else f"（折合 {y(x['price']/MONTHS[x['type']])}/月）"
     w(f"| {tag} | {x['name']} | {y(x['price'])}/{LABEL[x['type']].replace('付','')}{extra} | {gb(x['trafficGB'])} |")
 w('')
+if main['a'].get('coupon') and main['a'].get('couponOff'):
+    w(f"🎟️ 优惠码 **`{main['a']['coupon']}`**：月付、季付、半年付立减 {main['a']['couponOff']}%（年付一般不能用，以官网为准）\n")
 w(f"👉 [{main['a']['name']} 全部套餐与节点]({main['url']}) ｜ [访问 {main['a']['name']} 官网]({main['a']['url']})\n")
 
 def table(items, line=True):
-    head = '| 排名 | 机场 | 月付起价 | 折合最低 |' + (' 线路 |' if line else '') + ' 节点 | 协议 | 官网 |'
+    head = '| 排名 | 机场 | 月付起价 | 折合最低 |' + (' 线路 |' if line else '') + ' 节点 | 协议 | 优惠码 | 实测 | 官网 |'
     w(head)
     w('|' + ' --- |' * (head.count('|') - 1))
     for r in items:
@@ -90,7 +93,10 @@ def table(items, line=True):
                  f"{y(r['mon']['price'])}/月" if r['mon'] else '—',
                  f"{y(r['low'][0])}/月" if r['low'] else '—']
         if line: cells.append(p.get('lineType') or '—')
+        cp = r['a'].get('coupon') if r['a'].get('couponStatus') == 'valid' and r['a'].get('couponOff') else None
         cells += [f"{r['nodes']} 个" if r['nodes'] else '整理中', ' / '.join(p.get('protocols') or []) or '—',
+                  f"`{cp}` -{r['a']['couponOff']}%" if cp else '—',
+                  f"✅ {r['test']['date'][5:]}" if r['test'] else '—',
                   f"[官网]({r['a']['url']})"]
         w('| ' + ' | '.join(cells) + ' |')
     w('')
@@ -98,7 +104,35 @@ def table(items, line=True):
 w('## 主推与次推 10 家\n')
 w(f"第 1 名为站长主推，第 2 到第 {FEATURED} 名为次推，按本站推荐顺序排列。点机场名字可以看全部套餐、节点分布和怎么买最划算。\n")
 table(rows[:FEATURED])
-w('"折合最低"按年付等长周期套餐换算成每月价格。\n')
+w('"折合最低"按年付等长周期套餐换算成每月价格。优惠码一般可用于月付、季付、半年付，年付通常不能用，以官网为准。\n')
+
+tested = [r for r in rows if r['test']]
+if tested:
+    w('## 站长实测\n')
+    w(f'以下 {len(tested)} 家由站长用自己购买的订阅测速（MiaoKo 测速机器人，珠海联通测试服务器，32 线程）。数值为各地区节点平均速度，1 MB/s ≈ 8 Mbps；测试时段不同，结果只代表当时的情况。原始截图见各家资料页。\n')
+    regs = ['香港', '台湾', '新加坡', '日本', '美国']
+    w('| 机场 | 测试时间 | ' + ' | '.join(regs) + ' | 流媒体解锁 |')
+    w('|' + ' --- |' * (len(regs) + 3))
+    for r in tested:
+        t = r['test']
+        cells = [f"[{r['a']['name']}]({r['url']}#test-title)", t['date'] + (' ' + t['time'] if t.get('time') else '')]
+        for g in regs:
+            x = next((q for q in t['regions'] if q['name'] == g), None)
+            cells.append(f"{x['avgMBps']:g} MB/s" if x else '—')
+        u = t.get('unlock')
+        cells.append('、'.join(f'{k} {v}' for k, v in u.items()) if u else '未测')
+        w('| ' + ' | '.join(cells) + ' |')
+    w('')
+
+dp = os.path.join(ROOT, 'src/data/duibi.json')
+if os.path.exists(dp):
+    names = {r['a']['id']: r['a']['name'] for r in rows}
+    pairs = [x for x in json.load(open(dp))['pairs'] if x['a'] in names and x['b'] in names]
+    if pairs:
+        w('## 两家机场对比\n')
+        w('价格、按用量的最省方案、节点、优惠码和实测速度逐项比较：\n')
+        w(' · '.join(f"[{names[x['a']]} vs {names[x['b']]}]({SITE}/duibi/{x['a']}-vs-{x['b']}/)" for x in pairs) + '\n')
+        w(f'全部对比和选择器：[{SITE}/duibi/]({SITE}/duibi/)\n')
 
 w('## 全部机场对比表\n')
 w(f'其他 {len(rows) - FEATURED} 家机场也整理了完整资料：\n')
@@ -154,7 +188,8 @@ for q, a in qa:
 w('---\n')
 w(f'- 完整、每月更新的榜单：**[{SITE}/jichang-tuijian/]({SITE}/jichang-tuijian/)**')
 w(f'- 机场官网入口汇总：[{SITE}/jichang-daohang/]({SITE}/jichang-daohang/)')
-w('- 排名为本站推荐顺序，目前尚未加入测速数据。表格中的官网链接为推广链接，通过它注册价格不变，本站可能获得佣金。')
+w('- 排名为本站推荐顺序；速度数据只来自站长实测，没实测的机场不写速度。表格中的官网链接为推广链接，通过它注册价格不变，本站可能获得佣金。')
+w(f'- 优惠码汇总：[{SITE}/jichang-youhuima/]({SITE}/jichang-youhuima/) · 测评方法：[{SITE}/ceping-fangfa/]({SITE}/ceping-fangfa/)')
 w('- Telegram 频道：[t.me/jichanghao](https://t.me/jichanghao) · 交流群：[t.me/jichanghaoqun](https://t.me/jichanghaoqun)')
 w('- 发现价格变动或机场异常，欢迎提 Issue 或到交流群反馈。\n')
 
