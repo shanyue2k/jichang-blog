@@ -61,7 +61,16 @@ const gbRange = (list: Plan[], digits = 2) => {
 const nearRegions = (pr.regions ?? []).filter((r) => ['香港', '台湾', '日本', '新加坡', '韩国'].includes(r));
 const hasHK = (pr.regions ?? []).includes('香港');
 const title = `${name}机场怎么样？套餐价格、线路与优惠码整理（${year}）`;
-const description = `${name}机场资料整理：${cheapest ? `套餐最低折合 ${yuan(cheapest.value)}/月，` : ''}${pr.lineType ? `官方标注${pr.lineType}，` : ''}设备数${pr.devices ?? '以官网为准'}。附全部套餐价格、每 GB 单价对比和选购建议。`;
+const nodeN = pr.nodeCount?.match(/\d+/)?.[0];
+const description =
+  name + '机场怎么样？' +
+  (pr.lineType ? '官方标注' + pr.lineType + '，' : '') +
+  (nodeN ? '后台 ' + nodeN + ' 个节点' + (pr.regions?.length ? '，覆盖' + pr.regions.join('、') : '') + '，' : '') +
+  (cheapest ? '套餐最低折合 ' + yuan(cheapest.value) + '/月，' : '') +
+  '设备数' + (pr.devices ?? '以官网为准') + '。' +
+  (pr.tests?.length ? '附站长实测速度和流媒体解锁结果，' : '') +
+  (aff.coupon && aff.couponOff ? '优惠码 ' + aff.coupon + ' 立减 ' + aff.couponOff + '%，' : '') +
+  '整理全部套餐价格、每 GB 单价和选购建议。';
 
 const crumbs = [
   { name: '首页', path: '/' },

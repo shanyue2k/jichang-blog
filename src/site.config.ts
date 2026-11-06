@@ -10,7 +10,7 @@ export const SITE = {
   /** 首页 <title>，围绕核心关键词「机场推荐」 */
   homeTitle: '机场推荐 2026：主流机场套餐价格、节点与线路对比',
   description:
-    '整理主流机场的官网套餐价格、节点数量、线路和协议，每月更新机场推荐榜，并提供 Clash、Shadowrocket 等客户端使用教程。',
+    '2026 机场推荐：整理近 30 家主流机场的官网套餐价格、节点数量、IPLC / IEPL 线路和协议，附站长实测速度、可用优惠码和两两对比，每月更新推荐榜，并提供 Clash、Shadowrocket 等客户端使用教程。',
   locale: 'zh-CN',
   author: '站长',
   /** IndexNow 密钥（Bing 即时收录用），换不换都可以，保持 32 位十六进制即可 */
@@ -37,22 +37,22 @@ export const SECTIONS = {
   pingce: {
     label: '机场实测',
     title: '机场实测：站长用自己的订阅测过的机场',
-    description: '站长用自己购买的订阅实际测过的机场：各地区速度、延迟和流媒体解锁结果，附测试日期、环境和原始截图。',
+    description: '站长用自己购买的订阅实际测过的机场汇总：香港、台湾、新加坡、日本、美国各地区的平均速度、延迟和 YouTube、Netflix、Disney+ 解锁结果，附测试日期、测试环境和原始截图。',
   },
   duibi: {
     label: '机场对比',
     title: '机场对比：两家机场哪个好',
-    description: '两家机场的价格、按用量的最省方案、节点、优惠码和实测速度逐项比较。',
+    description: '两家机场哪个好？把月付价格、按每月用量算出的最省方案、节点和地区、优惠码、资料核对分和站长实测速度逐项放在一起比较，帮你在两家机场之间做决定。',
   },
   jiaocheng: {
     label: '客户端教程',
     title: '客户端教程：Clash、Shadowrocket 等导入订阅与设置',
-    description: '各平台代理客户端的下载、导入订阅、分流规则与常见问题处理教程。',
+    description: 'Windows、macOS、安卓、iPhone 各平台代理客户端教程：Clash Verge Rev、v2rayN、Shadowrocket、Clash Meta for Android 的下载、导入机场订阅、选择节点、分流规则和常见问题处理。',
   },
   wenzhang: {
     label: '文章',
     title: '文章：机场入门知识与选购经验',
-    description: '机场相关的基础概念、协议科普、选购避坑经验。',
+    description: '机场相关的基础知识和选购经验：机场是什么、订阅和节点怎么用、直连 / 中转 / IPLC / IEPL 线路有什么区别、VLESS 等协议科普，以及买机场前要避开的坑。',
   },
 } as const;
 
