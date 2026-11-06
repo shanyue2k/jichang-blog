@@ -1,0 +1,73 @@
+---
+// 站长点评：数据在 src/data/zhanzhang.json
+import data from '../data/zhanzhang.json';
+
+interface Props {
+  id: string;
+}
+const { id } = Astro.props;
+const note = (data.notes as Record<string, { date: string; text: string }>)[id];
+---
+
+{
+  note && (
+    <aside class="zz" aria-label="站长点评">
+      <img class="av" src="/logo-mark.svg" width="44" height="44" alt="" />
+      <div>
+        <p class="who">
+          <strong>站长 {data.author}</strong>
+          <span>点评 · <time datetime={note.date}>{note.date}</time></span>
+        </p>
+        <p class="txt">{note.text}</p>
+        <p class="src"><a href="/ceping-fangfa/">站长写的都是自己测过、核对过的内容</a></p>
+      </div>
+    </aside>
+  )
+}
+
+<style>
+  .zz {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 0.9rem;
+    margin: 0 0 2rem;
+    padding: 1rem 1.2rem;
+    background: #fffbea;
+    border: 1px solid #f0dc8a;
+    border-radius: var(--radius-md);
+  }
+
+  .av {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--slate);
+  }
+
+  .who {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.2rem 0.6rem;
+    margin: 0 0 0.3rem;
+  }
+
+  .who span {
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+
+  .txt {
+    margin: 0;
+    line-height: 1.8;
+  }
+
+  .src {
+    margin: 0.4rem 0 0;
+    font-size: 0.8125rem;
+  }
+
+  .src a {
+    color: var(--muted);
+  }
+</style>

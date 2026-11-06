@@ -12,7 +12,7 @@ export const SITE = {
   description:
     '2026 机场推荐：整理近 30 家主流机场的官网套餐价格、节点数量、IPLC / IEPL 线路和协议，附站长实测速度、可用优惠码和两两对比，每月更新推荐榜，并提供 Clash、Shadowrocket 等客户端使用教程。',
   locale: 'zh-CN',
-  author: '站长',
+  author: '啊豪',
   /** IndexNow 密钥（Bing 即时收录用），换不换都可以，保持 32 位十六进制即可 */
   indexNowKey: 'fd5439ecec0adee02208cdb4622c3515',
   /** Telegram 频道与交流群 */

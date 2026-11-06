@@ -2,6 +2,7 @@
 // 单家机场资料页：全部内容来自官网资料整理，不含任何未经实测的速度或评分
 import Base from '../../layouts/Base.astro';
 import TelegramCta from '../../components/TelegramCta.astro';
+import ZhanzhangNote from '../../components/ZhanzhangNote.astro';
 import TestResult from '../../components/TestResult.astro';
 import AuditCard from '../../components/AuditCard.astro';
 import TopologyNote from '../../components/TopologyNote.astro';
@@ -212,6 +213,8 @@ const jsonLd = [breadcrumbSchema(crumbs), faqSchema(faq)];
         </dl>
         <a class="btn" href={aff.url} rel="sponsored nofollow noopener" target="_blank">访问 {name} 官网</a>
       </section>
+
+      <ZhanzhangNote id={pr.id} />
 
       <div class="prose">
         <h2>{name}套餐价格一览</h2>
@@ -447,7 +450,7 @@ const jsonLd = [breadcrumbSchema(crumbs), faqSchema(faq)];
 
   .facts dl {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr));
     gap: 1.2rem 1.5rem;
     margin: 0 0 1.25rem;
   }
