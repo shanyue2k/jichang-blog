@@ -1,0 +1,314 @@
+---
+// 专题：梯子推荐（长尾词：梯子 / 梯子推荐 / 梯子工具 / 梯子软件哪个好用 / 梯子免费体验 / 机场梯子 / 挂梯子）
+// 「梯子」是翻墙工具的俗称；本页用梯子的说法介绍机场，数据与推荐榜同源
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Faq from '../components/Faq.astro';
+import RankTable from '../components/RankTable.astro';
+import Spotlight from '../components/Spotlight.astro';
+import TelegramCta from '../components/TelegramCta.astro';
+import { PILLAR } from '../site.config';
+import { absoluteUrl } from '../lib/content';
+import { formatDate } from '../lib/format';
+import { breadcrumbSchema, faqSchema } from '../lib/schema';
+import { FEATURED_COUNT, getRanking, monthLabel, onetimePacks, rankingUpdated } from '../lib/ranking';
+import { gb, yuan } from '../lib/profiles';
+
+const all = getRanking();
+const updated = rankingUpdated(all);
+const month = monthLabel(updated);
+const featured = all.slice(0, FEATURED_COUNT);
+const main = all[0];
+const tested = all.filter((i) => i.test);
+const tizi = all.find((i) => i.aff.id === 'tiziyun');
+
+const cheapMonthly = all
+  .filter((i) => i.monthlyFrom !== null)
+  .slice()
+  .sort((a, b) => (a.monthlyFrom ?? 0) - (b.monthlyFrom ?? 0) || a.rank - b.rank)
+  .slice(0, 5);
+const cheapPacks = onetimePacks(all)
+  .slice()
+  .sort((a, b) => a.plan.price - b.plan.price || a.item.rank - b.item.rank)
+  .slice(0, 5);
+const hk = (i: (typeof all)[number]) => i.test?.regions.find((r) => r.name === '香港');
+
+const title = '梯子推荐 ' + month + '｜好用的翻墙梯子排行、梯子软件怎么选、免费梯子避坑';
+const description =
+  '梯子推荐 ' + month + '：整理 ' + all.length + ' 家梯子（机场）的价格、节点和线路，附站长实测速度和优惠码；讲清楚梯子软件哪个好用、怎么挂梯子，以及免费梯子和免费体验为什么不建议用。';
+
+const crumbs = [
+  { name: '首页', path: '/' },
+  { name: PILLAR.label, path: PILLAR.path },
+  { name: '梯子推荐', path: '/tizi-tuijian/' },
+];
+
+const faq = [
+  {
+    q: '梯子是什么？和机场、VPN 有什么区别？',
+    a: '"梯子"是翻墙工具的俗称，意思是翻过墙去访问国外网站。现在大多数人用的梯子是"机场"：买一个订阅链接，导入 Clash、Shadowrocket 等客户端使用。传统 VPN 是装一个 App 一键连接，用起来简单，但同样的价格节点少、速度慢一些。',
+  },
+  {
+    q: '有免费的梯子吗？',
+    a: '有，但不建议用。免费梯子通常速度慢、经常断，部分还会收集你的浏览数据或插广告。本站整理的 ' + all.length + ' 家机场都没有免费试用，最便宜的月付 ' + (cheapMonthly[0] ? yuan(cheapMonthly[0].monthlyFrom ?? 0) : '') + ' 左右，先买一个月试用是更稳妥的做法。',
+  },
+  {
+    q: '梯子软件哪个好用？',
+    a: '梯子分两部分：机场提供节点和订阅，客户端负责连接。客户端推荐：Windows / macOS 用 Clash Verge Rev，Windows 也可以用 v2rayN，iPhone 用 Shadowrocket（小火箭），安卓用 Clash Meta for Android。真正决定快不快、稳不稳的是机场，而不是客户端。',
+  },
+  {
+    q: '"挂梯子"是什么意思？',
+    a: '"挂梯子"就是开着翻墙工具上网。具体做法是：在客户端里导入机场订阅、选一个节点、打开系统代理。打开后，访问国外网站走代理，国内网站仍然直连。',
+  },
+  {
+    q: '梯子会跑路吗？怎么避免损失？',
+    a: '机场跑路的事确实发生过。建议先买月付，用一两个月觉得稳定再考虑季付、半年付；不要一开始就买很长的套餐，也不要只看价格最低的。',
+  },
+];
+
+const jsonLd = [
+  breadcrumbSchema(crumbs),
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: '梯子推荐 ' + month,
+    numberOfItems: featured.length,
+    itemListElement: featured.map((i, k) => ({ '@type': 'ListItem', position: k + 1, name: i.aff.name, url: absoluteUrl(i.path) })),
+  },
+  faqSchema(faq),
+];
+---
+
+<Base title={title} description={description} jsonLd={jsonLd} modified={updated}>
+  <div class="wrap">
+    <Breadcrumbs crumbs={crumbs} />
+    <header class="head">
+      <h1>梯子推荐 {month}</h1>
+      <p class="lead">
+        "梯子"是翻墙工具的俗称。几年前大家说的梯子多半是 VPN，现在更常见的是"机场"：花十几二十块买一个订阅，导入客户端就能用，节点多、速度快。本页按梯子的说法，把本站整理的 {all.length} 家机场重新讲一遍：哪几家值得买、梯子软件怎么选、免费梯子能不能用。
+      </p>
+      <p class="meta">
+        最后更新 <time class="num" datetime={updated.toISOString()}>{formatDate(updated)}</time> · 价格和节点来自各机场官网与后台 · 已实测 {tested.length} 家 · 排名为本站推荐顺序，价格以官网为准
+      </p>
+    </header>
+
+    <section class="kinds" aria-labelledby="kinds-title">
+      <h2 id="kinds-title">梯子有三种，先分清楚</h2>
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead><tr><th scope="col"></th><th scope="col">机场（订阅 + 客户端）</th><th scope="col">传统 VPN</th><th scope="col">免费梯子</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">怎么用</th><td>复制订阅链接，导入 Clash、小火箭等客户端</td><td>装官方 App，一键连接</td><td>下载来路不明的 App 或分享的节点</td></tr>
+            <tr><th scope="row">价格</th><td>月付 ¥15–30 起，年付小流量折合每月约 ¥7–10</td><td>通常每月几十元，海外品牌更贵</td><td>免费</td></tr>
+            <tr><th scope="row">速度和节点</th><td>节点多（本站整理的多为 50–70 个），专线机场晚上也稳</td><td>节点少，国内连接常被干扰</td><td>慢，经常断</td></tr>
+            <tr><th scope="row">分流</th><td>规则模式：国内直连、国外走代理</td><td>多为全局，国内网站也绕道</td><td>不确定</td></tr>
+            <tr><th scope="row">风险</th><td>小机场可能跑路，先买月付</td><td>较低</td><td>可能收集数据、插广告</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="meta">本页推荐的都是第一种。想了解机场和 VPN 的详细区别，见 <a href="/vpn-jichang/">VPN 机场怎么选</a>。</p>
+    </section>
+
+    {main && <Spotlight item={main} />}
+
+    <section class="body-sec">
+      <h2>梯子推荐榜：主推与次推 {FEATURED_COUNT} 家</h2>
+      <p>第 1 名为站长主推，第 2 到第 {FEATURED_COUNT} 名为次推。点名字可以看全部套餐、节点分布和怎么买最划算；标"已实测"的有站长测速结果。</p>
+      <RankTable items={featured} compact caption={'梯子推荐榜前 ' + FEATURED_COUNT + ' 名'} />
+      <p class="meta">
+        全部 {all.length} 家的完整对比见<a href={PILLAR.path}>机场推荐榜</a>；两家之间怎么选，见<a href="/duibi/">机场对比</a>。
+        {tizi ? '另外，"梯子云"是其中一家机场的名字，和"梯子"这个统称无关，资料见' : ''}{tizi && <a href={tizi.path}>梯子云资料页</a>}{tizi ? '。' : ''}
+      </p>
+    </section>
+
+    <div class="body">
+      {!!tested.length && (
+        <section>
+          <h2>实测过的梯子</h2>
+          <p>下面这几家由站长用自己购买的订阅测速（珠海联通测试服务器）。香港是大多数梯子最快的地区，看视频、日常上网都够用。</p>
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead><tr><th scope="col">梯子</th><th scope="col">香港平均速度</th><th scope="col">流媒体解锁</th><th scope="col">测试时间</th></tr></thead>
+              <tbody>
+                {tested.map((i) => (
+                  <tr class={i.rank === 1 ? 'is-main' : ''}>
+                    <th scope="row"><a href={i.path + '#test-title'}>{i.aff.name}</a></th>
+                    <td class="num nowrap">{hk(i) ? hk(i)?.avgMBps + ' MB/s' : '—'}</td>
+                    <td>{i.test?.unlock ? Object.entries(i.test.unlock).map(([k, v]) => k + ' ' + v).join('、') : '未测'}</td>
+                    <td class="nowrap"><small>{i.test?.date} {i.test?.time ?? ''}</small></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p class="meta">1 MB/s ≈ 8 Mbps，代表测试服务器能跑到的带宽上限。各地区的完整结果和原始截图见<a href="/pingce/">机场实测</a>。</p>
+        </section>
+      )}
+
+      <section class="prose">
+        <h2>梯子软件哪个好用</h2>
+        <p>
+          很多人搜"梯子软件"，其实梯子分成两部分：<strong>机场</strong>提供节点和订阅链接，<strong>客户端</strong>负责连接。快不快、稳不稳，主要看机场；客户端选一个顺手、还在更新的就行。
+        </p>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead><tr><th>设备</th><th>推荐客户端</th><th>教程</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Windows / macOS</th><td>Clash Verge Rev</td><td><a href="/jiaocheng/clash-verge-rev-jiaocheng/">Clash Verge Rev 教程</a></td></tr>
+              <tr><th scope="row">Windows</th><td>v2rayN</td><td><a href="/jiaocheng/v2rayn-jiaocheng/">v2rayN 教程</a></td></tr>
+              <tr><th scope="row">iPhone / iPad</th><td>Shadowrocket（小火箭，需外区 Apple ID）</td><td><a href="/jiaocheng/shadowrocket-jiaocheng/">小火箭教程</a></td></tr>
+              <tr><th scope="row">安卓</th><td>Clash Meta for Android</td><td><a href="/jiaocheng/clash-meta-for-android-jiaocheng/">Clash Meta 教程</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>按客户端挑机场，可以看 <a href="/clash-jichang/">Clash 机场推荐</a> 和 <a href="/xiaohuojian-jichang/">小火箭机场推荐</a>。</p>
+
+        <h2>怎么挂梯子：三步</h2>
+        <ol>
+          <li><strong>买套餐</strong>：在机场官网注册，先买最便宜的月付。下单时填优惠码，月付、季付、半年付通常能立减 10%–30%（<a href="/jichang-youhuima/">全部优惠码</a>）。</li>
+          <li><strong>导入订阅</strong>：在机场后台复制订阅链接，粘贴到客户端里更新。</li>
+          <li><strong>选节点、开代理</strong>：选一个延迟低的节点，打开系统代理，保持规则模式。用 ChatGPT 记得选香港以外的节点（<a href="/chatgpt-jichang/">ChatGPT 机场推荐</a>）。</li>
+        </ol>
+
+        <h2>免费梯子和"免费体验"，能用吗</h2>
+        <p>
+          搜"梯子免费""梯子免费体验"的人很多，但我们不建议用免费梯子：速度慢、经常断，来路不明的 App 还可能收集浏览数据、插广告，账号密码也不安全。本站整理的 {all.length} 家机场都没有免费试用。
+        </p>
+        <p>想低成本试一试，有两个更稳妥的办法：</p>
+      </section>
+
+      <section>
+        <div class="duo">
+          <div>
+            <h3>先买一个月：月付最便宜的 5 家</h3>
+            <ol>
+              {cheapMonthly.map((i) => (
+                <li class={i.rank === 1 ? 'is-main' : ''}><a href={i.path}>{i.aff.name}</a><span class="num">{yuan(i.monthlyFrom ?? 0)}/月{i.monthlyFromGB ? ' · ' + gb(i.monthlyFromGB) : ''}</span></li>
+              ))}
+            </ol>
+          </div>
+          <div>
+            <h3>偶尔用：最便宜的不限时流量包</h3>
+            <ol>
+              {cheapPacks.map((p) => (
+                <li class={p.item.rank === 1 ? 'is-main' : ''}><a href={p.item.path}>{p.item.aff.name}</a><span class="num">{yuan(p.plan.price)} · {gb(p.plan.trafficGB)}</span></li>
+              ))}
+            </ol>
+          </div>
+        </div>
+        <p class="meta">不限时流量包一次付费、流量用完为止，不会每月过期，适合一个月只用几次的人。更多见<a href="/pianyi-jichang/">便宜机场推荐</a>和<a href="/buxianshi-jichang/">不限时流量机场</a>。</p>
+      </section>
+
+      <section class="prose">
+        <h2>挑梯子看这五点</h2>
+        <ol>
+          <li><strong>线路</strong>：标注 IPLC / IEPL 专线的，晚上 8 点到 11 点高峰期更稳（<a href="/zhuanxian-jichang/">专线机场</a>）。</li>
+          <li><strong>节点地区</strong>：香港、台湾、日本、新加坡、美国都有比较好；要用 ChatGPT 必须有香港以外的节点。</li>
+          <li><strong>流量够不够</strong>：每天看一两个小时视频，每月 100–150GB 一般够用；只聊天、查资料，最小的套餐就行。</li>
+          <li><strong>有没有实测</strong>：官网都说自己快，有第三方实测的更可信。</li>
+          <li><strong>先短后长</strong>：先买月付，用顺了再买长周期，降低跑路损失。</li>
+        </ol>
+        <p class="meta">请在遵守所在地法律法规的前提下使用网络服务。</p>
+      </section>
+
+      <TelegramCta />
+      <Faq items={faq} />
+
+      <p class="more">
+        相关专题：<a href={PILLAR.path}>机场推荐榜</a> · <a href="/pianyi-jichang/">便宜机场推荐</a> · <a href="/vpn-jichang/">VPN 机场怎么选</a> · <a href="/chatgpt-jichang/">ChatGPT 机场推荐</a> · <a href="/jichang-youhuima/">机场优惠码</a>
+      </p>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .head {
+    max-width: 48rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .lead {
+    color: var(--ink-soft);
+  }
+
+  .kinds,
+  .body-sec {
+    max-width: 60rem;
+    margin: 1.5rem 0 2rem;
+  }
+
+  .kinds h2,
+  .body-sec h2,
+  .body > section > h2,
+  .body .prose h2 {
+    border-top: 2px solid var(--ink);
+    padding-top: 0.25em;
+  }
+
+  .body {
+    max-width: 52rem;
+    margin-top: 2rem;
+  }
+
+  .data-table tbody th {
+    background: var(--surface);
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  tr.is-main td,
+  tr.is-main th {
+    background: #fffbea !important;
+  }
+
+  .nowrap {
+    white-space: nowrap;
+  }
+
+  .duo {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  @media (max-width: 720px) {
+    .duo {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .duo > div {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 0.25rem 1rem 0.75rem;
+  }
+
+  .duo h3 {
+    margin: 0.6rem 0 0.4rem;
+    font-size: 1.0625rem;
+  }
+
+  .duo ol {
+    margin: 0;
+    padding-left: 1.2em;
+  }
+
+  .duo li {
+    padding: 0.2rem 0;
+  }
+
+  .duo li span {
+    float: right;
+    color: var(--muted);
+    font-size: 0.875rem;
+  }
+
+  .duo li.is-main a {
+    font-weight: 700;
+  }
+
+  .more {
+    margin-top: 2rem;
+  }
+</style>

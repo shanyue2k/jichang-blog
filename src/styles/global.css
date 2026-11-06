@@ -253,6 +253,8 @@ p {
 }
 
 .table-scroll {
+  /* position: relative 让表格里绝对定位的隐藏文字留在滚动区内，不撑宽手机页面 */
+  position: relative;
   overflow-x: auto;
   margin: 1.5em 0;
 }
