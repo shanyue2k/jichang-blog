@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 350" width="440" height="350" role="img" aria-labelledby="t d">
+<title id="t">v2rayN 订阅分组设置示意图</title>
+<desc id="d">订阅分组设置窗口中点添加，填写别名和可选地址（订阅链接）后点确定。</desc>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#1d2833"/></marker>
+<marker id="ay" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#c99a00"/></marker><style>
+text{font-family:'PingFang SC','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC',sans-serif;fill:#1d2833}
+.n{font-size:26px;font-weight:700}
+.h{font-size:19px;font-weight:700}
+.s{font-size:15px;fill:#5d6875}
+.b{font-size:16px;font-weight:600}
+.box{fill:#fff;stroke:#c9d0d7;stroke-width:1.5}
+.direct{stroke:#1d2833;stroke-width:2.5;fill:none;marker-end:url(#a)}
+.proxy{stroke:#c99a00;stroke-width:2.5;fill:none;stroke-dasharray:7 5;marker-end:url(#ay)}
+</style></defs>
+<rect width="440" height="350" fill="#f3f5f7"/>
+<rect x="10" y="10" width="420" height="330" rx="10" fill="#fff" stroke="#1d2833" stroke-width="2.5"/>
+<path d="M10 20 a10 10 0 0 1 10 -10 h400 a10 10 0 0 1 10 10 v22 h-420 z" fill="#1d2833"/>
+<text x="26" y="33" style="font-size:14px;font-weight:600;fill:#fff">v2rayN</text>
+<text x="412" y="33" text-anchor="end" style="font-size:14px;fill:#c9d1da">—  ☐  ✕</text>
+<g transform="translate(10 42)"><text x="16" y="28" class="b">订阅分组设置</text><rect x="16" y="44" width="56" height="26" rx="4" fill="#1d2833"/><text x="44" y="62" text-anchor="middle" style="font-size:13px;fill:#fff">添加</text><rect x="80" y="44" width="56" height="26" rx="4" fill="#fff" stroke="#c9d0d7"/><text x="108" y="62" text-anchor="middle" style="font-size:13px">删除</text><rect x="16" y="82" width="388" height="118" rx="6" fill="#fff8d6" stroke="#ffcc00"/><text x="30" y="104" style="font-size:13px;fill:#5d6875">编辑订阅（点「添加」后弹出）</text><text x="30" y="134" style="font-size:14px">别名</text><rect x="110" y="116" width="276" height="28" rx="4" fill="#fff" stroke="#c9d0d7"/><text x="120" y="135" style="font-size:13.5px">我的机场</text><text x="30" y="176" style="font-size:14px">可选地址</text><rect x="110" y="158" width="276" height="28" rx="4" fill="#fff" stroke="#c9d0d7"/><text x="120" y="177" style="font-size:13.5px">https://••••••••••</text><rect x="244" y="214" width="76" height="30" rx="4" fill="#ffcc00"/><text x="282" y="234" text-anchor="middle" style="font-size:14px;font-weight:600">确定</text><rect x="328" y="214" width="76" height="30" rx="4" fill="#fff" stroke="#c9d0d7"/><text x="366" y="234" text-anchor="middle" style="font-size:14px">取消</text><text x="16" y="276" style="font-size:12.5px;fill:#8c99a6">保存后回到主界面：订阅分组 → 更新全部订阅</text></g>
+</svg>

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 538" width="520" height="538" role="img" aria-labelledby="t d">
+<title id="t">iOS 代理客户端怎么选示意图</title>
+<desc id="d">按需求选择：只想简单好用选 Shadowrocket；机场给 Clash 订阅选 Stash；喜欢折腾去广告和脚本选 Quantumult X 或 Loon；专业需求且预算充足选 Surge。</desc>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#1d2833"/></marker>
+<marker id="ay" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#c99a00"/></marker><style>
+text{font-family:'PingFang SC','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC',sans-serif;fill:#1d2833}
+.n{font-size:26px;font-weight:700}
+.h{font-size:19px;font-weight:700}
+.s{font-size:15px;fill:#5d6875}
+.b{font-size:16px;font-weight:600}
+.box{fill:#fff;stroke:#c9d0d7;stroke-width:1.5}
+.direct{stroke:#1d2833;stroke-width:2.5;fill:none;marker-end:url(#a)}
+.proxy{stroke:#c99a00;stroke-width:2.5;fill:none;stroke-dasharray:7 5;marker-end:url(#ay)}
+</style></defs>
+<rect width="520" height="538" fill="#f3f5f7"/>
+<text x="20" y="38" class="h">按需求选，对号入座</text><g transform="translate(12 58)"><rect width="496" height="106" rx="10" fill="#fff" stroke="#d8dde3" stroke-width="1.5"/><text x="20" y="34" class="s" style="fill:#1d2833;font-size:15.5px">只想导入订阅就用，越简单越好</text><rect x="20" y="50" width="206" height="38" rx="8" fill="#ffcc00"/><text x="34" y="75" style="font-size:18px;font-weight:700;fill:#1d2833">Shadowrocket</text><text x="242" y="68" class="s" style="font-size:14px">2.99 美元，买断</text><text x="242" y="88" class="s" style="font-size:13.5px">协议支持最全，新手首选</text></g><g transform="translate(12 176)"><rect width="496" height="106" rx="10" fill="#fff" stroke="#d8dde3" stroke-width="1.5"/><text x="20" y="34" class="s" style="fill:#1d2833;font-size:15.5px">机场给的是 Clash 订阅，或习惯 Clash</text><rect x="20" y="50" width="206" height="38" rx="8" fill="#1d2833"/><text x="34" y="75" style="font-size:18px;font-weight:700;fill:#fff">Stash</text><text x="242" y="68" class="s" style="font-size:14px">5.99 美元，买断</text><text x="242" y="88" class="s" style="font-size:13.5px">兼容 Clash 配置，分组直观</text></g><g transform="translate(12 294)"><rect width="496" height="106" rx="10" fill="#fff" stroke="#d8dde3" stroke-width="1.5"/><text x="20" y="34" class="s" style="fill:#1d2833;font-size:15.5px">想玩去广告、脚本、重写</text><rect x="20" y="50" width="206" height="38" rx="8" fill="#1d2833"/><text x="34" y="75" style="font-size:18px;font-weight:700;fill:#fff">Quantumult X / Loon</text><text x="242" y="68" class="s" style="font-size:14px">9.99 / 7.99 美元</text><text x="242" y="88" class="s" style="font-size:13.5px">社区规则多，可玩性高</text></g><g transform="translate(12 412)"><rect width="496" height="106" rx="10" fill="#fff" stroke="#d8dde3" stroke-width="1.5"/><text x="20" y="34" class="s" style="fill:#1d2833;font-size:15.5px">专业需求，预算充足</text><rect x="20" y="50" width="206" height="38" rx="8" fill="#1d2833"/><text x="34" y="75" style="font-size:18px;font-weight:700;fill:#fff">Surge</text><text x="242" y="68" class="s" style="font-size:14px">免费下载，Pro 49.99 美元</text><text x="242" y="88" class="s" style="font-size:13.5px">功能最强，但不支持 VLESS</text></g>
+</svg>

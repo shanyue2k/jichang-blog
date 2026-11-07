@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /export/
+
+Sitemap: https://jichanghao.com/sitemap.xml

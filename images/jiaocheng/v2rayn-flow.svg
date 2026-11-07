@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 340" width="480" height="340" role="img" aria-labelledby="t d">
+<title id="t">v2rayN 使用流程总览</title>
+<desc id="d">四个步骤：从 GitHub 下载并解压 v2rayN，在订阅分组设置中添加订阅并更新，测速后把节点设为活动，开启自动配置系统代理并选择绕过大陆路由。</desc>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#1d2833"/></marker>
+<marker id="ay" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#c99a00"/></marker><style>
+text{font-family:'PingFang SC','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC',sans-serif;fill:#1d2833}
+.n{font-size:26px;font-weight:700}
+.h{font-size:19px;font-weight:700}
+.s{font-size:15px;fill:#5d6875}
+.b{font-size:16px;font-weight:600}
+.box{fill:#fff;stroke:#c9d0d7;stroke-width:1.5}
+.direct{stroke:#1d2833;stroke-width:2.5;fill:none;marker-end:url(#a)}
+.proxy{stroke:#c99a00;stroke-width:2.5;fill:none;stroke-dasharray:7 5;marker-end:url(#ay)}
+</style></defs>
+<rect width="480" height="340" fill="#f3f5f7"/>
+<g transform="translate(20 20)"><rect width="212" height="140" rx="10" fill="#fff" stroke="#d8dde3" stroke-width="1.5"/>
+<rect x="16" y="16" width="38" height="38" rx="6" fill="#ffcc00"/><text x="35" y="44" class="n" text-anchor="middle">1</text>
+<text x="66" y="42" class="h" style="">下载解压</text>
+<text x="16" y="90" class="s" style="">GitHub 官方发布页</text>
+<text x="16" y="116" class="s" style="">解压后运行 v2rayN.exe</text></g>
+<g transform="translate(248 20)"><rect width="212" height="140" rx="10" fill="#fff" stroke="#d8dde3" stroke-width="1.5"/>
+<rect x="16" y="16" width="38" height="38" rx="6" fill="#ffcc00"/><text x="35" y="44" class="n" text-anchor="middle">2</text>
+<text x="66" y="42" class="h" style="">导入订阅</text>
+<text x="16" y="90" class="s" style="">订阅分组设置 → 添加</text>
+<text x="16" y="116" class="s" style="">再点「更新全部订阅」</text></g>
+<g transform="translate(20 180)"><rect width="212" height="140" rx="10" fill="#fff" stroke="#d8dde3" stroke-width="1.5"/>
+<rect x="16" y="16" width="38" height="38" rx="6" fill="#ffcc00"/><text x="35" y="44" class="n" text-anchor="middle">3</text>
+<text x="66" y="42" class="h" style="">选择节点</text>
+<text x="16" y="90" class="s" style="">Ctrl+R 测真连接延迟</text>
+<text x="16" y="116" class="s" style="">回车设为活动节点</text></g>
+<g transform="translate(248 180)"><rect width="212" height="140" rx="10" fill="#1d2833" />
+<rect x="16" y="16" width="38" height="38" rx="6" fill="#ffcc00"/><text x="35" y="44" class="n" text-anchor="middle">4</text>
+<text x="66" y="42" class="h" style="fill:#fff">开启代理</text>
+<text x="16" y="90" class="s" style="fill:#c9d1da">自动配置系统代理</text>
+<text x="16" y="116" class="s" style="fill:#c9d1da">路由选「绕过大陆」</text></g>
+<path d="M233 90 L 244 90" class="direct"/><path d="M233 250 L 244 250" class="direct"/>
+</svg>

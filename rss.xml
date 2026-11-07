@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>机场好</title>
+    <link>https://jichanghao.com/</link>
+    <description>2026 机场推荐：整理近 30 家主流机场的官网套餐价格、节点数量、IPLC / IEPL 线路和协议，附站长实测速度、可用优惠码和两两对比，每月更新推荐榜，并提供 Clash、Shadowrocket 等客户端使用教程。</description>
+    <language>zh-cn</language>
+    <item>
+      <title>Telegram 连不上、收不到验证码、怎么设置中文？电报下载与使用教程</title>
+      <link>https://jichanghao.com/jiaocheng/telegram-jiaocheng/</link>
+      <guid isPermaLink="true">https://jichanghao.com/jiaocheng/telegram-jiaocheng/</guid>
+      <description>国内用 Telegram（电报）最常遇到的问题一次讲清：去哪里下载才安全、一直转圈连不上怎么设置代理、+86 收不到验证码怎么办、怎么把界面改成简体中文，附 Windows、macOS、iPhone、安卓的具体操作。</description>
+      <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>ChatGPT 打不开、提示地区不支持怎么办？排查方法、App 下载与中文版网站说明</title>
+      <link>https://jichanghao.com/jiaocheng/chatgpt-da-bu-kai/</link>
+      <guid isPermaLink="true">https://jichanghao.com/jiaocheng/chatgpt-da-bu-kai/</guid>
+      <description>开了代理还是用不了 ChatGPT？按症状逐一分析完全打不开、提示地区不支持、Access denied、登录后报错，教你检测出口地区、选对节点并固定节点；附 ChatGPT App 官方下载渠道，以及所谓中文版网站的风险。</description>
+      <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>机场线路怎么选？直连、中转、BGP 中转、IPLC/IEPL 专线的区别</title>
+      <link>https://jichanghao.com/wenzhang/jichang-xianlu-qubie/</link>
+      <guid isPermaLink="true">https://jichanghao.com/wenzhang/jichang-xianlu-qubie/</guid>
+      <description>机场套餐页上的直连、中转、BGP 中转、IPLC、IEPL 分别是什么意思？用一张图讲清流量怎么出境，说明直连和中转哪个好、&quot;BGP 调度 + 专线出口&quot;算不算专线，以及怎么从节点名称看出线路。</description>
+      <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Clash Meta for Android 使用教程：安装、导入订阅、分应用代理详解</title>
+      <link>https://jichanghao.com/jiaocheng/clash-meta-for-android-jiaocheng/</link>
+      <guid isPermaLink="true">https://jichanghao.com/jiaocheng/clash-meta-for-android-jiaocheng/</guid>
+      <description>安卓手机用机场的完整教程：Clash Meta for Android（CMFA）怎么选安装包、导入机场订阅、启动代理、切换节点和代理模式，以及分应用代理、省电设置和常见问题处理。</description>
+      <pubDate>Tue, 03 Nov 2026 00:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>iOS 代理客户端怎么选？小火箭、Quantumult X、Loon、Stash、Surge 对比</title>
+      <link>https://jichanghao.com/jiaocheng/ios-kehuduan-duibi/</link>
+      <guid isPermaLink="true">https://jichanghao.com/jiaocheng/ios-kehuduan-duibi/</guid>
+      <description>iPhone 上五款主流代理客户端横向对比：Shadowrocket（小火箭）、Quantumult X（圈X）、Loon、Stash、Surge 的价格、有没有免费版、协议支持、订阅格式和上手难度，按你的需求给出选择建议。</description>
+      <pubDate>Tue, 03 Nov 2026 00:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>流媒体解锁教程：Netflix 只能看自制剧、提示代理错误怎么办？Disney+、YouTube 一起讲</title>
+      <link>https://jichanghao.com/jiaocheng/liumeiti-jiesuo/</link>
+      <guid isPermaLink="true">https://jichanghao.com/jiaocheng/liumeiti-jiesuo/</guid>
+      <description>用机场看 Netflix、Disney+、YouTube 遇到问题？本文讲清流媒体“解锁”的原理，教你判断节点是完全解锁、仅自制剧还是被识别为代理，以及 YouTube“送中”、Disney+ 地区不可用的处理方法和客户端设置。</description>
+      <pubDate>Tue, 03 Nov 2026 00:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Shadowrocket 小火箭使用教程：下载、导入机场订阅、分流设置一次搞定</title>
+      <link>https://jichanghao.com/jiaocheng/shadowrocket-jiaocheng/</link>
+      <guid isPermaLink="true">https://jichanghao.com/jiaocheng/shadowrocket-jiaocheng/</guid>
+      <description>iPhone / iPad 用户的 Shadowrocket（小火箭）完整教程：用外区 Apple ID 购买下载、导入机场订阅、测速选节点、配置分流规则、按需连接，以及连不上时的排查方法。</description>
+      <pubDate>Tue, 03 Nov 2026 00:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>外区 Apple ID 注册教程：美区、港区 Apple 账户免信用卡注册方法</title>
+      <link>https://jichanghao.com/jiaocheng/waiqu-apple-id-zhuce/</link>
+      <guid isPermaLink="true">https://jichanghao.com/jiaocheng/waiqu-apple-id-zhuce/</guid>
+      <description>自己注册美区或港区 Apple ID（Apple 账户）的完整教程：注册前的准备、在 iPhone App Store 里免信用卡注册、网页注册备用方法、礼品卡充值、国区外区来回切换，以及“无法创建账户”等常见问题的解决办法。</description>
+      <pubDate>Tue, 03 Nov 2026 00:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>v2rayN 使用教程：Windows 下载安装、导入机场订阅、系统代理与路由设置</title>
+      <link>https://jichanghao.com/jiaocheng/v2rayn-jiaocheng/</link>
+      <guid isPermaLink="true">https://jichanghao.com/jiaocheng/v2rayn-jiaocheng/</guid>
+      <description>Windows 电脑上 v2rayN 的完整新手教程：选对压缩包、解压运行、添加并更新机场订阅、测速选节点、开启系统代理、设置绕过大陆路由和 Tun 模式，以及常见报错的解决方法。</description>
+      <pubDate>Tue, 03 Nov 2026 00:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Clash Verge Rev 使用教程：下载安装、导入机场订阅到开启代理</title>
+      <link>https://jichanghao.com/jiaocheng/clash-verge-rev-jiaocheng/</link>
+      <guid isPermaLink="true">https://jichanghao.com/jiaocheng/clash-verge-rev-jiaocheng/</guid>
+      <description>Clash Verge Rev 新手教程，从下载对应版本、导入机场订阅、选择节点、开启系统代理，到 TUN 模式和常见问题，一步步讲清楚。</description>
+      <pubDate>Mon, 26 Oct 2026 00:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>机场是什么？新手必看的订阅、节点、倍率、专线一次讲清</title>
+      <link>https://jichanghao.com/wenzhang/jichang-shi-shenme/</link>
+      <guid isPermaLink="true">https://jichanghao.com/wenzhang/jichang-shi-shenme/</guid>
+      <description>机场是什么？给第一次接触机场的新手：机场、订阅链接、节点、倍率、流量重置分别是什么意思，直连、中转、IPLC / IEPL 专线有什么区别，常见协议怎么选，以及买机场前要注意的几件事。</description>
+      <pubDate>Mon, 26 Oct 2026 00:00:00 GMT</pubDate>
+    </item>
+  </channel>
+</rss>

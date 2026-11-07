@@ -1,0 +1,136 @@
+<!DOCTYPE html><html lang="zh-CN"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Shadowrocket 小火箭使用教程：下载、导入机场订阅、分流设置一次搞定 - 机场好</title><meta name="description" content="iPhone / iPad 用户的 Shadowrocket（小火箭）完整教程：用外区 Apple ID 购买下载、导入机场订阅、测速选节点、配置分流规则、按需连接，以及连不上时的排查方法。"><link rel="canonical" href="https://jichanghao.com/jiaocheng/shadowrocket-jiaocheng/"><meta name="theme-color" content="#1d2833"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="alternate" type="application/rss+xml" title="机场好" href="/rss.xml"><link rel="sitemap" href="/sitemap.xml"><meta property="og:type" content="article"><meta property="og:site_name" content="机场好"><meta property="og:title" content="Shadowrocket 小火箭使用教程：下载、导入机场订阅、分流设置一次搞定 - 机场好"><meta property="og:description" content="iPhone / iPad 用户的 Shadowrocket（小火箭）完整教程：用外区 Apple ID 购买下载、导入机场订阅、测速选节点、配置分流规则、按需连接，以及连不上时的排查方法。"><meta property="og:url" content="https://jichanghao.com/jiaocheng/shadowrocket-jiaocheng/"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://jichanghao.com/og-default.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta property="article:published_time" content="2026-11-03T00:00:00.000Z"><meta property="article:modified_time" content="2026-11-03T00:00:00.000Z"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首页","item":"https://jichanghao.com/"},{"@type":"ListItem","position":2,"name":"客户端教程","item":"https://jichanghao.com/jiaocheng/"},{"@type":"ListItem","position":3,"name":"Shadowrocket 小火箭使用教程：下载、导入机场订阅、分流设置一次搞定","item":"https://jichanghao.com/jiaocheng/shadowrocket-jiaocheng/"}]}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Shadowrocket 小火箭使用教程：下载、导入机场订阅、分流设置一次搞定","description":"iPhone / iPad 用户的 Shadowrocket（小火箭）完整教程：用外区 Apple ID 购买下载、导入机场订阅、测速选节点、配置分流规则、按需连接，以及连不上时的排查方法。","datePublished":"2026-11-03T00:00:00.000Z","dateModified":"2026-11-03T00:00:00.000Z","inLanguage":"zh-CN","mainEntityOfPage":"https://jichanghao.com/jiaocheng/shadowrocket-jiaocheng/","author":{"@type":"Person","name":"啊豪","url":"https://jichanghao.com/about/"},"publisher":{"@type":"Organization","name":"机场好","url":"https://jichanghao.com","logo":{"@type":"ImageObject","url":"https://jichanghao.com/icon-512.png"}}}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"为什么在 App Store 搜不到 Shadowrocket？","acceptedAnswer":{"@type":"Answer","text":"因为中国大陆区的 App Store 没有上架这类代理工具。需要登录美国、香港、台湾等其他地区的 Apple ID 才能搜到并购买。"}},{"@type":"Question","name":"Shadowrocket 要钱吗？买一次能用多久？","acceptedAnswer":{"@type":"Answer","text":"它是一次性付费应用，美区价格通常是 2.99 美元，具体以 App Store 页面为准。买断后同一个 Apple ID 下的设备都可以免费下载和更新，不需要续费。机场套餐是另外付费的。"}},{"@type":"Question","name":"小火箭本身提供节点吗？","acceptedAnswer":{"@type":"Answer","text":"不提供。Shadowrocket 只是一个客户端，相当于一个\"空壳\"，需要导入机场给你的订阅链接才能连接。"}},{"@type":"Question","name":"打开小火箭后国内 App 变慢了怎么办？","acceptedAnswer":{"@type":"Answer","text":"检查首页的\"全局路由\"是不是选成了\"代理\"。改成\"配置\"后，国内网站和 App 会直连，只有国外流量走节点。"}},{"@type":"Question","name":"用别人分享的 Apple ID 下载安全吗？","acceptedAnswer":{"@type":"Answer","text":"有风险。共享账号可能被对方改密码，如果误登到 iCloud 还可能导致设备被锁。最稳妥的做法是自己注册一个外区 Apple ID，并且只在 App Store 里登录，不要登录到系统设置的 iCloud。"}}]}</script><link rel="stylesheet" href="/_astro/_slug_.By-GMlJN.css">
+<style>.crumbs[data-astro-cid-ilhxcym7]{font-size:var(--step--1);color:var(--muted);margin:1.5rem 0 1rem}ol[data-astro-cid-ilhxcym7]{display:flex;flex-wrap:wrap;list-style:none;padding:0;margin:0}li[data-astro-cid-ilhxcym7]:not(:last-child):after{content:"/";margin:0 .5em;color:var(--line)}a[data-astro-cid-ilhxcym7]{color:var(--muted)}span[data-astro-cid-ilhxcym7]{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:18em;display:inline-block;vertical-align:bottom}
+</style>
+<link rel="stylesheet" href="/_astro/_slug_.D52E8xph.css">
+<style>.faq[data-astro-cid-z6gx6xcw]{max-width:var(--measure);margin-top:3rem}h2[data-astro-cid-z6gx6xcw]{border-top:2px solid var(--ink);padding-top:.25em}details[data-astro-cid-z6gx6xcw]{border-bottom:1px solid var(--line)}summary[data-astro-cid-z6gx6xcw]{cursor:pointer;padding:.8rem 2rem .8rem 0;font-weight:600;list-style:none;position:relative}summary[data-astro-cid-z6gx6xcw]::-webkit-details-marker{display:none}summary[data-astro-cid-z6gx6xcw]:after{content:"+";position:absolute;right:.25rem;top:.65rem;font-family:var(--font-sign);font-size:1.4rem;line-height:1;transition:transform .2s}details[data-astro-cid-z6gx6xcw][open] summary[data-astro-cid-z6gx6xcw]:after{transform:rotate(45deg)}details[data-astro-cid-z6gx6xcw] p[data-astro-cid-z6gx6xcw]{color:var(--ink-soft);margin:0 0 1rem}
+.list[data-astro-cid-nni2rj4u]{list-style:none;padding:0;margin:0;max-width:48rem}li[data-astro-cid-nni2rj4u]{padding:1.1rem 0;border-bottom:1px solid var(--line)}li[data-astro-cid-nni2rj4u]:first-child{padding-top:0}.meta[data-astro-cid-nni2rj4u]{display:flex;gap:.75em;align-items:baseline;margin:0 0 .2rem}.meta[data-astro-cid-nni2rj4u] time[data-astro-cid-nni2rj4u]{font-size:.9375rem}.sec[data-astro-cid-nni2rj4u]{font-weight:700;color:var(--ink);text-decoration:none;background:var(--sign);padding:0 .4em;border-radius:3px}.title[data-astro-cid-nni2rj4u]{font-size:var(--step-1);margin:0 0 .25rem;line-height:1.45}.title[data-astro-cid-nni2rj4u] a[data-astro-cid-nni2rj4u]{color:var(--ink);text-decoration:none}.title[data-astro-cid-nni2rj4u] a[data-astro-cid-nni2rj4u]:hover{color:var(--link);text-decoration:underline}.desc[data-astro-cid-nni2rj4u]{margin:0;color:var(--ink-soft);font-size:.9375rem;line-height:1.7}
+</style></head> <body> <a class="skip-link" href="#main">跳到正文</a> <header class="site-header" data-astro-cid-3ef6ksr2> <div class="wrap bar" data-astro-cid-3ef6ksr2> <a class="brand" href="/" aria-label="机场好 首页" data-astro-cid-3ef6ksr2> <img class="mark" src="/logo-mark.svg" width="36" height="36" alt="" data-astro-cid-3ef6ksr2> <span class="brand-name" data-astro-cid-3ef6ksr2>机场<span class="hao" data-astro-cid-3ef6ksr2>好</span></span> </a> </div> <nav class="wayfinding" aria-label="主栏目" data-astro-cid-3ef6ksr2> <ul class="wrap" data-astro-cid-3ef6ksr2> <li data-astro-cid-3ef6ksr2> <a href="/jichang-tuijian/" data-astro-cid-3ef6ksr2> 机场推荐 </a> </li><li data-astro-cid-3ef6ksr2> <a href="/jichang-youhuima/" data-astro-cid-3ef6ksr2> 机场优惠码 </a> </li><li data-astro-cid-3ef6ksr2> <a href="/pingce/" data-astro-cid-3ef6ksr2> 机场实测 </a> </li><li data-astro-cid-3ef6ksr2> <a href="/duibi/" data-astro-cid-3ef6ksr2> 机场对比 </a> </li><li data-astro-cid-3ef6ksr2> <a href="/jiaocheng/" aria-current="page" data-astro-cid-3ef6ksr2> 客户端教程 </a> </li><li data-astro-cid-3ef6ksr2> <a href="/wenzhang/" data-astro-cid-3ef6ksr2> 文章 </a> </li> </ul> </nav> </header>  <main id="main">  <div class="wrap" data-astro-cid-mxxqcl3x> <nav class="crumbs" aria-label="当前位置" data-astro-cid-ilhxcym7> <ol data-astro-cid-ilhxcym7> <li data-astro-cid-ilhxcym7> <a href="/" data-astro-cid-ilhxcym7>首页</a> </li><li data-astro-cid-ilhxcym7> <a href="/jiaocheng/" data-astro-cid-ilhxcym7>客户端教程</a> </li><li data-astro-cid-ilhxcym7> <span aria-current="page" data-astro-cid-ilhxcym7>Shadowrocket 小火箭使用教程：下载、导入机场订阅、分流设置一次搞定</span> </li> </ol> </nav>  <div class="layout" data-astro-cid-mxxqcl3x> <article class="article" data-astro-cid-mxxqcl3x> <header class="head" data-astro-cid-mxxqcl3x> <h1 data-astro-cid-mxxqcl3x>Shadowrocket 小火箭使用教程：下载、导入机场订阅、分流设置一次搞定</h1> <p class="meta" data-astro-cid-mxxqcl3x> <span data-astro-cid-mxxqcl3x>发布于 <time class="num" datetime="2026-11-03T00:00:00.000Z" data-astro-cid-mxxqcl3x>2026-11-03</time></span>  <span data-astro-cid-mxxqcl3x>适用：iPhone / iPad</span> </p> </header>    <div class="prose" data-astro-cid-mxxqcl3x> <p>在 iPhone 上用机场，最常见的选择就是 Shadowrocket，国内用户习惯叫它”小火箭”。它界面简单、支持的协议多、导入订阅只要几秒钟，而且是买断制，花一次钱以后都能用。</p>
+<p>这篇教程按实际操作顺序来写：<strong>拿到软件 → 导入订阅 → 选节点连接 → 调整分流 → 处理常见问题</strong>。第一次用的话，跟着从头做一遍大约十分钟。</p>
+<figure>
+  <img src="/images/jiaocheng/shadowrocket-flow.svg" width="480" height="340" alt="Shadowrocket 使用流程：下载 App、导入订阅、选节点连接、设好分流" decoding="async">
+  <figcaption>整个流程分四步，下面逐步展开。</figcaption>
+</figure>
+<h2 id="开始之前要准备什么">开始之前要准备什么</h2>
+<ul>
+<li><strong>一台 iPhone 或 iPad</strong>，系统版本不要太老，能正常访问 App Store 即可。</li>
+<li><strong>一个外区 Apple ID</strong>：美国、香港、台湾、日本等地区都可以。国区商店里没有这个应用。还没有的话，先看<a href="/jiaocheng/waiqu-apple-id-zhuce/">外区 Apple ID 注册教程</a>。</li>
+<li><strong>一份机场订阅链接</strong>：在你购买的机场后台里可以找到。还没有机场的话，可以先看看<a href="/jichang-tuijian/">机场推荐榜单</a>。</li>
+</ul>
+<h2 id="第一步用外区-apple-id-下载-shadowrocket">第一步：用外区 Apple ID 下载 Shadowrocket</h2>
+<h3 id="切换-app-store-账号">切换 App Store 账号</h3>
+<p>打开 <strong>App Store</strong>，点右上角的头像，滑到最底部点 <strong>退出登录</strong>，然后用外区 Apple ID 登录。</p>
+<p>这里要特别注意：<strong>只在 App Store 里切换账号，不要去”设置 → 顶部你的名字”那里退出 iCloud</strong>。iCloud 里存着你的照片、通讯录和”查找”功能，换掉它既麻烦又有风险。</p>
+<h3 id="搜索并购买">搜索并购买</h3>
+<p>在搜索框输入 <code>Shadowrocket</code>，开发者名字是 Shadow Launch Technology Limited，图标是一枚蓝色背景上的小火箭。认准这个，名字相近的仿冒应用不要下载。</p>
+<p>Shadowrocket 是付费应用，需要账号里有余额或绑定了当地的付款方式。常见做法是购买对应地区的 App Store 礼品卡充值。付款成功后点 <strong>获取</strong> 等它安装完成。</p>
+<p>装好之后可以切回你自己的国区账号，小火箭仍然能正常使用和更新。以后需要更新时，在 App Store 里会提示用购买时的账号登录。</p>
+<!-- 截图建议：App Store 搜索结果页，圈出正确的开发者名称 -->
+<h2 id="第二步导入机场订阅">第二步：导入机场订阅</h2>
+<p>小火箭的导入方式有两种，任选一种。</p>
+<h3 id="方法一复制链接后自动识别最省事">方法一：复制链接后自动识别（最省事）</h3>
+<ol>
+<li>登录机场后台，找到 <strong>复制订阅链接</strong> 或类似的按钮。很多机场有单独的 Shadowrocket 选项，有就选它，没有就复制通用订阅。</li>
+<li>打开 Shadowrocket，它会自动读取剪贴板，弹出”是否添加订阅”之类的提示。</li>
+<li>点 <strong>添加</strong>，等几秒，首页就会出现机场的节点列表。</li>
+</ol>
+<p>如果系统询问是否允许 Shadowrocket 粘贴来自其他 App 的内容，选 <strong>允许粘贴</strong>。</p>
+<h3 id="方法二手动添加">方法二：手动添加</h3>
+<p>如果没有弹出提示，就手动加：</p>
+<ol>
+<li>在小火箭首页点右上角的 <strong>+</strong> 号。</li>
+<li><strong>类型</strong> 选 <code>Subscribe</code>（订阅）。</li>
+<li>把订阅链接粘贴到 <strong>URL</strong> 一栏。</li>
+<li><strong>备注</strong> 可以填机场名字，方便以后区分。</li>
+<li>点右上角 <strong>完成</strong>。</li>
+</ol>
+<p>导入成功后，首页会出现一个以备注命名的分组，点开就能看到全部节点。</p>
+<!-- 截图建议：添加订阅的填写页面，订阅链接部分打码 -->
+<blockquote>
+<p>订阅链接等于你的账号。截图发给别人求助时，记得把链接打码。</p>
+</blockquote>
+<h3 id="让订阅自动保持最新">让订阅自动保持最新</h3>
+<p>机场换服务器、加节点时，订阅里的内容会跟着变。到 <strong>设置 → 订阅</strong>，把 <strong>打开时更新</strong> 打开，每次进入 App 都会自动刷新节点。需要立即刷新时，在首页把订阅分组向左滑，点 <strong>更新</strong> 即可。</p>
+<h2 id="第三步测速并连接">第三步：测速并连接</h2>
+<h3 id="测一下哪些节点好用">测一下哪些节点好用</h3>
+<p>首页底部有 <strong>连通性测试</strong>，点一下会给每个节点测延迟。显示数字的是能连通的，数字越小延迟越低；显示超时或红色的节点暂时不可用，先跳过。</p>
+<p>延迟低不代表速度一定快，它只说明响应快。看视频时如果卡顿，换一个延迟稍高但同地区的节点，有时反而更流畅。</p>
+<h3 id="打开连接">打开连接</h3>
+<ol>
+<li>点选你想用的节点，左侧出现圆点表示已选中。</li>
+<li>点首页最上方 <strong>未连接</strong> 右边的开关。</li>
+<li>第一次打开时，iOS 会提示”Shadowrocket 想添加 VPN 配置”，点 <strong>允许</strong>，再输入锁屏密码或使用面容 ID 确认。</li>
+</ol>
+<p>连接成功后，状态栏会出现一个 <strong>VPN</strong> 小图标。这时打开浏览器访问国外网站，能打开就说明一切正常。</p>
+<figure>
+  <img src="/images/jiaocheng/shadowrocket-home.svg" width="364" height="630" alt="Shadowrocket 首页示意图，标出添加按钮、连接开关、全局路由、节点列表和连通性测试的位置" loading="lazy" decoding="async">
+  <figcaption>① 右上角 + 号：添加订阅　② 连接开关　③ 全局路由　④ 节点列表与延迟　⑤ 连通性测试</figcaption>
+</figure>
+<!-- 截图建议：首页已连接状态，节点列表中的延迟数字（拿到真实截图后替换上面的示意图） -->
+<h2 id="第四步选对全局路由国内外分开走">第四步：选对全局路由，国内外分开走</h2>
+<p>首页上方有一个 <strong>全局路由</strong>，决定流量怎么走。新手最容易在这里设错。</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>效果</th>
+<th>什么时候用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>配置</td>
+<td>按规则分流：国内直连，国外走代理</td>
+<td><strong>日常一直用这个</strong></td>
+</tr>
+<tr>
+<td>代理</td>
+<td>所有流量都走节点</td>
+<td>某个国外网站在”配置”模式下打不开时临时用</td>
+</tr>
+<tr>
+<td>直连</td>
+<td>所有流量都不走节点</td>
+<td>相当于暂停代理</td>
+</tr>
+<tr>
+<td>场景</td>
+<td>按网络环境自动切换</td>
+<td>进阶用法，新手不用管</td>
+</tr>
+</tbody>
+</table>
+<figure>
+  <img src="/images/jiaocheng/proxy-modes.svg" width="520" height="566" alt="规则、全局、直连三种模式下国内和国外流量的走向示意图" loading="lazy" decoding="async">
+  <figcaption>三种模式的区别：只有「规则」能做到国内直连、国外走节点。</figcaption>
+</figure>
+<p>选 <strong>配置</strong> 的好处很直接：微信、淘宝、银行 App 这些国内服务不会绕到海外再回来，速度不受影响，也省机场流量。</p>
+<h3 id="关于分流规则">关于分流规则</h3>
+<p>“配置”模式依据的是 <strong>配置</strong> 标签页里当前选中的规则文件。小火箭自带一份默认规则，对大多数人已经够用。</p>
+<p>有些机场会在后台提供专用的规则配置链接，里面针对自家节点做了分组，比如把 Netflix、ChatGPT 单独指定到能解锁的节点。如果你的机场有提供，可以在 <strong>配置</strong> 页点右上角 <strong>+</strong>，粘贴那个链接下载，然后点选它并选择 <strong>使用配置</strong>。</p>
+<h2 id="第五步几个值得打开的设置">第五步：几个值得打开的设置</h2>
+<h3 id="按需连接">按需连接</h3>
+<p>在 <strong>设置 → 按需连接</strong> 里打开后，Shadowrocket 会在网络变化时自动重连，比如从 Wi-Fi 切到蜂窝数据。你不用每次手动去开关。</p>
+<h3 id="节点排序">节点排序</h3>
+<p>节点很多时，在首页右上角菜单里可以选择按延迟排序，好用的节点会排在前面。</p>
+<h3 id="从控制中心快速开关">从控制中心快速开关</h3>
+<p>如果经常需要开关代理，可以在 iPhone 的 <strong>设置 → 控制中心</strong> 添加 Shadowrocket 的控件（取决于系统版本和应用版本是否支持）。不支持的话，也可以直接用 <strong>设置 → VPN</strong> 里的开关。</p>
+<h2 id="连不上怎么办按这个顺序排查">连不上怎么办：按这个顺序排查</h2>
+<p><strong>1. 所有节点都超时</strong>
+先下拉或左滑更新一次订阅。仍然全部超时的话，去机场后台确认套餐没过期、流量没用完。</p>
+<p><strong>2. 订阅导入失败或更新失败</strong>
+可能是订阅地址在当前网络下被屏蔽。可以换成手机流量或其他 Wi-Fi 再试，很多机场也会在后台提供备用订阅地址。</p>
+<p><strong>3. 显示已连接，但网页打不开</strong>
+换一个节点再试；把全局路由临时切到 <strong>代理</strong>，如果这样能打开，说明是规则的问题，更新一下配置文件就行。</p>
+<p><strong>4. 国内 App 变慢或打不开</strong>
+大概率是全局路由选成了 <strong>代理</strong>，改回 <strong>配置</strong>。</p>
+<p><strong>5. 某个流媒体提示所在地区不可用</strong>
+不是所有节点都能解锁流媒体。机场一般会在节点名字里标注”解锁”或”NF”，换到这类节点上。</p>
+<h2 id="小结">小结</h2>
+<p>还在犹豫买小火箭还是其他客户端？可以看 <a href="/jiaocheng/ios-kehuduan-duibi/">iOS 代理客户端对比</a>。</p>
+<p>小火箭的核心操作其实就三件事：<strong>导入订阅、选节点打开开关、全局路由保持在”配置”</strong>。做对这三步，日常使用基本不会遇到问题。</p>
+<p>电脑上也要用的话，可以看 <a href="/jiaocheng/clash-verge-rev-jiaocheng/">Clash Verge Rev 使用教程</a> 或 <a href="/jiaocheng/v2rayn-jiaocheng/">v2rayN 使用教程</a>；安卓手机看 <a href="/jiaocheng/clash-meta-for-android-jiaocheng/">Clash Meta for Android 使用教程</a>。如果你对”订阅""节点""专线”这些词还不熟，先读一下<a href="/wenzhang/jichang-shi-shenme/">机场是什么</a>。</p>
+<p>还没有机场？可以看 <a href="/xiaohuojian-jichang/">小火箭机场推荐</a>：按 iPhone 的用量整理了该买多大的套餐，订阅都能直接导入小火箭。</p> </div> <section class="faq" aria-labelledby="faq-title" data-astro-cid-z6gx6xcw><h2 id="faq-title" data-astro-cid-z6gx6xcw>常见问题</h2><details data-astro-cid-z6gx6xcw><summary data-astro-cid-z6gx6xcw>为什么在 App Store 搜不到 Shadowrocket？</summary><p data-astro-cid-z6gx6xcw>因为中国大陆区的 App Store 没有上架这类代理工具。需要登录美国、香港、台湾等其他地区的 Apple ID 才能搜到并购买。</p></details><details data-astro-cid-z6gx6xcw><summary data-astro-cid-z6gx6xcw>Shadowrocket 要钱吗？买一次能用多久？</summary><p data-astro-cid-z6gx6xcw>它是一次性付费应用，美区价格通常是 2.99 美元，具体以 App Store 页面为准。买断后同一个 Apple ID 下的设备都可以免费下载和更新，不需要续费。机场套餐是另外付费的。</p></details><details data-astro-cid-z6gx6xcw><summary data-astro-cid-z6gx6xcw>小火箭本身提供节点吗？</summary><p data-astro-cid-z6gx6xcw>不提供。Shadowrocket 只是一个客户端，相当于一个&quot;空壳&quot;，需要导入机场给你的订阅链接才能连接。</p></details><details data-astro-cid-z6gx6xcw><summary data-astro-cid-z6gx6xcw>打开小火箭后国内 App 变慢了怎么办？</summary><p data-astro-cid-z6gx6xcw>检查首页的&quot;全局路由&quot;是不是选成了&quot;代理&quot;。改成&quot;配置&quot;后，国内网站和 App 会直连，只有国外流量走节点。</p></details><details data-astro-cid-z6gx6xcw><summary data-astro-cid-z6gx6xcw>用别人分享的 Apple ID 下载安全吗？</summary><p data-astro-cid-z6gx6xcw>有风险。共享账号可能被对方改密码，如果误登到 iCloud 还可能导致设备被锁。最稳妥的做法是自己注册一个外区 Apple ID，并且只在 App Store 里登录，不要登录到系统设置的 iCloud。</p></details></section> <p class="pillar-link" data-astro-cid-mxxqcl3x>
+还在挑机场？看看 <a href="/jichang-tuijian/" data-astro-cid-mxxqcl3x>机场推荐榜单</a>，附价格、节点和线路对比。
+</p> </article> <aside class="side" data-astro-cid-mxxqcl3x> <div class="sticky" data-astro-cid-mxxqcl3x> <nav class="toc" aria-label="本文目录" data-astro-cid-6t6zfk7k><p class="toc-title" data-astro-cid-6t6zfk7k>本文目录</p><ol data-astro-cid-6t6zfk7k><li class="d2" data-astro-cid-6t6zfk7k><a href="#开始之前要准备什么" data-astro-cid-6t6zfk7k>开始之前要准备什么</a></li><li class="d2" data-astro-cid-6t6zfk7k><a href="#第一步用外区-apple-id-下载-shadowrocket" data-astro-cid-6t6zfk7k>第一步：用外区 Apple ID 下载 Shadowrocket</a></li><li class="d3" data-astro-cid-6t6zfk7k><a href="#切换-app-store-账号" data-astro-cid-6t6zfk7k>切换 App Store 账号</a></li><li class="d3" data-astro-cid-6t6zfk7k><a href="#搜索并购买" data-astro-cid-6t6zfk7k>搜索并购买</a></li><li class="d2" data-astro-cid-6t6zfk7k><a href="#第二步导入机场订阅" data-astro-cid-6t6zfk7k>第二步：导入机场订阅</a></li><li class="d3" data-astro-cid-6t6zfk7k><a href="#方法一复制链接后自动识别最省事" data-astro-cid-6t6zfk7k>方法一：复制链接后自动识别（最省事）</a></li><li class="d3" data-astro-cid-6t6zfk7k><a href="#方法二手动添加" data-astro-cid-6t6zfk7k>方法二：手动添加</a></li><li class="d3" data-astro-cid-6t6zfk7k><a href="#让订阅自动保持最新" data-astro-cid-6t6zfk7k>让订阅自动保持最新</a></li><li class="d2" data-astro-cid-6t6zfk7k><a href="#第三步测速并连接" data-astro-cid-6t6zfk7k>第三步：测速并连接</a></li><li class="d3" data-astro-cid-6t6zfk7k><a href="#测一下哪些节点好用" data-astro-cid-6t6zfk7k>测一下哪些节点好用</a></li><li class="d3" data-astro-cid-6t6zfk7k><a href="#打开连接" data-astro-cid-6t6zfk7k>打开连接</a></li><li class="d2" data-astro-cid-6t6zfk7k><a href="#第四步选对全局路由国内外分开走" data-astro-cid-6t6zfk7k>第四步：选对全局路由，国内外分开走</a></li><li class="d3" data-astro-cid-6t6zfk7k><a href="#关于分流规则" data-astro-cid-6t6zfk7k>关于分流规则</a></li><li class="d2" data-astro-cid-6t6zfk7k><a href="#第五步几个值得打开的设置" data-astro-cid-6t6zfk7k>第五步：几个值得打开的设置</a></li><li class="d3" data-astro-cid-6t6zfk7k><a href="#按需连接" data-astro-cid-6t6zfk7k>按需连接</a></li><li class="d3" data-astro-cid-6t6zfk7k><a href="#节点排序" data-astro-cid-6t6zfk7k>节点排序</a></li><li class="d3" data-astro-cid-6t6zfk7k><a href="#从控制中心快速开关" data-astro-cid-6t6zfk7k>从控制中心快速开关</a></li><li class="d2" data-astro-cid-6t6zfk7k><a href="#连不上怎么办按这个顺序排查" data-astro-cid-6t6zfk7k>连不上怎么办：按这个顺序排查</a></li><li class="d2" data-astro-cid-6t6zfk7k><a href="#小结" data-astro-cid-6t6zfk7k>小结</a></li></ol></nav> </div> </aside> </div> <section class="related" aria-labelledby="related-title" data-astro-cid-mxxqcl3x> <h2 id="related-title" data-astro-cid-mxxqcl3x>更多客户端教程</h2> <ul class="list" data-astro-cid-nni2rj4u> <li data-astro-cid-nni2rj4u> <p class="meta" data-astro-cid-nni2rj4u>  <time datetime="2026-11-06T00:00:00.000Z" class="num" data-astro-cid-nni2rj4u> 2026-11-06 </time>  </p> <h3 class="title" data-astro-cid-nni2rj4u="true"> <a href="/jiaocheng/telegram-jiaocheng/" data-astro-cid-nni2rj4u>Telegram 连不上、收不到验证码、怎么设置中文？电报下载与使用教程</a> </h3> <p class="desc" data-astro-cid-nni2rj4u>国内用 Telegram（电报）最常遇到的问题一次讲清：去哪里下载才安全、一直转圈连不上怎么设置代理、+86 收不到验证码怎么办、怎么把界面改成简体中文，附 Windows、macOS、iPhone、安卓的具体操作。</p> </li><li data-astro-cid-nni2rj4u> <p class="meta" data-astro-cid-nni2rj4u>  <time datetime="2026-11-06T00:00:00.000Z" class="num" data-astro-cid-nni2rj4u> 2026-11-06 </time> <span data-astro-cid-nni2rj4u>更新</span> </p> <h3 class="title" data-astro-cid-nni2rj4u="true"> <a href="/jiaocheng/chatgpt-da-bu-kai/" data-astro-cid-nni2rj4u>ChatGPT 打不开、提示地区不支持怎么办？排查方法、App 下载与中文版网站说明</a> </h3> <p class="desc" data-astro-cid-nni2rj4u>开了代理还是用不了 ChatGPT？按症状逐一分析完全打不开、提示地区不支持、Access denied、登录后报错，教你检测出口地区、选对节点并固定节点；附 ChatGPT App 官方下载渠道，以及所谓中文版网站的风险。</p> </li><li data-astro-cid-nni2rj4u> <p class="meta" data-astro-cid-nni2rj4u>  <time datetime="2026-11-03T00:00:00.000Z" class="num" data-astro-cid-nni2rj4u> 2026-11-03 </time>  </p> <h3 class="title" data-astro-cid-nni2rj4u="true"> <a href="/jiaocheng/clash-meta-for-android-jiaocheng/" data-astro-cid-nni2rj4u>Clash Meta for Android 使用教程：安装、导入订阅、分应用代理详解</a> </h3> <p class="desc" data-astro-cid-nni2rj4u>安卓手机用机场的完整教程：Clash Meta for Android（CMFA）怎么选安装包、导入机场订阅、启动代理、切换节点和代理模式，以及分应用代理、省电设置和常见问题处理。</p> </li><li data-astro-cid-nni2rj4u> <p class="meta" data-astro-cid-nni2rj4u>  <time datetime="2026-11-03T00:00:00.000Z" class="num" data-astro-cid-nni2rj4u> 2026-11-03 </time>  </p> <h3 class="title" data-astro-cid-nni2rj4u="true"> <a href="/jiaocheng/ios-kehuduan-duibi/" data-astro-cid-nni2rj4u>iOS 代理客户端怎么选？小火箭、Quantumult X、Loon、Stash、Surge 对比</a> </h3> <p class="desc" data-astro-cid-nni2rj4u>iPhone 上五款主流代理客户端横向对比：Shadowrocket（小火箭）、Quantumult X（圈X）、Loon、Stash、Surge 的价格、有没有免费版、协议支持、订阅格式和上手难度，按你的需求给出选择建议。</p> </li> </ul>  </section> </div>  </main> <footer class="site-footer" data-astro-cid-sz7xmlte> <div class="wrap grid" data-astro-cid-sz7xmlte> <div class="brand" data-astro-cid-sz7xmlte> <p class="name" data-astro-cid-sz7xmlte>机场好</p> <p class="small" data-astro-cid-sz7xmlte>整理主流机场的价格、节点和线路，站长自己买订阅实测，每月核对一次优惠码。只写查得到、测得出的东西。</p> <p class="tg" data-astro-cid-sz7xmlte> <a href="https://t.me/jichanghao" rel="noopener" target="_blank" data-astro-cid-sz7xmlte>机场好 Telegram 频道</a> <span aria-hidden="true" data-astro-cid-sz7xmlte>·</span> <a href="https://t.me/jichanghaoqun" rel="noopener" target="_blank" data-astro-cid-sz7xmlte>交流群</a> </p> </div> <nav aria-label="专题" data-astro-cid-sz7xmlte> <p class="col-title" data-astro-cid-sz7xmlte>专题</p> <ul data-astro-cid-sz7xmlte> <li data-astro-cid-sz7xmlte><a href="/jichang-tuijian/" data-astro-cid-sz7xmlte>机场推荐</a></li> <li data-astro-cid-sz7xmlte><a href="/tizi-tuijian/" data-astro-cid-sz7xmlte>梯子推荐</a></li> <li data-astro-cid-sz7xmlte><a href="/pianyi-jichang/" data-astro-cid-sz7xmlte>便宜机场推荐</a></li> <li data-astro-cid-sz7xmlte><a href="/mianfei-jichang/" data-astro-cid-sz7xmlte>免费机场推荐</a></li> <li data-astro-cid-sz7xmlte><a href="/buxianshi-jichang/" data-astro-cid-sz7xmlte>不限时流量机场</a></li> <li data-astro-cid-sz7xmlte><a href="/zhuanxian-jichang/" data-astro-cid-sz7xmlte>IPLC / IEPL 专线机场</a></li> <li data-astro-cid-sz7xmlte><a href="/chatgpt-jichang/" data-astro-cid-sz7xmlte>ChatGPT 机场推荐</a></li> <li data-astro-cid-sz7xmlte><a href="/clash-jichang/" data-astro-cid-sz7xmlte>Clash 机场推荐</a></li> <li data-astro-cid-sz7xmlte><a href="/xiaohuojian-jichang/" data-astro-cid-sz7xmlte>小火箭机场推荐</a></li> <li data-astro-cid-sz7xmlte><a href="/vpn-jichang/" data-astro-cid-sz7xmlte>VPN 机场怎么选</a></li> </ul> </nav> <nav aria-label="栏目" data-astro-cid-sz7xmlte> <p class="col-title" data-astro-cid-sz7xmlte>栏目</p> <ul data-astro-cid-sz7xmlte> <li data-astro-cid-sz7xmlte><a href="/jichang-youhuima/" data-astro-cid-sz7xmlte>机场优惠码</a></li> <li data-astro-cid-sz7xmlte><a href="/jichang-daohang/" data-astro-cid-sz7xmlte>机场官网导航</a></li> <li data-astro-cid-sz7xmlte><a href="/pingce/" data-astro-cid-sz7xmlte>机场实测</a></li><li data-astro-cid-sz7xmlte><a href="/duibi/" data-astro-cid-sz7xmlte>机场对比</a></li><li data-astro-cid-sz7xmlte><a href="/jiaocheng/" data-astro-cid-sz7xmlte>客户端教程</a></li><li data-astro-cid-sz7xmlte><a href="/wenzhang/" data-astro-cid-sz7xmlte>文章</a></li> </ul> </nav> <nav aria-label="关于本站" data-astro-cid-sz7xmlte> <p class="col-title" data-astro-cid-sz7xmlte>关于</p> <ul data-astro-cid-sz7xmlte> <li data-astro-cid-sz7xmlte><a href="/ceping-fangfa/" data-astro-cid-sz7xmlte>测评方法</a></li> <li data-astro-cid-sz7xmlte><a href="/about/" data-astro-cid-sz7xmlte>关于与声明</a></li> <li data-astro-cid-sz7xmlte><a href="mailto:shanyue2k@proton.me" data-astro-cid-sz7xmlte>招商合作</a></li> <li data-astro-cid-sz7xmlte><a href="https://github.com/shanyue2k/jichang-tuijian" rel="noopener" target="_blank" data-astro-cid-sz7xmlte>GitHub 榜单</a></li> <li data-astro-cid-sz7xmlte><a href="/rss.xml" data-astro-cid-sz7xmlte>RSS 订阅</a></li> <li data-astro-cid-sz7xmlte><a href="/sitemap.xml" data-astro-cid-sz7xmlte>网站地图</a></li> </ul> </nav> </div> <div class="wrap small legal" data-astro-cid-sz7xmlte> <p data-astro-cid-sz7xmlte>
+© 2026 机场好。部分链接为推广链接，通过它购买不会让你多付钱，本站可能获得佣金；请遵守所在地法律法规使用网络服务。
+</p> </div> </footer>  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon="{&#34;token&#34;:&#34;8b6dae5260044215a6bc92d6ee8adbe3&#34;}"></script> </body> </html> 
