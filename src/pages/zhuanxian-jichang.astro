@@ -57,7 +57,8 @@ const xdm = all.find((i) => i.aff.id === 'xingdaomeng');
 const m0 = byMonthly[0];
 const l0 = byLowest[0];
 
-const title = '专线机场推荐 ' + month + '｜IPLC / IEPL，' + full.length + ' 家全线标注专线的机场与价格对比';
+// 搜索量：IPLC专线 103、IEPL专线 103、专线机场 66（Bing 中国区 30 天）
+const title = 'IPLC专线、IEPL专线机场推荐 ' + month + '｜' + full.length + ' 家全线专线机场价格对比';
 const description =
   '整理 ' + n + ' 家机场的线路标注：哪些全部套餐都是 IPLC / IEPL 专线、哪些只有部分套餐是专线、哪些只是专线出口，附专线机场的价格对比，并讲清楚 IPLC 和 IEPL 的区别。';
 
@@ -109,7 +110,7 @@ const jsonLd = [
   <div class="wrap">
     <Breadcrumbs crumbs={crumbs} />
     <header class="head">
-      <h1>专线机场推荐 {month}（IPLC / IEPL）</h1>
+      <h1>IPLC专线、IEPL专线机场推荐 {month}</h1>
       <p class="lead">
         几乎每家机场都说自己是"专线"，但细看套餐说明，有的是全部套餐都走专线，有的只有某一个年付套餐是专线，有的只是出境那一段用专线。我们把 {n} 家机场的官网标注逐条核对，分成三类列出来，再比一比真正全线专线的那几家谁更便宜。
       </p>
