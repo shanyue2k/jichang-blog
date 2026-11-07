@@ -23,7 +23,7 @@ const { A, B } = pair;
 const sp = (n: string, side: 'l' | 'r') => (/^[A-Za-z0-9]/.test(side === 'l' ? n : n.slice(-1)) ? (side === 'l' ? ' ' + n : n + ' ') : n);
 const nA = A.aff.name;
 const nB = B.aff.name;
-const vsName = sp(nA, 'r') + '和' + sp(nB, 'l');
+const vsName = sp(nA, 'r') + '和' + sp(sp(nB, 'l'), 'r');
 const path = pairPath(pair.a, pair.b);
 
 const updated = new Date(
