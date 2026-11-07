@@ -1,0 +1,352 @@
+---
+// 专题：免费机场推荐（搜索量：免费机场推荐 504、免费机场订阅 393、免费机场vpn 334，Bing 中国区 30 天）
+// 不点名、不提供任何免费节点或订阅；讲清楚免费的来源和风险，把读者引到本站整理的机场里最省钱的方案
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Faq from '../components/Faq.astro';
+import Spotlight from '../components/Spotlight.astro';
+import TelegramCta from '../components/TelegramCta.astro';
+import { PILLAR } from '../site.config';
+import { absoluteUrl } from '../lib/content';
+import { formatDate } from '../lib/format';
+import { breadcrumbSchema, faqSchema } from '../lib/schema';
+import { getRanking, monthLabel, onetimePacks, rankingUpdated } from '../lib/ranking';
+import { gb, yuan } from '../lib/profiles';
+
+const all = getRanking();
+const updated = rankingUpdated(all);
+const month = monthLabel(updated);
+const main = all[0];
+
+const cheapMonthly = all
+  .filter((i) => i.monthlyFrom !== null)
+  .slice()
+  .sort((a, b) => (a.monthlyFrom ?? 0) - (b.monthlyFrom ?? 0) || a.rank - b.rank)
+  .slice(0, 5);
+const cheapPacks = onetimePacks(all)
+  .slice()
+  .sort((a, b) => a.plan.price - b.plan.price || a.item.rank - b.item.rank)
+  .slice(0, 5);
+const cheapLong = all
+  .filter((i) => i.lowest !== null)
+  .slice()
+  .sort((a, b) => (a.lowest ?? 0) - (b.lowest ?? 0) || a.rank - b.rank)
+  .slice(0, 5);
+const minMonthly = cheapMonthly[0]?.monthlyFrom ?? 0;
+const minPack = cheapPacks[0]?.plan.price ?? 0;
+const minLong = cheapLong[0]?.lowest ?? 0;
+
+const title = '免费机场推荐 ' + month + '｜免费机场订阅能用吗？风险与 ' + yuan(minMonthly) + ' 起的靠谱替代';
+const description =
+  '免费机场、免费订阅、免费 VPN 节点从哪里来，能用多久，有什么风险，一次讲清楚。本站不分享免费节点，而是按 ' + all.length +
+  ' 家机场的官网价格整理出最省钱的三种方案：月付 ' + yuan(minMonthly) + ' 起、不限时流量包 ' + yuan(minPack) + ' 起、年付折合每月约 ' + yuan(minLong) + '。';
+
+const crumbs = [
+  { name: '首页', path: '/' },
+  { name: PILLAR.label, path: PILLAR.path },
+  { name: '免费机场推荐', path: '/mianfei-jichang/' },
+];
+
+const faq = [
+  {
+    q: '免费机场靠谱吗？',
+    a: '偶尔救急可以，但不适合日常使用。免费节点大多是公开抓取或别人分享的，常常几小时到几天就失效，晚上很慢，也说不清是谁在运营。重要账号、网银、工作资料最好不要经过来路不明的节点。',
+  },
+  {
+    q: '有没有完全免费又稳定的机场？',
+    a: '基本没有。稳定的线路、专线和带宽都要花钱，长期免费又稳定的服务很难持续。真正稳定的低成本方案是买便宜的付费套餐，本站整理的机场里，月付 ' + yuan(minMonthly) + ' 起，年付折合每月约 ' + yuan(minLong) + '。',
+  },
+  {
+    q: '免费机场订阅怎么用？',
+    a: '用法和付费机场一样：复制订阅链接，导入 Clash、v2rayN、小火箭等客户端，更新后选节点。区别在于免费订阅里的节点经常大量不可用，需要频繁测速、更换。客户端教程见本站"客户端教程"栏目。',
+  },
+  {
+    q: '本站推荐的机场有免费试用吗？',
+    a: '没有。本站整理的 ' + all.length + ' 家机场都没有免费试用。想低成本试一试，可以先买最便宜的月付或不限时流量包，用不惯就不再续费。',
+  },
+  {
+    q: '最便宜的机场多少钱？',
+    a: '按官网价格，月付最便宜 ' + yuan(minMonthly) + '，不限时流量包最便宜 ' + yuan(minPack) + '，年付小流量套餐折合每月约 ' + yuan(minLong) + '。价格以官网为准，详见便宜机场推荐。',
+  },
+];
+
+const jsonLd = [
+  breadcrumbSchema(crumbs),
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: '免费机场的低成本替代方案 ' + month,
+    numberOfItems: cheapMonthly.length,
+    itemListElement: cheapMonthly.map((i, k) => ({ '@type': 'ListItem', position: k + 1, name: i.aff.name, url: absoluteUrl(i.path) })),
+  },
+  faqSchema(faq),
+];
+---
+
+<Base title={title} description={description} jsonLd={jsonLd} modified={updated}>
+  <div class="wrap">
+    <Breadcrumbs crumbs={crumbs} />
+    <header class="head">
+      <h1>免费机场推荐 {month}：先看清楚再用</h1>
+      <p class="lead">
+        搜"免费机场"的人，多半是想先试试、或者预算真的很紧。这页不分享任何免费节点和订阅链接，原因下面会讲。我们做的是两件事：讲清楚免费节点从哪里来、风险在哪里；再按 {all.length} 家机场的真实价格，找出花钱最少、又能稳定用的办法。
+      </p>
+      <p class="meta">
+        最后更新 <time class="num" datetime={updated.toISOString()}>{formatDate(updated)}</time> · 价格来自各机场官网，以官网为准
+      </p>
+    </header>
+
+    <ul class="split" aria-label="三种最省钱的方案">
+      <li>
+        <strong class="num">{yuan(minMonthly)}</strong>
+        <span>月付最低，先试一个月</span>
+        <small>不满意就不续费，损失最小</small>
+      </li>
+      <li>
+        <strong class="num">{yuan(minPack)}</strong>
+        <span>不限时流量包最低</span>
+        <small>一次付费，流量用完为止，不会过期</small>
+      </li>
+      <li>
+        <strong class="num">{yuan(minLong)}/月</strong>
+        <span>年付小流量折合</span>
+        <small>长期用最便宜，适合确定要用的人</small>
+      </li>
+    </ul>
+
+    <div class="body">
+      <section class="prose">
+        <h2>免费节点从哪里来</h2>
+        <p>网上的"免费机场""免费订阅""免费 VPN 节点"，大致有三种来源：</p>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead><tr><th>来源</th><th>怎么拿到</th><th>能用多久</th><th>主要问题</th></tr></thead>
+            <tbody>
+              <tr>
+                <th scope="row">GitHub 免费订阅仓库</th>
+                <td>有人写程序从各处抓取公开节点，汇总成订阅链接定时更新</td>
+                <td>单个节点几小时到几天就失效</td>
+                <td>大量节点连不上；节点是谁搭的、会不会记录流量都无法知道</td>
+              </tr>
+              <tr>
+                <th scope="row">Telegram 分享频道</th>
+                <td>频道或群组定期发节点、订阅链接</td>
+                <td>不固定，常常一两天</td>
+                <td>经常夹带广告和引流，偶尔有钓鱼链接或问题配置</td>
+              </tr>
+              <tr>
+                <th scope="row">付费机场的免费试用</th>
+                <td>注册后送少量流量或一两天时间</td>
+                <td>通常 1 天或几 GB</td>
+                <td>试用节点不一定是正式线路；本站整理的 {all.length} 家都没有免费试用</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>这也是本站不分享免费节点名单的原因：它们变化太快，我们无法核实今天还能不能用、运营者是谁；把名字写上去，等于替说不清来路的东西做担保。</p>
+
+        <h2>免费节点和 {yuan(minMonthly)} 的月付机场，差在哪</h2>
+      </section>
+
+      <div class="table-scroll">
+        <table class="data-table vs">
+          <thead><tr><th scope="col"></th><th scope="col">免费节点 / 免费订阅</th><th scope="col">便宜的付费机场</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">稳定性</th><td>节点经常失效，要不停换</td><td class="good">节点固定，失效会有人维护</td></tr>
+            <tr><th scope="row">晚上 8–11 点</th><td>很慢或连不上，用的人太多</td><td class="good">专线机场高峰期通常也能看高清视频</td></tr>
+            <tr><th scope="row">Netflix、ChatGPT</th><td>大多数节点解锁不了</td><td class="good">多数机场会写明解锁情况，本站实测过的也有记录</td></tr>
+            <tr><th scope="row">安全</th><td>不知道谁在运营，流量可能被记录</td><td class="good">有官网、有客服，出了问题有人可找</td></tr>
+            <tr><th scope="row">花费</th><td>0 元，但耗时间</td><td class="good">月付 {yuan(minMonthly)} 起，年付折合每月约 {yuan(minLong)}</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <section>
+        <h2>花最少的钱：三种方案</h2>
+        <p>下面三份名单都按本站整理的官网价格自动计算，点名字可以看每家的全部套餐、节点和怎么买最划算。</p>
+        <div class="trio">
+          <div>
+            <h3>先试一个月</h3>
+            <p class="meta">月付最便宜的 5 家</p>
+            <ol>
+              {cheapMonthly.map((i) => (
+                <li class={i.rank === 1 ? 'is-main' : ''}><a href={i.path}>{i.aff.name}</a><span class="num">{yuan(i.monthlyFrom ?? 0)}/月{i.monthlyFromGB ? ' · ' + gb(i.monthlyFromGB) : ''}</span></li>
+              ))}
+            </ol>
+          </div>
+          <div>
+            <h3>偶尔用一下</h3>
+            <p class="meta">最便宜的不限时流量包</p>
+            <ol>
+              {cheapPacks.map((p) => (
+                <li class={p.item.rank === 1 ? 'is-main' : ''}><a href={p.item.path}>{p.item.aff.name}</a><span class="num">{yuan(p.plan.price)} · {gb(p.plan.trafficGB)}</span></li>
+              ))}
+            </ol>
+          </div>
+          <div>
+            <h3>确定长期用</h3>
+            <p class="meta">折合每月最便宜</p>
+            <ol>
+              {cheapLong.map((i) => (
+                <li class={i.rank === 1 ? 'is-main' : ''}><a href={i.path}>{i.aff.name}</a><span class="num">约 {yuan(i.lowest ?? 0)}/月</span></li>
+              ))}
+            </ol>
+          </div>
+        </div>
+        <p class="meta">"折合每月最便宜"多为年付小流量套餐，年付一般不能用优惠码。月付、季付、半年付可以用优惠码再便宜 10%–30%，见<a href="/jichang-youhuima/">机场优惠码</a>。更完整的比较见<a href="/pianyi-jichang/">便宜机场推荐</a>。</p>
+      </section>
+
+      {main && (
+        <section>
+          <h2>不想自己挑：站长主推</h2>
+          <Spotlight item={main} headingLevel="h3" />
+        </section>
+      )}
+
+      <section class="prose">
+        <h2>如果你还是要用免费节点</h2>
+        <p>临时救急用一下没问题，但请注意这几点：</p>
+        <ol>
+          <li><strong>不要登录重要账号</strong>：网银、支付、工作邮箱，最好别经过来路不明的节点。</li>
+          <li><strong>只导入订阅，不装陌生 App</strong>：用 <a href="/jiaocheng/clash-verge-rev-jiaocheng/">Clash Verge Rev</a>、<a href="/jiaocheng/v2rayn-jiaocheng/">v2rayN</a>、<a href="/jiaocheng/shadowrocket-jiaocheng/">小火箭</a> 这类常见客户端，不要下载频道里发的"专用客户端"。</li>
+          <li><strong>保持规则模式</strong>：国内网站直连，只有国外网站走代理，经过陌生节点的流量越少越好。</li>
+          <li><strong>用完就删订阅</strong>：不用的时候把订阅删掉，避免客户端在后台自动连上。</li>
+        </ol>
+        <p>用了一阵发现天天在换节点、晚上打不开，就是该换成付费套餐的时候了。花十几块买一个月，通常比每天花半小时找节点划算。</p>
+      </section>
+
+      <TelegramCta />
+      <Faq items={faq} />
+
+      <p class="more">
+        相关专题：<a href="/pianyi-jichang/">便宜机场推荐</a> · <a href="/buxianshi-jichang/">不限时流量机场</a> · <a href={PILLAR.path}>机场推荐榜</a> · <a href="/tizi-tuijian/">梯子推荐</a> · <a href="/jichang-youhuima/">机场优惠码</a>
+      </p>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .head {
+    max-width: 48rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .lead {
+    color: var(--ink-soft);
+  }
+
+  .split {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.9rem;
+    max-width: 60rem;
+  }
+
+  @media (max-width: 720px) {
+    .split {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .split li {
+    display: grid;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-top: 3px solid var(--ink);
+    border-radius: var(--radius-md);
+    padding: 0.9rem 1.1rem;
+  }
+
+  .split strong {
+    font-size: 1.8rem;
+    line-height: 1.2;
+  }
+
+  .split span {
+    font-weight: 700;
+  }
+
+  .split small {
+    color: var(--muted);
+    font-size: 0.8125rem;
+  }
+
+  .body {
+    max-width: 52rem;
+    margin-top: 2rem;
+  }
+
+  .body > section > h2,
+  .body .prose h2 {
+    border-top: 2px solid var(--ink);
+    padding-top: 0.25em;
+  }
+
+  .data-table tbody th {
+    background: var(--surface);
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  .vs td {
+    width: 42%;
+  }
+
+  td.good {
+    background: #fffbea;
+  }
+
+  .trio {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  @media (max-width: 720px) {
+    .trio {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .trio > div {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 0.25rem 1rem 0.75rem;
+  }
+
+  .trio h3 {
+    margin: 0.6rem 0 0.2rem;
+    font-size: 1.0625rem;
+  }
+
+  .trio .meta {
+    margin: 0 0 0.4rem;
+  }
+
+  .trio ol {
+    margin: 0;
+    padding-left: 1.2em;
+  }
+
+  .trio li {
+    padding: 0.2rem 0;
+  }
+
+  .trio li span {
+    float: right;
+    color: var(--muted);
+    font-size: 0.875rem;
+  }
+
+  .trio li.is-main a {
+    font-weight: 700;
+  }
+
+  .more {
+    margin-top: 2rem;
+  }
+</style>
