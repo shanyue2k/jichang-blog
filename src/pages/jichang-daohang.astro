@@ -20,7 +20,7 @@ const crumbs = [
 ---
 
 <Base
-  title="机场官网导航：常见机场官网入口汇总"
+  title={'机场官网导航 ' + new Date().getFullYear() + '｜' + items.length + ' 家机场官网入口、套餐与优惠码'}
   description="机场官网导航：汇总近 30 家常见机场的官网入口，标明哪些已经实测、哪些有可用优惠码；可以直接访问官网，也可以打开资料页查看各家的套餐价格、节点、线路和协议。"
   jsonLd={[breadcrumbSchema(crumbs)]}
   noindex={!indexable}

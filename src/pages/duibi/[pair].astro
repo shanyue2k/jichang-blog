@@ -19,8 +19,11 @@ interface Props {
 }
 const { pair } = Astro.props;
 const { A, B } = pair;
+// 英文名两侧补空格：闪跃和 Firefly
+const sp = (n: string, side: 'l' | 'r') => (/^[A-Za-z0-9]/.test(side === 'l' ? n : n.slice(-1)) ? (side === 'l' ? ' ' + n : n + ' ') : n);
 const nA = A.aff.name;
 const nB = B.aff.name;
+const vsName = sp(nA, 'r') + '和' + sp(nB, 'l');
 const path = pairPath(pair.a, pair.b);
 
 const updated = new Date(
@@ -103,21 +106,21 @@ const mb = (n: number) => n + ' MB/s';
 const cheaperEntry = lower(A.monthlyFrom, B.monthlyFrom);
 const faq = [
   {
-    q: nA + '和' + nB + '哪个便宜？',
+    q: vsName + '哪个便宜？',
     a:
       '月付起价：' + nA + ' ' + monthlyLabel(A) + '，' + nB + ' ' + monthlyLabel(B) + '。按年付、半年付摊到每月，' + nA + '最低' + lowestLabel(A) + '，' + nB + '最低' + lowestLabel(B) + '。' +
       (cheaperEntry ? '只看入门价是' + (cheaperEntry === 'a' ? nA : nB) + '便宜，' : '') +
       '但两家每档给的流量不同，按自己每月的用量对照本页的价格表更准确。价格以官网为准。',
   },
   {
-    q: nA + '和' + nB + '哪个速度快？',
+    q: vsName + '哪个速度快？',
     a: bothTested
       ? '本站实测（珠海联通测试服务器）：' + (fasterA.length ? nA + '在' + fasterA.join('、') + '更快' : '') + (fasterA.length && fasterB.length ? '，' : '') + (fasterB.length ? nB + '在' + fasterB.join('、') + '更快' : '') +
         '。' + nA + '测于 ' + when(tA) + '，' + nB + '测于 ' + when(tB) + '，测试时段不同，结果只代表当时的情况。'
       : (tA ? nA + '有站长实测（' + when(tA) + '）' : nA + '还没有实测') + '，' + (tB ? nB + '有站长实测（' + when(tB) + '）' : nB + '还没有实测') + '，所以本页没有直接比较两家的速度。没实测的那家，建议先买月付自己试。',
   },
   {
-    q: nA + '和' + nB + '的优惠码是多少？',
+    q: vsName + '的优惠码是多少？',
     a: nA + '：' + couponLabel(A) + '；' + nB + '：' + couponLabel(B) + '。优惠码一般可用于月付、季付和半年付，年付通常不能用，个别活动套餐也不能用，一切以官网结算页为准。',
   },
   {
@@ -126,9 +129,9 @@ const faq = [
   },
 ];
 
-const title = nA + '和' + nB + '哪个好？价格、节点、实测速度对比（' + month + '）';
+const title = vsName + '哪个好？价格、节点、实测速度对比（' + month + '）';
 const description =
-  nA + '和' + nB + '逐项对比：月付起价 ' + monthlyLabel(A) + ' 对 ' + monthlyLabel(B) + '，节点 ' + nodeLabel(A) + ' 对 ' + nodeLabel(B) + '，' +
+  vsName + '逐项对比：月付起价 ' + monthlyLabel(A) + ' 对 ' + monthlyLabel(B) + '，节点 ' + nodeLabel(A) + ' 对 ' + nodeLabel(B) + '，' +
   (bothTested ? '附两家的站长实测速度，' : '') + '以及优惠码和选购建议。';
 
 const crumbs = [
@@ -144,7 +147,7 @@ const jsonLd = [breadcrumbSchema(crumbs), faqSchema(faq)];
   <div class="wrap">
     <Breadcrumbs crumbs={crumbs} />
     <header class="head">
-      <h1>{nA}和{nB}哪个好？</h1>
+      <h1>{vsName}哪个好？</h1>
       <p class="lead">{pair.intro}</p>
       <p class="meta">
         最后更新 <time class="num" datetime={updated.toISOString()}>{formatDate(updated)}</time> · 价格和节点来自两家官网与后台 · 实测由站长用自己购买的订阅进行 · 一切以官网为准
@@ -241,7 +244,7 @@ const jsonLd = [breadcrumbSchema(crumbs), faqSchema(faq)];
             <p>
               两家都由站长用自己购买的订阅、在同一台珠海联通测试服务器上测速（MiaoKo 测速机器人，32 线程）。{nA}测于 <b>{when(tA)}</b>，{nB}测于 <b>{when(tB)}</b>。
             </p>
-            <div class="speed" role="table" aria-label={nA + '和' + nB + '各地区平均速度'}>
+            <div class="speed" role="table" aria-label={vsName + '各地区平均速度'}>
               <div class="sp-head" role="row">
                 <span role="columnheader">地区</span>
                 <span role="columnheader">{nA}</span>

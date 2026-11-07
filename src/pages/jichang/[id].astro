@@ -8,6 +8,7 @@ import AuditCard from '../../components/AuditCard.astro';
 import TopologyNote from '../../components/TopologyNote.astro';
 import { auditOf } from '../../lib/audit';
 import { pairsOf } from '../../lib/duibi';
+import { getRanking, monthLabel, rankingUpdated } from '../../lib/ranking';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import Faq from '../../components/Faq.astro';
 import { formatDate } from '../../lib/format';
@@ -61,7 +62,11 @@ const gbRange = (list: Plan[], digits = 2) => {
 
 const nearRegions = (pr.regions ?? []).filter((r) => ['香港', '台湾', '日本', '新加坡', '韩国'].includes(r));
 const hasHK = (pr.regions ?? []).includes('香港');
-const title = `${name}机场怎么样？套餐价格、线路与优惠码整理（${year}）`;
+const siteMonth = monthLabel(rankingUpdated(getRanking()));
+const nm = name + (/^[A-Za-z0-9]/.test(name.slice(-1)) ? ' 机场' : '机场');
+const title = pr.tests?.length
+  ? nm + '怎么样？' + siteMonth + '实测速度、套餐价格与优惠码'
+  : nm + '怎么样？官网、套餐价格、节点与优惠码（' + siteMonth + '）';
 const nodeN = pr.nodeCount?.match(/\d+/)?.[0];
 const description =
   name + '机场怎么样？' +

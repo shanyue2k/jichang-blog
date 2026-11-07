@@ -23,8 +23,9 @@ const month = monthLabel(updated);
 const year = updated.getFullYear();
 const indexable = all.length >= 5;
 
-const title = '机场推荐 ' + month + '｜' + all.length + ' 家机场价格、节点与线路对比';
-const description = year + ' 年机场推荐榜：整理 ' + all.length + ' 家机场的官网套餐价格、后台节点数量、线路类型和协议，按月更新。附主推 ' + FEATURED_COUNT + ' 家详细资料、价格对比和选购建议。';
+const testedN = all.filter((i) => i.test).length;
+const title = '机场推荐 ' + month + '｜' + testedN + ' 家实测、' + all.length + ' 家机场价格节点与优惠码';
+const description = '机场推荐 ' + month + '：' + all.length + ' 家机场的官网套餐价格、后台节点数、IPLC / IEPL 线路和协议放在一张表里比较，' + testedN + ' 家附站长实测速度，含可用优惠码和主推 ' + FEATURED_COUNT + ' 家选购建议，每月更新。';
 
 const crumbs = [
   { name: '首页', path: '/' },

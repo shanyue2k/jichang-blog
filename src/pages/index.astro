@@ -17,6 +17,13 @@ const featured = ranking.slice(0, FEATURED_COUNT);
 const primary = featured[0];
 const secondary = featured.slice(1);
 const updated = rankingUpdated(ranking);
+const month = monthLabel(updated);
+const testedN = ranking.filter((i) => i.test).length;
+// 首页走品牌总入口；"机场推荐"这个词由推荐榜页 /jichang-tuijian/ 主攻，避免两页互抢
+const homeTitle = SITE.name + '：' + month + '机场推荐、站长实测与优惠码';
+const homeDesc =
+  SITE.name + '（jichanghao.com）由站长' + SITE.author + '维护：每月核对 ' + ranking.length + ' 家机场的官网套餐、后台节点和线路，' +
+  testedN + ' 家附自己买订阅实测的速度和原始截图，并整理可用优惠码、两家机场对比和 Clash、小火箭等客户端教程。';
 
 const latest = (await getAllPosts()).slice(0, 8);
 const counts = Object.fromEntries(
@@ -35,26 +42,26 @@ const SHORT: Record<string, string> = {
 };
 ---
 
-<Base fullTitle={`${SITE.homeTitle} - ${SITE.name}`} description={SITE.description} jsonLd={[websiteSchema()]}>
+<Base fullTitle={homeTitle} description={homeDesc} jsonLd={[websiteSchema()]}>
   <section class="hero">
     <div class="wrap hero-grid">
       <div class="intro">
-        <h1>机场推荐 {monthLabel(updated)}</h1>
+        <h1>选机场，先看实测和真实价格</h1>
         <p>
           整理了 {ranking.length} 家机场的官网套餐价格、后台节点数量、线路和协议，每月更新。本站主推 {primary?.aff.name}，另外 {secondary.length} 家为次推，点名字可以看每家的全部套餐和怎么买最划算。
         </p>
         <p class="cta">
-          <a class="btn" href={PILLAR.path}>查看完整机场推荐榜</a>
+          <a class="btn" href={PILLAR.path}>{month}机场推荐榜</a>
           <a class="btn btn--ghost" href="/jichang-daohang/">机场官网导航</a>
         </p>
         <p class="meta">最后更新 <time class="num" datetime={updated.toISOString()}>{formatDate(updated)}</time> · 价格以官网为准</p>
       </div>
       <div class="board-slot">
-        {primary && <Spotlight item={primary} />}
+        {primary && <Spotlight item={primary} headingLevel="h3" />}
       </div>
     </div>
     <div class="wrap">
-      <h2 class="top-title">次推 {secondary.length} 家机场</h2>
+      <h2 class="top-title">主推{primary?.aff.name}之外：次推 {secondary.length} 家机场</h2>
       <RankTable items={secondary} compact caption={'次推 ' + secondary.length + ' 家机场'} />
       <p class="meta small">"折合最低"按年付等长周期换算成每月价格。官网链接为推广链接，注册价格不变。</p>
     </div>
@@ -65,7 +72,7 @@ const SHORT: Record<string, string> = {
   <div class="wrap">
     <TelegramCta />
     <section class="sections" aria-labelledby="sections-title">
-      <h2 id="sections-title" class="visually-hidden">栏目</h2>
+      <h2 id="sections-title" class="visually-hidden">机场实测、对比与客户端教程</h2>
       <ul>
         {
           SECTION_KEYS.map((k) => (
