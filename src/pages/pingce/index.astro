@@ -19,11 +19,11 @@ const crumbs = [
 ];
 ---
 
-<Base title={'机场测速 ' + monthLabel(rankingUpdated(all)) + '｜' + tested.length + ' 家机场实测速度、延迟与流媒体解锁结果'} description={meta.description} jsonLd={[breadcrumbSchema(crumbs)]} noindex={tested.length === 0}>
+<Base title={'机场测速评测 ' + monthLabel(rankingUpdated(all)) + '｜' + tested.length + ' 家机场实测速度、延迟与流媒体解锁结果'} description={meta.description} jsonLd={[breadcrumbSchema(crumbs)]} noindex={tested.length === 0}>
   <div class="wrap">
     <Breadcrumbs crumbs={crumbs} />
     <header class="head">
-      <h1>机场测速：站长实测结果</h1>
+      <h1>机场测速评测：站长实测结果</h1>
       <p class="lead">
         这里只放站长用自己购买的订阅、通过测速机器人实际测过的机场。目前实测了 {tested.length} 家，其余 {untested} 家暂时只有官网和后台整理的资料，资料页会写明"尚未实测"，不会拿别人的测速图充数。
       </p>
